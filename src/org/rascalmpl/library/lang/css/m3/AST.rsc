@@ -58,3 +58,29 @@ data Type
 data Modifier
     = important()
     ;
+    
+public Declaration createAstFromFile(loc file) {
+    result = createAstsFromFiles({file});
+    if ({oneResult} := result) {
+        return oneResult;
+    }
+    throw "Unexpected number of ASTs returned from <file>";
+}
+
+@javaClass{org.rascalmpl.library.lang.css.m3.internal.ASTConverter}
+@reflect
+public java set[Declaration] createAstsFromFiles(set[loc] file);
+
+@javaClass{org.rascalmpl.library.lang.css.m3.internal.ASTConverter}
+@reflect
+public java Declaration createAstFromString(str source);
+
+@doc{Creates ASTs from a project}
+public set[Declaration] createAstsFromDirectory(loc project) {
+    if (!(isDirectory(project))) {
+      throw "<project> is not a valid directory";
+    }
+    
+    allCSSFiles = [ j | j <- find(project, "css"), isFile(j) ];
+    return createAstsFromFiles(allCSSFiles);
+}
