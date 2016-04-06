@@ -9,6 +9,16 @@ import Set;
 import String;
 import List;
 
+data Statement
+    = ruleSet(list[Expression] selectors, list[Declaration] declarations)
+    | ruleMedia(Expression mediaQueries, Statement \value)
+    | ruleFontFace(Statement \value)
+    | ruleImport(Type uri)
+    | ruleMargin(Expression atRule, Statement \value)
+    | rulePage(Expression atRule, Statement \value)
+    | ruleViewport(Expression atRule, Statement \value)
+    ;
+
 data Declaration
     = declaration(Expression property, Expression \value, Modifier modifier)
     ;
@@ -18,16 +28,6 @@ data Expression
     | property(Type \type, list[Expression] dimensions)
     | \value(Type \type, list[Expression] dimensions)
     | string(str \value)
-    ;
-
-data Statement
-    = ruleSet(list[Expression] selectors, list[Declaration] declarations)
-    | ruleMedia(Expression mediaQueries, Statement \value)
-    | ruleFontFace(Statement \value)
-    | ruleImport(Type uri)
-    | ruleMargin(Expression atRule, Statement \value)
-    | rulePage(Expression atRule, Statement \value)
-    | ruleViewport(Expression atRule, Statement \value)
     ;
 
 data Type 
@@ -67,15 +67,14 @@ public Declaration createAstFromFile(loc file) {
     throw "Unexpected number of ASTs returned from <file>";
 }
 
-@javaClass{org.rascalmpl.library.lang.css.m3.internal.ASTConverter}
-@reflect
-public java set[Declaration] createAstsFromFiles(set[loc] file);
+@javaClass{org.rascalmpl.library.lang.css.m3.internal.CSSLoader}
+@reflect{Need access to stderr/stdout}
+public java set[Statement] createAstsFromFiles(set[loc] file);
 
-@javaClass{org.rascalmpl.library.lang.css.m3.internal.ASTConverter}
-@reflect
-public java Declaration createAstFromString(str source);
+@javaClass{org.rascalmpl.library.lang.css.m3.internal.CSSLoader}
+@reflect{Need access to stderr/stdout}
+public java Statement createAstFromString(str source);
 
-@doc{Creates ASTs from a project}
 public set[Declaration] createAstsFromDirectory(loc project) {
     if (!(isDirectory(project))) {
       throw "<project> is not a valid directory";
