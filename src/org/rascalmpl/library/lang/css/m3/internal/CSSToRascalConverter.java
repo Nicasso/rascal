@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.rascalmpl.library.lang.java.m3.internal.IValueList;
 import org.rascalmpl.value.IConstructor;
 import org.rascalmpl.value.IList;
@@ -40,7 +38,6 @@ public class CSSToRascalConverter {
 
 	protected final TypeStore typeStore;
 	protected final Map<String, ISourceLocation> locationCache;
-	protected IValue ownValue;
 
 	CSSToRascalConverter(final TypeStore typeStore, Map<String, ISourceLocation> cache) {
 		this.typeStore = typeStore;
@@ -99,29 +96,19 @@ public class CSSToRascalConverter {
 		return values.constructor(constr, removeNulls(children));
 	}
 
-	protected IValueList parseModifiers(IValue node) {
-		IValueList list = new IValueList(values);
-		list.add(node);
-		return list;
+	protected IValue setAnnotation(String annoName, IValue value, IValue annoValue) {
+		if (value.getType().declaresAnnotation(this.typeStore, annoName)) {
+			return ((IConstructor) value).asAnnotatable().setAnnotation(annoName, annoValue);
+		}
+		return null;
 	}
 
-	protected void setAnnotation(String annoName, IValue annoValue) {
-		if (this.ownValue == null) {
-			return;
-		}
-		if (annoValue != null && ownValue.getType().declaresAnnotation(this.typeStore, annoName)) {
-			ownValue = ((IConstructor) ownValue).asAnnotatable().setAnnotation(annoName, annoValue);
-		}
-	}
-
-	protected void setAnnotation(String annoName, IValueList annoList) {
+	protected IValue setAnnotation(String annoName, IValue value, IValueList annoList) {
 		IList annos = (IList) annoList.asList();
-		if (this.ownValue == null) {
-			return;
-		}
-		if (annoList != null && this.ownValue.getType().declaresAnnotation(this.typeStore, annoName)
+		if (annoList != null && value.getType().declaresAnnotation(this.typeStore, annoName)
 				&& !annos.isEmpty()) {
-			this.ownValue = ((IConstructor) this.ownValue).asAnnotatable().setAnnotation(annoName, annos);
+			return ((IConstructor) value).asAnnotatable().setAnnotation(annoName, annos);
 		}
+		return null;
 	}
 }
