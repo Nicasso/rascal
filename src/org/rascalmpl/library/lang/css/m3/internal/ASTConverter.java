@@ -279,12 +279,12 @@ public class ASTConverter extends CSSToRascalConverter {
 	
 	private IValue elementId(Selector.ElementID node) {
 		IValue idName = values.string(node.getID());
-		return idName;
+		return constructTypeNode("id", idName, null);
 	}
 	
 	private IValue domElement(Selector.ElementDOM node) {
 		IValue elementName = values.string(node.getElement().getTagName());
-		return elementName;
+		return constructTypeNode("domElement", elementName, null);
 	}
 	
 	private IValue combinator(Selector.Combinator node) {
@@ -321,17 +321,19 @@ public class ASTConverter extends CSSToRascalConverter {
 	}
 	
 	private IValue attributeselector(Selector.SelectorPart node) {
+		// A visitor should be so easy
 		IValue attribute = values.string(((ElementAttribute) node).getAttribute());
 		IValue operator = values.string(((ElementAttribute) node).getOperator().toString());
+		// Same for this one...
 		IValue value = values.string(((ElementAttribute) node).getValue());
 		
 		IValue attributeSelectors = values.string(node.toString());
-		return attributeSelectors;
+		return constructTypeNode("attributeSelectors", attribute, operator, value);
 	}
 	
 	private IValue pseudoClass(Selector.SelectorPart node) {
 		IValue psuedoClasses = values.string(node.toString());
-		return psuedoClasses;
+		return constructTypeNode("psuedoClasses", psuedoClasses);
 	}
 	
 	private IValue angle(TermAngle node) {
