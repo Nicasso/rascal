@@ -7,6 +7,7 @@ import org.rascalmpl.value.ISet;
 import org.rascalmpl.value.IString;
 import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.IValueFactory;
+import org.rascalmpl.value.type.TypeStore;
 
 import cz.vutbr.web.css.CSSException;
 import cz.vutbr.web.css.CSSFactory;
@@ -28,7 +29,12 @@ public class CSSLoader {
 		for (IValue f : files) {
 			try {
 				StyleSheet style = CSSFactory.parse(f.getType().getValueLabel(), "UTF-8");
-				ASTConverter ast = new ASTConverter(style, eval);
+				
+				TypeStore store = new TypeStore();
+		        store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
+		        store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
+				
+				ASTConverter ast = new ASTConverter(style, store, eval);
 			} catch (CSSException | IOException e) {
 				eval.getStdErr().println(e.getMessage());
 				eval.getStdErr().flush();
@@ -46,7 +52,12 @@ public class CSSLoader {
 		try {
 			// @TODO This null needs to be replaced lated with a optional URL, for @import and url's. 
 			StyleSheet style = CSSFactory.parseString(contents.getValue(), null);
-			ASTConverter ast = new ASTConverter(style, eval);
+			
+			TypeStore store = new TypeStore();
+	        store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
+	        store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
+	        
+			ASTConverter ast = new ASTConverter(style, store, eval);
 		} catch (CSSException | IOException e) {
 			eval.getStdErr().println(e.getMessage());
 			eval.getStdErr().flush();
