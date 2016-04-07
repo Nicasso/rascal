@@ -1,8 +1,12 @@
 package org.rascalmpl.library.lang.css.m3.internal;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 import org.rascalmpl.interpreter.IEvaluatorContext;
+import org.rascalmpl.value.IValue;
+import org.rascalmpl.value.type.TypeStore;
 
 import cz.vutbr.web.css.CombinedSelector;
 import cz.vutbr.web.css.Declaration;
@@ -38,12 +42,14 @@ import cz.vutbr.web.css.TermString;
 import cz.vutbr.web.css.TermTime;
 import cz.vutbr.web.css.TermURI;
 
-public class ASTConverter {
+public class ASTConverter extends CSSToRascalConverter {
 	
 	private IEvaluatorContext eval;
 	
-	public ASTConverter(Collection<RuleBlock<?>> rules, IEvaluatorContext eval) {
+	public ASTConverter(Collection<RuleBlock<?>> rules, TypeStore store, IEvaluatorContext eval) {
+		super(store, new HashMap<>());
 		this.eval = eval;
+		
 		rulesBlock(rules);
 	}
 
@@ -62,7 +68,7 @@ public class ASTConverter {
 			} else if (ruleBlock instanceof RuleViewport) {
 				ruleViewport(ruleBlock);
 			} else {
-				eval.getStdOut().println("EXOTIC STUFF");
+				new AssertionError("Some kind of exotic block which is not recognized.");
 			}
 		}
 	}
@@ -75,18 +81,38 @@ public class ASTConverter {
 
 		eval.getStdOut().println("Declarations:");
 		for (Declaration decl : set) {
-			eval.getStdOut().println(decl.getSource());
 			eval.getStdOut().println("  Property: " + decl.getProperty());
 			eval.getStdOut().println("  Values: ");
 			declarations(decl);
 		}
 	}
+	
+	private void mediaQuery(List<MediaQuery> list) {
+		for(MediaQuery m : list) {
+			eval.getStdOut().println("MEDIAQUERY: "+m.getType()+" - "+m.toString());
+			mediaExpression(m);
+		}
+	}
+	
+	private void mediaExpression(MediaQuery m) {
+		for(MediaExpression a : m) {
+			eval.getStdOut().println("MEDIAEXPRESSION: "+a.getFeature() + " - " +a.toString());
+			mediaTerms(a);
+		}
+	}
+	
+	private void mediaTerms(MediaExpression m) {
+		for(Term a : m) {
+			eval.getStdOut().println("(MEDIA)TERMS: "+a.toString());
+			terms(a);
+		}
+	}
 
 	private void ruleMedia(RuleBlock<?> ruleBlock) {
-		eval.getStdOut().println("This is a ruleMedia");
 		eval.getStdOut().println("");
+		eval.getStdOut().println("This is a ruleMedia");
 		RuleMedia media = (RuleMedia) ruleBlock;
-		eval.getStdOut().println("Media: " + media.getMediaQueries());
+		mediaQuery(media.getMediaQueries());
 		for (RuleSet set : media) {
 			ruleSet(set);
 		}
@@ -126,7 +152,6 @@ public class ASTConverter {
 		eval.getStdOut().println("This is a ruleViewport");
 		eval.getStdOut().println("");
 		RuleViewport media = (RuleViewport) ruleBlock;
-		//eval.getStdOut().println("MaginAre: " + media.getMarginArea());
 		for (Declaration set : media) {
 			declarations(set);
 		}
@@ -135,10 +160,11 @@ public class ASTConverter {
 	private void realSelectors(CombinedSelector s2) {
 		for (Selector s : s2) {
 			for (Selector.SelectorPart sp : s) {
-				eval.getStdOut().println(sp.toString());
-				eval.getStdOut().println("REAL SELECTORS: "+s.getClassName()+" - "+s.getElementName()+" - "+s.getIDName()+" - "+s.getCombinator()+ " - "+s.getPseudoElement());
+				eval.getStdOut().print(sp.toString() + " ");
+				//eval.getStdOut().println("Complete selector: ."+s.getClassName()+" - "+s.getElementName()+" - #"+s.getIDName()+" - "+s.getCombinator());
 			}
 		}
+		eval.getStdOut().println("");
 	}
 	
 	private void mediaExpression(MediaExpression exp) {
@@ -148,11 +174,10 @@ public class ASTConverter {
 	
 	private void mediaQuery(MediaQuery q) {
 		eval.getStdOut().println("mediaQuery: "+q.getType());
-		
 	}
 
 	private void rules(Rule<?> rules) {
-		eval.getStdOut().println("Rules!");
+		eval.getStdOut().println("Rules:");
 		for (Object rule : rules) {
 			if (rule instanceof CombinedSelector) {
 				//realSelectors((Collection<Selector.SelectorPart>) rule);
@@ -183,9 +208,7 @@ public class ASTConverter {
 		}
 	}
 
-
 	private void declarations(Declaration decl) {
-		//eval.getStdOut().println("Declaration source: "+decl.getSource());
 		eval.getStdOut().println("Important? "+decl.isImportant());
 		for (Term<?> term : decl) {
 			terms(term);
@@ -216,8 +239,8 @@ public class ASTConverter {
 			eval.getStdOut().println("    List: " + term.getValue());
 		} else if (term instanceof TermNumber) {
 			eval.getStdOut().println("    Number: " + term.getValue());
-		} else if (term instanceof TermNumeric) {
-			eval.getStdOut().println("    Numeric: " + term.getValue());
+//		} else if (term instanceof TermNumeric) {
+//			eval.getStdOut().println("    Numeric: " + term.getValue());
 		} else if (term instanceof TermPair) {
 			eval.getStdOut().println("    Pair: " + term.getValue());
 		} else if (term instanceof TermPercent) {
@@ -232,12 +255,108 @@ public class ASTConverter {
 			eval.getStdOut().println("    URI: " + term.getValue());
 		}
 	}
-
+	
 	private void selectors(CombinedSelector[] combinedSelectors) {
 		for (CombinedSelector s : combinedSelectors) {
-			eval.getStdOut().println(s);
+			//eval.getStdOut().println(s);
 			realSelectors(s);
 		}
+	}
+	
+	private void angle(TermAngle node) {
+		IValue angle = values.real(node.getValue().doubleValue());
+		IValue unit = values.string(node.getUnit().toString());
+		ownValue = constructStatementNode("angle", angle, unit);
+	}
+	
+	private void color(TermColor node) {
+		String hex = "#"+Integer.toHexString(node.getValue().getRGB()).substring(2);
+		IValue color = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("color", color);
+	}
+	
+	//@TODO IMPROVE
+	private void expression(TermExpression node) {
+		IValue expression = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("expression", expression);
+	}
+
+	private void frequency(TermFrequency node) {
+		IValue freq = values.string(node.getValue().toString());
+		IValue unit = values.string(node.getUnit().toString());
+		ownValue = constructStatementNode("frequency", freq, unit);
+	}
+	
+	//@TODO IMPROVE
+	private void function(TermFunction node) {
+		IValue functionName = values.string(node.getFunctionName());
+		IValue expression = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("function", functionName, expression);
+	}
+	
+	private void ident(TermIdent node) {
+		IValue ident = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("ident", ident);
+	}
+	
+	private void integer(TermInteger node) {
+		IValue integer = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("integer", integer);
+	}
+	
+	private void length(TermLength node) {
+		IValue length = values.string(node.getValue().toString());
+		IValue unit = values.string(node.getUnit().toString());
+		ownValue = constructStatementNode("length", length, unit);
+	}
+	
+	//@TODO IMPROVE
+	private void list(TermList node) {
+		IValue list = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("list", list);
+	}
+	
+	private void number(TermNumber node) {
+		IValue number = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("number", number);
+	}
+	
+//	private void numeric(TermNumeric node) {
+//		IValue numeric = values.string(node.getValue().toString());
+//		ownValue = constructStatementNode("numeric", numeric);
+//	}
+	
+	//@TODO IMPROVE
+	private void pair(TermPair node) {
+		IValue pair = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("pair", pair);
+	}
+	
+	private void percent(TermPercent node) {
+		IValue percent = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("percent", percent);
+	}
+	
+	private void resolution(TermResolution node) {
+		IValue resolution = values.string(node.getValue().toString());
+		IValue unit = values.string(node.getUnit().toString());
+		ownValue = constructStatementNode("resolution", resolution, unit);
+	}
+	
+	private void string(TermString node) {
+		IValue string = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("string", string);
+	}
+	
+	private void time(TermTime node) {
+		IValue time = values.string(node.getValue().toString());
+		IValue unit = values.string(node.getUnit().toString());
+		ownValue = constructStatementNode("time", time, unit);
+	}
+	
+	private void uri(TermURI node) {
+		IValue uri = values.string(node.getValue().toString());
+		ownValue = constructStatementNode("uri", uri);
 	}
 	
 }
