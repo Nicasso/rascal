@@ -51,10 +51,10 @@ data Type
     | integer(int \val) // 1
     | length(num \len, str unit) // 10cm, 10.00pt, 10em, etc.
     | percent(num \perc) // 10%, 10.00%
-    | \list(list[Type] pair) // (@TODO, when is this used?!)
+    | \list(list[Type] pair) // (@TODO, when is this ever used?!)
     | number(num number) // 10.00
     //| numeric(num number) // Numbers specific for a certain unit like 10px. Superclass for angle, freuquency etc. @TODO, do we need this here since it is a superclas??
-    | pair(tuple[Type, Type] values) // Terms with a operator (COMMA, SPACE, SLASH) in between 
+    | pair(tuple[Type, Type] keyValue, str op) // A key value pair with an operator (COMMA, SPACE, SLASH) in between used for shorthands (@TODO Don't know where exactly this is used yet.) 
     | resolution(num \res, str unit) // 960dpi, 10dpcm, 20dppx
     | string(str \string) // "lol"
     | time(num \time, str unit) // 12s, +0s, -456ms
