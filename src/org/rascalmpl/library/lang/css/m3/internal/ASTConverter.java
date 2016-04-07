@@ -2,9 +2,11 @@ package org.rascalmpl.library.lang.css.m3.internal;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.rascalmpl.interpreter.IEvaluatorContext;
+import org.rascalmpl.library.lang.java.m3.internal.IValueList;
 import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
 
@@ -21,6 +23,11 @@ import cz.vutbr.web.css.RulePage;
 import cz.vutbr.web.css.RuleSet;
 import cz.vutbr.web.css.RuleViewport;
 import cz.vutbr.web.css.Selector;
+import cz.vutbr.web.css.Selector.ElementAttribute;
+import cz.vutbr.web.css.Selector.ElementClass;
+import cz.vutbr.web.css.Selector.ElementDOM;
+import cz.vutbr.web.css.Selector.ElementID;
+import cz.vutbr.web.css.Selector.ElementName;
 import cz.vutbr.web.css.StyleSheet;
 import cz.vutbr.web.css.Term;
 import cz.vutbr.web.css.TermAngle;
@@ -34,7 +41,6 @@ import cz.vutbr.web.css.TermLength;
 import cz.vutbr.web.css.TermLengthOrPercent;
 import cz.vutbr.web.css.TermList;
 import cz.vutbr.web.css.TermNumber;
-import cz.vutbr.web.css.TermNumeric;
 import cz.vutbr.web.css.TermPair;
 import cz.vutbr.web.css.TermPercent;
 import cz.vutbr.web.css.TermResolution;
@@ -263,100 +269,165 @@ public class ASTConverter extends CSSToRascalConverter {
 		}
 	}
 	
-	private void angle(TermAngle node) {
+	// IVALUE CONVERSION METHODS!
+	
+	// @TODO HOW TO ADD THE OPTIONAL ATRIBUTESELECTORS AND PSEUDOCLASSES?!
+	private IValue elementClass(Selector.ElementClass node) {
+		IValue className = values.string(node.getClassName());
+		return constructTypeNode("class", className, null);
+	}
+	
+	private IValue elementId(Selector.ElementID node) {
+		IValue idName = values.string(node.getID());
+		return idName;
+	}
+	
+	private IValue domElement(Selector.ElementDOM node) {
+		IValue elementName = values.string(node.getElement().getTagName());
+		return elementName;
+	}
+	
+	private IValue combinator(Selector.Combinator node) {
+		IValue combinator = values.string(node.value());
+		return constructTypeNode("combinator", combinator);
+	}
+	
+	private IValue combinatedSelector(CombinedSelector node) {
+		
+		IValueList selectors = new IValueList(values);
+		for (Iterator it = node.iterator(); it.hasNext();) {
+			Selector s = (Selector) it.next();
+			for (Selector.SelectorPart sp : s) {
+				
+				IValue selectorPart;
+				
+				if (sp instanceof ElementClass) {
+					selectorPart = elementClass((ElementClass) sp);
+				} else if (sp instanceof ElementID) {
+					selectorPart = elementId((ElementID) sp);
+				} else if (sp instanceof ElementDOM) {
+					selectorPart = domElement((ElementDOM) sp);
+				} else if (sp instanceof ElementAttribute) {
+					selectorPart = attributeselector((ElementAttribute) sp);
+				} else if (sp instanceof ElementName) {
+					System.out.println(((ElementName) sp).getName());
+				} else {
+					new AssertionError("CombinatedSelector error");
+				}
+			}
+		}
+		 
+		return selectors.asList();
+	}
+	
+	private IValue attributeselector(Selector.SelectorPart node) {
+		IValue attribute = values.string(((ElementAttribute) node).getAttribute());
+		IValue operator = values.string(((ElementAttribute) node).getOperator().toString());
+		IValue value = values.string(((ElementAttribute) node).getValue());
+		
+		IValue attributeSelectors = values.string(node.toString());
+		return attributeSelectors;
+	}
+	
+	private IValue pseudoClass(Selector.SelectorPart node) {
+		IValue psuedoClasses = values.string(node.toString());
+		return psuedoClasses;
+	}
+	
+	private IValue angle(TermAngle node) {
 		IValue angle = values.real(node.getValue().doubleValue());
 		IValue unit = values.string(node.getUnit().toString());
-		ownValue = constructStatementNode("angle", angle, unit);
+		return constructTypeNode("angle", angle, unit);
 	}
 	
-	private void color(TermColor node) {
+	private IValue color(TermColor node) {
 		String hex = "#"+Integer.toHexString(node.getValue().getRGB()).substring(2);
 		IValue color = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("color", color);
+		return constructTypeNode("color", color);
 	}
 	
 	//@TODO IMPROVE
-	private void expression(TermExpression node) {
+	private IValue expression(TermExpression node) {
 		IValue expression = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("expression", expression);
+		return constructTypeNode("expression", expression);
 	}
 
-	private void frequency(TermFrequency node) {
+	private IValue frequency(TermFrequency node) {
 		IValue freq = values.string(node.getValue().toString());
 		IValue unit = values.string(node.getUnit().toString());
-		ownValue = constructStatementNode("frequency", freq, unit);
+		return constructTypeNode("frequency", freq, unit);
 	}
 	
 	//@TODO IMPROVE
-	private void function(TermFunction node) {
+	private IValue function(TermFunction node) {
 		IValue functionName = values.string(node.getFunctionName());
 		IValue expression = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("function", functionName, expression);
+		return constructTypeNode("function", functionName, expression);
 	}
 	
-	private void ident(TermIdent node) {
+	private IValue ident(TermIdent node) {
 		IValue ident = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("ident", ident);
+		return constructTypeNode("ident", ident);
 	}
 	
-	private void integer(TermInteger node) {
+	private IValue integer(TermInteger node) {
 		IValue integer = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("integer", integer);
+		return constructTypeNode("integer", integer);
 	}
 	
-	private void length(TermLength node) {
+	private IValue length(TermLength node) {
 		IValue length = values.string(node.getValue().toString());
 		IValue unit = values.string(node.getUnit().toString());
-		ownValue = constructStatementNode("length", length, unit);
+		return constructTypeNode("length", length, unit);
 	}
 	
 	//@TODO IMPROVE
-	private void list(TermList node) {
+	private IValue list(TermList node) {
 		IValue list = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("list", list);
+		return constructTypeNode("list", list);
 	}
 	
-	private void number(TermNumber node) {
+	private IValue number(TermNumber node) {
 		IValue number = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("number", number);
+		return constructTypeNode("number", number);
 	}
 	
 //	private void numeric(TermNumeric node) {
 //		IValue numeric = values.string(node.getValue().toString());
-//		ownValue = constructStatementNode("numeric", numeric);
+//		return constructTypeNode("numeric", numeric);
 //	}
 	
 	//@TODO IMPROVE
-	private void pair(TermPair node) {
+	private IValue pair(TermPair node) {
 		IValue pair = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("pair", pair);
+		return constructTypeNode("pair", pair);
 	}
 	
-	private void percent(TermPercent node) {
+	private IValue percent(TermPercent node) {
 		IValue percent = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("percent", percent);
+		return constructTypeNode("percent", percent);
 	}
 	
-	private void resolution(TermResolution node) {
+	private IValue resolution(TermResolution node) {
 		IValue resolution = values.string(node.getValue().toString());
 		IValue unit = values.string(node.getUnit().toString());
-		ownValue = constructStatementNode("resolution", resolution, unit);
+		return constructTypeNode("resolution", resolution, unit);
 	}
 	
-	private void string(TermString node) {
+	private IValue string(TermString node) {
 		IValue string = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("string", string);
+		return constructTypeNode("string", string);
 	}
 	
-	private void time(TermTime node) {
+	private IValue time(TermTime node) {
 		IValue time = values.string(node.getValue().toString());
 		IValue unit = values.string(node.getUnit().toString());
-		ownValue = constructStatementNode("time", time, unit);
+		return constructTypeNode("time", time, unit);
 	}
 	
-	private void uri(TermURI node) {
+	private IValue uri(TermURI node) {
 		IValue uri = values.string(node.getValue().toString());
-		ownValue = constructStatementNode("uri", uri);
+		return constructTypeNode("uri", uri);
 	}
 	
 }
