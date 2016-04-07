@@ -43,17 +43,17 @@ data Type
     | pseudoClasses(str class) // :after, :link, :first-child
     // Values
     | angle(int angle, str unit) // 10deg, 10grad, 1rad, 0.25turn
-    | color(int color, str unit) // red, #000000, #888, rgb(0,0,255), rgb(0,0,255,0.5), hsl(120, 100%, 50%), hsla(120, 100%, 50%, 0.3)
-    | expression(str expr) // (@TODO, when is this ever used?!)
-    | frequency(num freq, str unit) // 12Hz, 14KhZ (No space between the number and the literal. Not supported by any browser so far)
-    | function(str func, list[Type] expr) // calc(100% - 100px), linear-gradient(red,yellow,blue). Example for content property: 'content: " (" attr(href) ")";'
+    | color(int color) // red, #000000, #888, rgb(0,0,255), rgb(0,0,255,0.5), hsl(120, 100%, 50%), hsla(120, 100%, 50%, 0.3)
+    | expression(list[Declaration] expressions) // Used for media expression like (max-width : 480px) and (orientation: landscape) in mediaqueries like "@media tv and (min-width: 700px) and (orientation: landscape)"
+    | frequency(num freq, str unit) // 12Hz, 14KhZ (No space between the number and the literal! Not supported by any browser so far)
+    | function(str func, list[Type] exp) // calc(100% - 100px), linear-gradient(red,yellow,blue). Example for content property: 'content: " (" attr(href) ")";'
     | ident(str ident) // left, auto, none
     | integer(int \val) // 1
     | length(num \len, str unit) // 10cm, 10.00pt, 10em, etc.
     | percent(num \perc) // 10%, 10.00%
     | \list(list[Type] pair) // (@TODO, when is this used?!)
     | number(num number) // 10.00
-    | numeric(num number) // Numbers specific for a certain unit like 10px. Superclass for angle, freuquency etc. @TODO, do we need this here since it is a superclas??
+    //| numeric(num number) // Numbers specific for a certain unit like 10px. Superclass for angle, freuquency etc. @TODO, do we need this here since it is a superclas??
     | pair(tuple[Type, Type] values) // Terms with a operator (COMMA, SPACE, SLASH) in between 
     | resolution(num \res, str unit) // 960dpi, 10dpcm, 20dppx
     | string(str \string) // "lol"
