@@ -17,7 +17,7 @@ data Statement
     | ruleMedia(Expression mediaQueries, Statement \value) // @media only screen and (max-width : 480px) {
     | ruleFontFace(Statement \value) // @font-face {
     | ruleImport(Type uri) // @import url("style2.css");
-    | ruleMargin(Expression atRule, Statement \value) // (@TODO, when is this used?!)
+    | ruleMargin(Expression atRule, Statement \value) // (@TODO, never heard of this!)
     | rulePage(Expression atRule, Statement \value) // @page :left {
     | ruleViewport(Statement \value) // @viewport {
     ;
@@ -39,8 +39,8 @@ data Type
     | domElement(str name, list[Type] optional) // div (Optional is meant for the attributeSelectors and pseudoClasses)
     | combinator(str name) // child selector (>), adjacent sibling selector (+), general sibling selector (~), descendant selector (space)
     | combinedSelector(list[Type] selectors) // .lol.hej.you, #hej.you, #hi#there (single element with all noted attributes)
-    | attributeSelectors(Type attribute, Type \value) // div[class*="post"] (This rule only relates to the [class*="post"] part)
-    | pseudoClasses(str class) // :after, :link, :first-child
+    | attributeSelector(Type attribute, str op, Type \value) // div[class*="post"] (This rule only relates to the [class*="post"] part)
+    | pseudoClass(str class) // :after, :link, :first-child
     // Values
     | angle(int angle, str unit) // 10deg, 10grad, 1rad, 0.25turn
     | color(int color) // red, #000000, #888, rgb(0,0,255), rgb(0,0,255,0.5), hsl(120, 100%, 50%), hsla(120, 100%, 50%, 0.3)
