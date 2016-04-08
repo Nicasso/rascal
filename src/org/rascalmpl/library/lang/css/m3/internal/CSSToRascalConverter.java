@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.java.m3.internal.IValueList;
 import org.rascalmpl.value.IConstructor;
 import org.rascalmpl.value.IList;
@@ -36,12 +37,15 @@ public class CSSToRascalConverter {
 	protected static org.rascalmpl.value.type.Type DATATYPE_RASCAL_MESSAGE_DATA_TYPE;
 	protected static org.rascalmpl.value.type.Type DATATYPE_RASCAL_MESSAGE_ERROR_NODE_TYPE;
 
+	private IEvaluatorContext eval;
+	
 	protected final TypeStore typeStore;
 	protected final Map<String, ISourceLocation> locationCache;
 
-	CSSToRascalConverter(final TypeStore typeStore, Map<String, ISourceLocation> cache) {
+	CSSToRascalConverter(final TypeStore typeStore, Map<String, ISourceLocation> cache, IEvaluatorContext eval) {
 		this.typeStore = typeStore;
 		this.locationCache = cache;
+		this.eval = eval;
 
 		DATATYPE_RASCAL_AST_TYPE_NODE_TYPE = this.typeStore.lookupAbstractDataType(DATATYPE_RASCAL_AST_TYPE_NODE);
 		DATATYPE_RASCAL_AST_MODIFIER_NODE_TYPE = this.typeStore
@@ -71,7 +75,7 @@ public class CSSToRascalConverter {
 	protected IValue constructDeclarationNode(String constructor, IValue... children) {
 		org.rascalmpl.value.type.Type args = TF.tupleType(removeNulls(children));
 		org.rascalmpl.value.type.Type constr = typeStore.lookupConstructor(DATATYPE_RASCAL_AST_DECLARATION_NODE_TYPE,
-				constructor, args);
+				constructor, args);		
 		return values.constructor(constr, removeNulls(children));
 	}
 
@@ -92,7 +96,7 @@ public class CSSToRascalConverter {
 	protected IValue constructTypeNode(String constructor, IValue... children) {
 		org.rascalmpl.value.type.Type args = TF.tupleType(removeNulls(children));
 		org.rascalmpl.value.type.Type constr = typeStore.lookupConstructor(DATATYPE_RASCAL_AST_TYPE_NODE_TYPE,
-				constructor, args);
+				constructor, args);		
 		return values.constructor(constr, removeNulls(children));
 	}
 
