@@ -1,19 +1,17 @@
 package org.rascalmpl.library.lang.css.m3.internal;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 import org.rascalmpl.interpreter.IEvaluatorContext;
-import org.rascalmpl.library.lang.java.m3.internal.IValueList;
-import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
 
+import cz.vutbr.web.CSSNodeVisitor;
 import cz.vutbr.web.css.CombinedSelector;
 import cz.vutbr.web.css.Declaration;
 import cz.vutbr.web.css.MediaExpression;
 import cz.vutbr.web.css.MediaQuery;
+import cz.vutbr.web.css.MediaSpec;
 import cz.vutbr.web.css.Rule;
 import cz.vutbr.web.css.RuleBlock;
 import cz.vutbr.web.css.RuleFontFace;
@@ -28,408 +26,388 @@ import cz.vutbr.web.css.Selector.ElementClass;
 import cz.vutbr.web.css.Selector.ElementDOM;
 import cz.vutbr.web.css.Selector.ElementID;
 import cz.vutbr.web.css.Selector.ElementName;
+import cz.vutbr.web.css.Selector.PseudoPage;
+import cz.vutbr.web.css.Selector.SelectorPart;
 import cz.vutbr.web.css.StyleSheet;
 import cz.vutbr.web.css.Term;
 import cz.vutbr.web.css.TermAngle;
 import cz.vutbr.web.css.TermColor;
 import cz.vutbr.web.css.TermExpression;
+import cz.vutbr.web.css.TermFloatValue;
 import cz.vutbr.web.css.TermFrequency;
 import cz.vutbr.web.css.TermFunction;
 import cz.vutbr.web.css.TermIdent;
 import cz.vutbr.web.css.TermInteger;
-import cz.vutbr.web.css.TermLength;
-import cz.vutbr.web.css.TermLengthOrPercent;
 import cz.vutbr.web.css.TermList;
 import cz.vutbr.web.css.TermNumber;
-import cz.vutbr.web.css.TermPair;
 import cz.vutbr.web.css.TermPercent;
 import cz.vutbr.web.css.TermResolution;
 import cz.vutbr.web.css.TermString;
 import cz.vutbr.web.css.TermTime;
 import cz.vutbr.web.css.TermURI;
+import cz.vutbr.web.csskit.RuleArrayList;
 
-public class ASTConverter extends CSSToRascalConverter {
-	
+public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor {
+
 	private IEvaluatorContext eval;
-	
-	public ASTConverter(Collection<RuleBlock<?>> rules, TypeStore store, IEvaluatorContext eval) {
+
+	public ASTConverter(StyleSheet rules, TypeStore store, IEvaluatorContext eval) {
 		super(store, new HashMap<>());
 		this.eval = eval;
-		
-		rulesBlock(rules);
+
+		rules.accept(this);
 	}
 
-	private void rulesBlock(Collection<RuleBlock<?>> rules) {
-		for (RuleBlock<?> ruleBlock : rules) {
-			if (ruleBlock instanceof RuleSet) {
-				ruleSet(ruleBlock);
-			} else if (ruleBlock instanceof RuleMedia) {
-				ruleMedia(ruleBlock);
-			} else if (ruleBlock instanceof RuleFontFace) {
-				ruleFontFace(ruleBlock);
-			} else if (ruleBlock instanceof RuleMargin) {
-				ruleMargin(ruleBlock);
-			} else if (ruleBlock instanceof RulePage) {
-				rulePage(ruleBlock);
-			} else if (ruleBlock instanceof RuleViewport) {
-				ruleViewport(ruleBlock);
-			} else {
-				new AssertionError("Some kind of exotic block which is not recognized.");
-			}
+	@Override
+	public Object visit(Declaration node) {
+		eval.getStdOut().println("Declaration");
+
+		eval.getStdOut().println("\t" + node.getProperty());
+
+		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
+			Term<?> t = it.next();
+			t.accept(this);
 		}
+
+		return null;
 	}
 
-	private void ruleSet(RuleBlock<?> ruleBlock) {
-		eval.getStdOut().println("This is a ruleblock");
+	@Override
+	public Object visit(CombinedSelector node) {
+		eval.getStdOut().println("CombinedSelector");
+
+		for (Iterator<Selector> it = node.iterator(); it.hasNext();) {
+			Selector s = it.next();
+			s.accept(this);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object visit(MediaExpression node) {
+		eval.getStdOut().println("MediaExpression");
+		eval.getStdOut().println(node.getFeature());
+		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
+			Term<?> t = it.next();
+			t.accept(this);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object visit(MediaQuery node) {
+		eval.getStdOut().println("MediaQuery");
+
+		eval.getStdOut().println(node.getType());
+
+		for (Iterator<MediaExpression> it = node.iterator(); it.hasNext();) {
+			MediaExpression m = it.next();
+			m.accept(this);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object visit(MediaSpec node) {
+		eval.getStdOut().println("MediaSpec");
+
+		return null;
+	}
+
+	@Override
+	public Object visit(RuleArrayList node) {
+		eval.getStdOut().println("RuleArrayList");
+
+		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
+			RuleBlock<?> r = it.next();
+			r.accept(this);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object visit(RuleFontFace node) {
+		eval.getStdOut().println("RuleFontFace");
+
+		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
+			Declaration d = it.next();
+			d.accept(this);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object visit(RuleMargin node) {
+		eval.getStdOut().println("RuleMargin");
+
+		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
+			Declaration d = it.next();
+			d.accept(this);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object visit(RuleMedia node) {
+		eval.getStdOut().println("RuleMedia");
+
+		for (Iterator<MediaQuery> it = node.getMediaQueries().iterator(); it.hasNext();) {
+			MediaQuery m = it.next();
+			m.accept(this);
+		}
+
+		for (Iterator<RuleSet> it = node.iterator(); it.hasNext();) {
+			RuleSet r = it.next();
+			r.accept(this);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object visit(RulePage node) {
+		eval.getStdOut().println("RulePage");
+
+		for (Iterator<Rule<?>> it = node.iterator(); it.hasNext();) {
+			Rule<?> r = it.next();
+			r.accept(this);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object visit(RuleSet node) {
+		eval.getStdOut().println("RuleSet");
+
+		for (CombinedSelector cs : node.getSelectors()) {
+			cs.accept(this);
+		}
+
+		for (Declaration cs : node) {
+			cs.accept(this);
+		}
+
 		eval.getStdOut().println("");
-		RuleSet set = (RuleSet) ruleBlock;		
-		selectors(set.getSelectors());
 
-		eval.getStdOut().println("Declarations:");
-		for (Declaration decl : set) {
-			eval.getStdOut().println("  Property: " + decl.getProperty());
-			eval.getStdOut().println("  Values: ");
-			declarations(decl);
-		}
-	}
-	
-	private void mediaQuery(List<MediaQuery> list) {
-		for(MediaQuery m : list) {
-			eval.getStdOut().println("MEDIAQUERY: "+m.getType()+" - "+m.toString());
-			mediaExpression(m);
-		}
-	}
-	
-	private void mediaExpression(MediaQuery m) {
-		for(MediaExpression a : m) {
-			eval.getStdOut().println("MEDIAEXPRESSION: "+a.getFeature() + " - " +a.toString());
-			mediaTerms(a);
-		}
-	}
-	
-	private void mediaTerms(MediaExpression m) {
-		for(Term a : m) {
-			eval.getStdOut().println("(MEDIA)TERMS: "+a.toString());
-			terms(a);
-		}
+		return null;
 	}
 
-	private void ruleMedia(RuleBlock<?> ruleBlock) {
-		eval.getStdOut().println("");
-		eval.getStdOut().println("This is a ruleMedia");
-		RuleMedia media = (RuleMedia) ruleBlock;
-		mediaQuery(media.getMediaQueries());
-		for (RuleSet set : media) {
-			ruleSet(set);
+	@Override
+	public Object visit(RuleViewport node) {
+		eval.getStdOut().println("RuleViewport");
+
+		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
+			Declaration m = it.next();
+			m.accept(this);
 		}
+
+		return null;
 	}
 
-	private void ruleFontFace(RuleBlock<?> ruleBlock) {
-		eval.getStdOut().println("This is a ruleFontFace");
-		eval.getStdOut().println("");
-		RuleFontFace media = (RuleFontFace) ruleBlock;
-		//eval.getStdOut().println("FontFace" + media.f);
-		for (Declaration set : media) {
-			declarations(set);
+	@Override
+	public Object visit(Selector node) {
+		eval.getStdOut().println("Selector");
+
+		if (node.getCombinator() != null) {
+			eval.getStdOut().println(node.getCombinator());
 		}
+
+		for (Iterator<SelectorPart> it = node.iterator(); it.hasNext();) {
+			SelectorPart m = it.next();
+			m.accept(this);
+		}
+
+		return null;
 	}
 
-	private void ruleMargin(RuleBlock<?> ruleBlock) {
-		eval.getStdOut().println("This is a ruleMargin");
-		eval.getStdOut().println("");
-		RuleMargin media = (RuleMargin) ruleBlock;
-		eval.getStdOut().println("Magins: " + media.getMarginArea());
-		for (Declaration set : media) {
-			declarations(set);
+	@Override
+	public Object visit(StyleSheet node) {
+		eval.getStdOut().println("StyleSheet");
+
+		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
+			RuleBlock<?> r = it.next();
+			r.accept(this);
 		}
+
+		return null;
 	}
 
-	private void rulePage(RuleBlock<?> ruleBlock) {
-		eval.getStdOut().println("This is a rulePage");
-		eval.getStdOut().println("");
-		RulePage media = (RulePage) ruleBlock;
-		eval.getStdOut().println("Name: " + media.getName());
-		for (Rule<?> set : media) {
-			rules(set);
-		}
+	// @Override
+	// public Object visit(Term node) {
+	// eval.getStdOut().println("Term");
+	//
+	// return null;
+	// }
+
+	@Override
+	public Object visit(TermAngle node) {
+		eval.getStdOut().println("TermAngle");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
 	}
 
-	private void ruleViewport(RuleBlock<?> ruleBlock) {
-		eval.getStdOut().println("This is a ruleViewport");
-		eval.getStdOut().println("");
-		RuleViewport media = (RuleViewport) ruleBlock;
-		for (Declaration set : media) {
-			declarations(set);
-		}
-	}
-	
-	private void realSelectors(CombinedSelector s2) {
-		for (Selector s : s2) {
-			for (Selector.SelectorPart sp : s) {
-				eval.getStdOut().print(sp.toString() + " ");
-				//eval.getStdOut().println("Complete selector: ."+s.getClassName()+" - "+s.getElementName()+" - #"+s.getIDName()+" - "+s.getCombinator());
-			}
-		}
-		eval.getStdOut().println("");
-	}
-	
-	private void mediaExpression(MediaExpression exp) {
-		eval.getStdOut().println("mediaExpression: "+exp.getFeature());
-		
-	}
-	
-	private void mediaQuery(MediaQuery q) {
-		eval.getStdOut().println("mediaQuery: "+q.getType());
+	@Override
+	public Object visit(TermColor node) {
+		eval.getStdOut().println("TermColor");
+		eval.getStdOut().println("\t" + node.getValue());
+		return null;
 	}
 
-	private void rules(Rule<?> rules) {
-		eval.getStdOut().println("Rules:");
-		for (Object rule : rules) {
-			if (rule instanceof CombinedSelector) {
-				//realSelectors((Collection<Selector.SelectorPart>) rule);
-			} else if (rule instanceof Declaration) {
-				declarations((Declaration) rule);
-			} else if (rule instanceof MediaExpression) {
-				mediaExpression((MediaExpression) rule);
-			} else if (rule instanceof MediaQuery) {
-				mediaQuery((MediaQuery) rule);
-			} else if (rule instanceof RuleBlock) {
-				rulesBlock((RuleBlock) rule);
-			} else if (rule instanceof RuleFontFace) {
-				ruleFontFace((RuleFontFace) rule);
-			} else if (rule instanceof RuleMargin) {
-				ruleMargin((RuleMargin) rule);
-			} else if (rule instanceof RulePage) {
-				rulePage((RulePage) rule);
-			} else if (rule instanceof RuleSet) {
-				ruleSet((RuleSet) rule);
-			} else if (rule instanceof RuleViewport) {
-				ruleViewport((RuleViewport) rule);
-			} else if (rule instanceof Selector) {
-				selectors((CombinedSelector[]) rule);
-			} else if (rule instanceof StyleSheet) {
-				rulesBlock((Collection<RuleBlock<?>>) rule);
-			}
-			//eval.getStdOut().println("");
-		}
+	@Override
+	public Object visit(TermExpression node) {
+		eval.getStdOut().println("TermExpression");
+		eval.getStdOut().println("\t" + node.getValue());
+		return null;
 	}
 
-	private void declarations(Declaration decl) {
-		eval.getStdOut().println("Important? "+decl.isImportant());
-		for (Term<?> term : decl) {
-			terms(term);
-		}
+	@Override
+	public Object visit(TermFloatValue node) {
+		eval.getStdOut().println("TermFloatValue");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
 	}
 
-	private void terms(Term<?> term) {
-		if (term instanceof TermAngle) {
-			eval.getStdOut().println("    Angle: " + term.getValue());
-		} else if (term instanceof TermColor) {
-			eval.getStdOut().println("    Color: " + term.getValue() +" - "+ term.getOperator());
-		} else if (term instanceof TermExpression) {
-			eval.getStdOut().println("    Expression: " + term.getValue());
-		} else if (term instanceof TermFrequency) {
-			eval.getStdOut().println("    Frequency: " + term.getValue());
-		} else if (term instanceof TermFunction) {
-			eval.getStdOut().println("    Function: " + term.getValue());
-		} else if (term instanceof TermIdent) {
-			eval.getStdOut().println("    Ident: " + term.getValue());
-		} else if (term instanceof TermInteger) {
-			eval.getStdOut().println("    Integer: " + term.getValue());
-		} else if (term instanceof TermLength) {
-			eval.getStdOut().println("    Length: " + term.getValue());
-		} else if (term instanceof TermLengthOrPercent) {
-			TermLengthOrPercent test = (TermLengthOrPercent) term;
-			eval.getStdOut().println("    Length or Percent: " + term.getValue() + " - Percent? "+test.isPercentage());
-		} else if (term instanceof TermList) {
-			eval.getStdOut().println("    List: " + term.getValue());
-		} else if (term instanceof TermNumber) {
-			eval.getStdOut().println("    Number: " + term.getValue());
-//		} else if (term instanceof TermNumeric) {
-//			eval.getStdOut().println("    Numeric: " + term.getValue());
-		} else if (term instanceof TermPair) {
-			eval.getStdOut().println("    Pair: " + term.getValue());
-		} else if (term instanceof TermPercent) {
-			eval.getStdOut().println("    Percent: " + term.getValue());
-		} else if (term instanceof TermResolution) {
-			eval.getStdOut().println("    Resolution: " + term.getValue());
-		} else if (term instanceof TermString) {
-			eval.getStdOut().println("    String: " + term.getValue());
-		} else if (term instanceof TermTime) {
-			eval.getStdOut().println("    Time: " + term.getValue());
-		} else if (term instanceof TermURI) {
-			eval.getStdOut().println("    URI: " + term.getValue());
-		}
-	}
-	
-	private void selectors(CombinedSelector[] combinedSelectors) {
-		for (CombinedSelector s : combinedSelectors) {
-			//eval.getStdOut().println(s);
-			realSelectors(s);
-		}
-	}
-	
-	// IVALUE CONVERSION METHODS!
-	
-	// @TODO HOW TO ADD THE OPTIONAL ATRIBUTESELECTORS AND PSEUDOCLASSES?!
-	private IValue elementClass(Selector.ElementClass node) {
-		IValue className = values.string(node.getClassName());
-		return constructTypeNode("class", className, null);
-	}
-	
-	private IValue elementId(Selector.ElementID node) {
-		IValue idName = values.string(node.getID());
-		return constructTypeNode("id", idName, null);
-	}
-	
-	private IValue domElement(Selector.ElementDOM node) {
-		IValue elementName = values.string(node.getElement().getTagName());
-		return constructTypeNode("domElement", elementName, null);
-	}
-	
-	private IValue combinator(Selector.Combinator node) {
-		IValue combinator = values.string(node.value());
-		return constructTypeNode("combinator", combinator);
-	}
-	
-	private IValue combinatedSelector(CombinedSelector node) {
-		
-		IValueList selectors = new IValueList(values);
-		for (Iterator it = node.iterator(); it.hasNext();) {
-			Selector s = (Selector) it.next();
-			for (Selector.SelectorPart sp : s) {
-				
-				IValue selectorPart;
-				
-				if (sp instanceof ElementClass) {
-					selectorPart = elementClass((ElementClass) sp);
-				} else if (sp instanceof ElementID) {
-					selectorPart = elementId((ElementID) sp);
-				} else if (sp instanceof ElementDOM) {
-					selectorPart = domElement((ElementDOM) sp);
-				} else if (sp instanceof ElementAttribute) {
-					selectorPart = attributeselector((ElementAttribute) sp);
-				} else if (sp instanceof ElementName) {
-					System.out.println(((ElementName) sp).getName());
-				} else {
-					new AssertionError("CombinatedSelector error");
-				}
-			}
-		}
-		 
-		return selectors.asList();
-	}
-	
-	private IValue attributeselector(Selector.SelectorPart node) {
-		// A visitor should be so easy
-		IValue attribute = values.string(((ElementAttribute) node).getAttribute());
-		IValue operator = values.string(((ElementAttribute) node).getOperator().toString());
-		// Same for this one...
-		IValue value = values.string(((ElementAttribute) node).getValue());
-		
-		IValue attributeSelectors = values.string(node.toString());
-		return constructTypeNode("attributeSelectors", attribute, operator, value);
-	}
-	
-	private IValue pseudoClass(Selector.SelectorPart node) {
-		IValue psuedoClasses = values.string(node.toString());
-		return constructTypeNode("psuedoClasses", psuedoClasses);
-	}
-	
-	private IValue angle(TermAngle node) {
-		IValue angle = values.real(node.getValue().doubleValue());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("angle", angle, unit);
-	}
-	
-	private IValue color(TermColor node) {
-		String hex = "#"+Integer.toHexString(node.getValue().getRGB()).substring(2);
-		IValue color = values.string(node.getValue().toString());
-		return constructTypeNode("color", color);
-	}
-	
-	//@TODO IMPROVE
-	private IValue expression(TermExpression node) {
-		IValue expression = values.string(node.getValue().toString());
-		return constructTypeNode("expression", expression);
+	@Override
+	public Object visit(TermFrequency node) {
+		eval.getStdOut().println("TermFrequency");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
 	}
 
-	private IValue frequency(TermFrequency node) {
-		IValue freq = values.string(node.getValue().toString());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("frequency", freq, unit);
+	@Override
+	public Object visit(TermFunction node) {
+		eval.getStdOut().println("TermFunction");
+		eval.getStdOut().println(node.getFunctionName());
+		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
+			Term<?> t = it.next();
+			t.accept(this);
+		}
+
+		return null;
 	}
-	
-	//@TODO IMPROVE
-	private IValue function(TermFunction node) {
-		IValue functionName = values.string(node.getFunctionName());
-		IValue expression = values.string(node.getValue().toString());
-		return constructTypeNode("function", functionName, expression);
+
+	@Override
+	public Object visit(TermIdent node) {
+		eval.getStdOut().println("TermIdent");
+		eval.getStdOut().println("\t" + node.getValue());
+		return null;
 	}
-	
-	private IValue ident(TermIdent node) {
-		IValue ident = values.string(node.getValue().toString());
-		return constructTypeNode("ident", ident);
+
+	@Override
+	public Object visit(TermInteger node) {
+		eval.getStdOut().println("TermInteger");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
 	}
-	
-	private IValue integer(TermInteger node) {
-		IValue integer = values.string(node.getValue().toString());
-		return constructTypeNode("integer", integer);
+
+	@Override
+	public Object visit(TermList node) {
+		eval.getStdOut().println("TermList");
+		return null;
 	}
-	
-	private IValue length(TermLength node) {
-		IValue length = values.string(node.getValue().toString());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("length", length, unit);
+
+	@Override
+	public Object visit(TermNumber node) {
+		eval.getStdOut().println("TermNumber");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
 	}
-	
-	//@TODO IMPROVE
-	private IValue list(TermList node) {
-		IValue list = values.string(node.getValue().toString());
-		return constructTypeNode("list", list);
+
+	// @Override
+	// public Object visit(TermPair node) {
+	// eval.getStdOut().println("TermPair");
+	// return null;
+	// }
+
+	@Override
+	public Object visit(TermPercent node) {
+		eval.getStdOut().println("TermPercent");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
 	}
-	
-	private IValue number(TermNumber node) {
-		IValue number = values.string(node.getValue().toString());
-		return constructTypeNode("number", number);
+
+	@Override
+	public Object visit(TermResolution node) {
+		eval.getStdOut().println("TermResolution");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
 	}
-	
-//	private void numeric(TermNumeric node) {
-//		IValue numeric = values.string(node.getValue().toString());
-//		return constructTypeNode("numeric", numeric);
-//	}
-	
-	//@TODO IMPROVE
-	private IValue pair(TermPair node) {
-		IValue pair = values.string(node.getValue().toString());
-		return constructTypeNode("pair", pair);
+
+	@Override
+	public Object visit(TermString node) {
+		eval.getStdOut().println("TermString");
+		eval.getStdOut().println("\t" + node.getValue());
+		return null;
 	}
-	
-	private IValue percent(TermPercent node) {
-		IValue percent = values.string(node.getValue().toString());
-		return constructTypeNode("percent", percent);
+
+	@Override
+	public Object visit(TermTime node) {
+		eval.getStdOut().println("TermTime");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
 	}
-	
-	private IValue resolution(TermResolution node) {
-		IValue resolution = values.string(node.getValue().toString());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("resolution", resolution, unit);
+
+	@Override
+	public Object visit(TermURI node) {
+		eval.getStdOut().println("TermURI");
+		eval.getStdOut().println("\t" + node.getValue());
+		return null;
 	}
-	
-	private IValue string(TermString node) {
-		IValue string = values.string(node.getValue().toString());
-		return constructTypeNode("string", string);
+
+	// @Override
+	// public Object visit(SelectorPart node) {
+	// eval.getStdOut().println("SelectorPart");
+	//
+	// return null;
+	// }
+
+	@Override
+	public Object visit(ElementAttribute node) {
+		eval.getStdOut().println("ElementAttribute");
+		eval.getStdOut().println("\t" + node.getAttribute() + " " + node.getOperator() + " " + node.getValue());
+		return null;
 	}
-	
-	private IValue time(TermTime node) {
-		IValue time = values.string(node.getValue().toString());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("time", time, unit);
+
+	@Override
+	public Object visit(ElementClass node) {
+		eval.getStdOut().println("ElementClass");
+		eval.getStdOut().println("\t" + node.getClassName());
+		return null;
 	}
-	
-	private IValue uri(TermURI node) {
-		IValue uri = values.string(node.getValue().toString());
-		return constructTypeNode("uri", uri);
+
+	@Override
+	public Object visit(ElementDOM node) {
+		eval.getStdOut().println("ElementDOM");
+		eval.getStdOut().println("\t" + node.getElement());
+		return null;
 	}
-	
+
+	@Override
+	public Object visit(ElementID node) {
+		eval.getStdOut().println("ElementID");
+		eval.getStdOut().println("\t" + node.getID());
+		return null;
+	}
+
+	@Override
+	public Object visit(ElementName node) {
+		eval.getStdOut().println("ElementName");
+		eval.getStdOut().println("\t" + node.getName());
+		return null;
+	}
+
+	@Override
+	public Object visit(PseudoPage node) {
+		eval.getStdOut().println("PseudoPage");
+		eval.getStdOut().println("\t" + node.getValue());
+		return null;
+	}
+
 }

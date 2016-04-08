@@ -62,7 +62,7 @@ data Type
     ;
 
 data Modifier
-    = important() // !important
+    = important() // !important (Will be added as @modifier annotation to declarations as the Java m3 does)
     ;
     
 public Declaration createAstFromFile(loc file) {

@@ -31,7 +31,6 @@ public class CSSLoader {
 				StyleSheet style = CSSFactory.parse(f.getType().getValueLabel(), "UTF-8");
 				
 				TypeStore store = new TypeStore();
-		        store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
 		        store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 				
 				ASTConverter ast = new ASTConverter(style, store, eval);
@@ -54,7 +53,6 @@ public class CSSLoader {
 			StyleSheet style = CSSFactory.parseString(contents.getValue(), null);
 			
 			TypeStore store = new TypeStore();
-	        store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
 	        store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 	        
 			ASTConverter ast = new ASTConverter(style, store, eval);
