@@ -27,7 +27,8 @@ data Declaration
     ;
 
 data Expression 
-    = selector(list[Type] selectorParts, str combinator) // See Type Selector, it is a list because ".hi #there" or ".hi > div" is one complete selector
+    = selector(list[Type] selectorParts) // Combinator is not present with the first selector part, so made it optional by adding the rule below.
+    | selector(list[Type] selectorParts, str combinator) // See Type Selector, it is a list because ".hi #there" or ".hi > div" is one complete selector
     | mediaExpression(str property, list[Type] values) // (max-width : 480px) and (orientation: landscape) in mediaqueries like "@media tv and (min-width: 700px) and (orientation: landscape)"
     ;
 
@@ -36,7 +37,6 @@ data Type
     = class(str name) // .lol
     | id(str name) // #lol
     | domElement(str name) // div
-    //| combinator(str name) // child selector (>), adjacent sibling selector (+), general sibling selector (~), descendant selector (space)
     | combinedSelector(list[Type] selectors) // .lol.hej.you, #hej.you, #hi#there (single element with all noted attributes)
     | attributeSelector(str attribute, str op, str \value) // div[class*="post"] (This rule only relates to the [class*="post"] part)
     | pseudoClass(str class) // :after, :link, :first-child
@@ -52,8 +52,6 @@ data Type
     | \percent(num \perc) // 10%, 10.00%
     | \list(list[Type] pair) // (@TODO, when is this ever used?!)
     | \number(num number) // 10.00
-    //| numeric(num number) // Numbers specific for a certain unit like 10px. Superclass for angle, freuquency etc. @TODO, do we need this here since it is a superclas??
-    //| \pair(tuple[Type, Type] keyValue, str op) // A key value pair with an operator (COMMA, SPACE, SLASH) in between used for shorthands (@TODO Don't know where exactly this is used yet.) 
     | \resolution(num \res, str unit) // 960dpi, 10dpcm, 20dppx
     | \string(str \string) // "lol"
     | \time(num \time, str unit) // 12s, +0s, -456ms
