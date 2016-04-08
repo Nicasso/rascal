@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.rascalmpl.interpreter.IEvaluatorContext;
+import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
 
 import cz.vutbr.web.CSSNodeVisitor;
@@ -38,6 +39,7 @@ import cz.vutbr.web.css.TermFrequency;
 import cz.vutbr.web.css.TermFunction;
 import cz.vutbr.web.css.TermIdent;
 import cz.vutbr.web.css.TermInteger;
+import cz.vutbr.web.css.TermLength;
 import cz.vutbr.web.css.TermList;
 import cz.vutbr.web.css.TermNumber;
 import cz.vutbr.web.css.TermPercent;
@@ -52,73 +54,92 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	private IEvaluatorContext eval;
 
 	public ASTConverter(StyleSheet rules, TypeStore store, IEvaluatorContext eval) {
-		super(store, new HashMap<>());
+		super(store, new HashMap<>(), eval);
 		this.eval = eval;
 
 		rules.accept(this);
 	}
 
 	@Override
-	public Object visit(Declaration node) {
+	public IValue visit(Declaration node) {
 		eval.getStdOut().println("Declaration");
-
 		eval.getStdOut().println("\t" + node.getProperty());
+		
+		IValue property = values.string(node.getProperty());
 
+		IValueList declarationValues = new IValueList(values);
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
-			t.accept(this);
+			IValue temp = (IValue) t.accept(this);
+			declarationValues.add(temp);
 		}
 
-		return null;
+		return constructDeclarationNode("declaration", property, declarationValues.asList());
 	}
 
 	@Override
-	public Object visit(CombinedSelector node) {
+	public IValue visit(CombinedSelector node) {
 		eval.getStdOut().println("CombinedSelector");
 
+		IValueList selectors = new IValueList(values);
 		for (Iterator<Selector> it = node.iterator(); it.hasNext();) {
 			Selector s = it.next();
-			s.accept(this);
+			IValue temp = (IValue) s.accept(this);
+			selectors.add(temp);
 		}
 
-		return null;
+		return constructStatementNode("combinedSelector", selectors.asList());
 	}
 
 	@Override
-	public Object visit(MediaExpression node) {
+	public IValue visit(MediaExpression node) {
 		eval.getStdOut().println("MediaExpression");
 		eval.getStdOut().println(node.getFeature());
+		
+		IValue feature = values.string(node.getFeature());
+		
+		IValueList expressions = new IValueList(values);
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
-			t.accept(this);
+			IValue temp = (IValue) t.accept(this);
+			expressions.add(temp);
 		}
 
-		return null;
+		return constructStatementNode("mediaExpression", feature, expressions.asList());
 	}
 
 	@Override
-	public Object visit(MediaQuery node) {
+	public IValue visit(MediaQuery node) {
 		eval.getStdOut().println("MediaQuery");
-
 		eval.getStdOut().println(node.getType());
+		
+		IValue type = values.string(node.getType());
 
+		IValueList expressions = new IValueList(values);
 		for (Iterator<MediaExpression> it = node.iterator(); it.hasNext();) {
 			MediaExpression m = it.next();
-			m.accept(this);
+			IValue temp = (IValue) m.accept(this);
+			expressions.add(temp);
 		}
 
-		return null;
+		return constructStatementNode("mediaQuery", type, expressions.asList());
 	}
 
+	/**
+	 * Isn't this handled already? Check it out!
+	 */
 	@Override
-	public Object visit(MediaSpec node) {
+	public IValue visit(MediaSpec node) {
 		eval.getStdOut().println("MediaSpec");
 
 		return null;
 	}
 
+	/**
+	 * Wtf is this?! Never called so far.
+	 */
 	@Override
-	public Object visit(RuleArrayList node) {
+	public IValue visit(RuleArrayList node) {
 		eval.getStdOut().println("RuleArrayList");
 
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
@@ -130,19 +151,24 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	}
 
 	@Override
-	public Object visit(RuleFontFace node) {
+	public IValue visit(RuleFontFace node) {
 		eval.getStdOut().println("RuleFontFace");
 
+		IValueList declarations = new IValueList(values);
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
-			d.accept(this);
+			IValue temp = (IValue) d.accept(this);
+			declarations.add(temp);
 		}
 
-		return null;
+		return constructStatementNode("ruleFontFace", declarations.asList());
 	}
 
+	/**
+	 * No clue when this is used.
+	 */
 	@Override
-	public Object visit(RuleMargin node) {
+	public IValue visit(RuleMargin node) {
 		eval.getStdOut().println("RuleMargin");
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
@@ -154,260 +180,324 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	}
 
 	@Override
-	public Object visit(RuleMedia node) {
+	public IValue visit(RuleMedia node) {
 		eval.getStdOut().println("RuleMedia");
 
+		IValueList mediaQueries = new IValueList(values);
 		for (Iterator<MediaQuery> it = node.getMediaQueries().iterator(); it.hasNext();) {
 			MediaQuery m = it.next();
-			m.accept(this);
+			IValue temp = (IValue) m.accept(this);
+			mediaQueries.add(temp);
 		}
 
+		IValueList ruleSets = new IValueList(values);
 		for (Iterator<RuleSet> it = node.iterator(); it.hasNext();) {
 			RuleSet r = it.next();
-			r.accept(this);
+			IValue temp = (IValue) r.accept(this);
+			ruleSets.add(temp);
 		}
 
-		return null;
+		return constructStatementNode("ruleMedia", mediaQueries.asList(), ruleSets.asList());
 	}
 
 	@Override
-	public Object visit(RulePage node) {
+	public IValue visit(RulePage node) {
 		eval.getStdOut().println("RulePage");
+		
+		IValue pseudo = values.string(node.getPseudo());
 
+		IValueList declarations = new IValueList(values);
 		for (Iterator<Rule<?>> it = node.iterator(); it.hasNext();) {
 			Rule<?> r = it.next();
-			r.accept(this);
+			IValue temp = (IValue) r.accept(this);
+			declarations.add(temp);
 		}
 
-		return null;
+		return constructStatementNode("rulePage", pseudo, declarations.asList());
 	}
 
 	@Override
-	public Object visit(RuleSet node) {
+	public IValue visit(RuleSet node) {
 		eval.getStdOut().println("RuleSet");
 
+		IValueList selectors = new IValueList(values);
 		for (CombinedSelector cs : node.getSelectors()) {
-			cs.accept(this);
+			IValue temp = (IValue) cs.accept(this);
+			selectors.add(temp);
 		}
 
+		IValueList declarations = new IValueList(values);
 		for (Declaration cs : node) {
-			cs.accept(this);
+			IValue temp = (IValue) cs.accept(this);
+			declarations.add(temp);
 		}
 
-		eval.getStdOut().println("");
-
-		return null;
+		return constructStatementNode("ruleSet", selectors.asList(), declarations.asList());
 	}
 
 	@Override
-	public Object visit(RuleViewport node) {
+	public IValue visit(RuleViewport node) {
 		eval.getStdOut().println("RuleViewport");
 
+		IValueList declarations = new IValueList(values);
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
-			Declaration m = it.next();
-			m.accept(this);
+			Declaration d = it.next();
+			IValue temp = (IValue) d.accept(this);
+			declarations.add(temp);
 		}
 
-		return null;
+		return constructStatementNode("ruleViewport", declarations.asList());
 	}
 
 	@Override
-	public Object visit(Selector node) {
+	public IValue visit(Selector node) {
 		eval.getStdOut().println("Selector");
+		eval.getStdOut().println("\t"+node.getCombinator());
 
-		if (node.getCombinator() != null) {
-			eval.getStdOut().println(node.getCombinator());
-		}
-
+		IValueList statements = new IValueList(values);
 		for (Iterator<SelectorPart> it = node.iterator(); it.hasNext();) {
 			SelectorPart m = it.next();
-			m.accept(this);
+			IValue temp = (IValue) m.accept(this);
+			statements.add(temp);
 		}
+		
+		IValue combinator = values.string(node.getCombinator().toString());
 
-		return null;
+		return constructStatementNode("selector", statements.asList(), combinator);
 	}
 
 	@Override
-	public Object visit(StyleSheet node) {
+	public IValue visit(StyleSheet node) {
 		eval.getStdOut().println("StyleSheet");
 
+		IValueList statements = new IValueList(values);
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
 			RuleBlock<?> r = it.next();
-			r.accept(this);
+			IValue temp = (IValue) r.accept(this);
+			statements.add(temp);
 		}
 
-		return null;
+		return constructStatementNode("stylesheet", statements.asList());
 	}
 
-	// @Override
-	// public Object visit(Term node) {
-	// eval.getStdOut().println("Term");
-	//
-	// return null;
-	// }
-
 	@Override
-	public Object visit(TermAngle node) {
+	public IValue visit(TermAngle node) {
 		eval.getStdOut().println("TermAngle");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
+		
+		IValue angle = values.real(node.getValue().doubleValue());
+	    IValue unit = values.string(node.getUnit().toString());
+	    return constructTypeNode("angle", angle, unit);
 	}
 
 	@Override
-	public Object visit(TermColor node) {
+	public IValue visit(TermColor node) {
 		eval.getStdOut().println("TermColor");
 		eval.getStdOut().println("\t" + node.getValue());
-		return null;
+		
+		IValue red = values.integer(node.getValue().getRed());
+		IValue green = values.integer(node.getValue().getGreen());
+		IValue blue = values.integer(node.getValue().getBlue());
+		IValue alpha = values.integer(node.getValue().getAlpha());
+		return constructTypeNode("color", red, green, blue, alpha);
 	}
 
 	@Override
-	public Object visit(TermExpression node) {
+	public IValue visit(TermExpression node) {
 		eval.getStdOut().println("TermExpression");
 		eval.getStdOut().println("\t" + node.getValue());
-		return null;
+		
+		IValue expression = values.string(node.getValue().toString());
+		return constructTypeNode("expression", expression);
 	}
 
+	/**
+	 * This one can go? Since all its children are covered?
+	 */
 	@Override
-	public Object visit(TermFloatValue node) {
+	public IValue visit(TermFloatValue node) {
 		eval.getStdOut().println("TermFloatValue");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
-	public Object visit(TermFrequency node) {
+	public IValue visit(TermFrequency node) {
 		eval.getStdOut().println("TermFrequency");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
+		
+		IValue freq = values.real(node.getValue());
+		IValue unit = values.string(node.getUnit().toString());
+		return constructTypeNode("frequency", freq, unit);
 	}
 
 	@Override
-	public Object visit(TermFunction node) {
+	public IValue visit(TermFunction node) {
 		eval.getStdOut().println("TermFunction");
 		eval.getStdOut().println(node.getFunctionName());
+
+		IValue functionName = values.string(node.getFunctionName());
+		
+		IValueList expressions = new IValueList(values);
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
-			t.accept(this);
+			IValue temp = (IValue) t.accept(this);
+			expressions.add(temp);
 		}
 
-		return null;
+		return constructTypeNode("function", functionName, expressions.asList());
 	}
 
 	@Override
-	public Object visit(TermIdent node) {
+	public IValue visit(TermIdent node) {
 		eval.getStdOut().println("TermIdent");
 		eval.getStdOut().println("\t" + node.getValue());
-		return null;
+		
+		IValue ident = values.string(node.getValue().toString());
+		return constructTypeNode("ident", ident);
 	}
 
 	@Override
-	public Object visit(TermInteger node) {
+	public IValue visit(TermInteger node) {
 		eval.getStdOut().println("TermInteger");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
+		
+		IValue integer = values.integer(node.getValue().toString());
+		return constructTypeNode("integer", integer);
+	}
+	
+	@Override
+	public IValue visit(TermLength node) {
+		eval.getStdOut().println("TermLength");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		
+		IValue integer = values.real(node.getValue());
+		return constructTypeNode("integer", integer);
 	}
 
+	/**
+	 * This one can go?
+	 */
 	@Override
-	public Object visit(TermList node) {
+	public IValue visit(TermList node) {
 		eval.getStdOut().println("TermList");
 		return null;
 	}
 
 	@Override
-	public Object visit(TermNumber node) {
+	public IValue visit(TermNumber node) {
 		eval.getStdOut().println("TermNumber");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
+		
+		IValue number = values.real(node.getValue());
+		return constructTypeNode("number", number);
 	}
 
-	// @Override
-	// public Object visit(TermPair node) {
-	// eval.getStdOut().println("TermPair");
-	// return null;
-	// }
-
 	@Override
-	public Object visit(TermPercent node) {
+	public IValue visit(TermPercent node) {
 		eval.getStdOut().println("TermPercent");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
+		
+		IValue percent = values.real(node.getValue());
+		return constructTypeNode("percent", percent);
 	}
 
 	@Override
-	public Object visit(TermResolution node) {
+	public IValue visit(TermResolution node) {
 		eval.getStdOut().println("TermResolution");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
+		
+		IValue resolution = values.real(node.getValue());
+		IValue unit = values.string(node.getUnit().toString());
+		return constructTypeNode("resolution", resolution, unit);
 	}
 
 	@Override
-	public Object visit(TermString node) {
+	public IValue visit(TermString node) {
 		eval.getStdOut().println("TermString");
 		eval.getStdOut().println("\t" + node.getValue());
-		return null;
+		
+		IValue string = values.string(node.getValue().toString());
+		return constructTypeNode("string", string);
 	}
 
 	@Override
-	public Object visit(TermTime node) {
+	public IValue visit(TermTime node) {
 		eval.getStdOut().println("TermTime");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
+		
+		IValue time = values.real(node.getValue());
+		IValue unit = values.string(node.getUnit().toString());
+		return constructTypeNode("time", time, unit);
 	}
 
 	@Override
-	public Object visit(TermURI node) {
+	public IValue visit(TermURI node) {
 		eval.getStdOut().println("TermURI");
 		eval.getStdOut().println("\t" + node.getValue());
-		return null;
+
+		IValue uri = values.string(node.getValue().toString());
+		return constructTypeNode("uri", uri);
 	}
 
-	// @Override
-	// public Object visit(SelectorPart node) {
-	// eval.getStdOut().println("SelectorPart");
-	//
-	// return null;
-	// }
-
 	@Override
-	public Object visit(ElementAttribute node) {
+	public IValue visit(ElementAttribute node) {
 		eval.getStdOut().println("ElementAttribute");
 		eval.getStdOut().println("\t" + node.getAttribute() + " " + node.getOperator() + " " + node.getValue());
-		return null;
+		
+		IValue attribute = values.string(node.getAttribute().toString());
+		IValue operator = values.string(node.getOperator().toString());
+		IValue value = values.string(node.getValue().toString());
+		return constructTypeNode("attributeSelector", attribute, operator, value);
 	}
 
 	@Override
-	public Object visit(ElementClass node) {
+	public IValue visit(ElementClass node) {
 		eval.getStdOut().println("ElementClass");
 		eval.getStdOut().println("\t" + node.getClassName());
-		return null;
+		
+		IValue className = values.string(node.getClassName());
+		return constructTypeNode("class", className);
 	}
 
+	/**
+	 *  This one can go I guess? ElementName really handles stuff like "div" and "span". Not this one.
+	 *  Not even visited so far.
+	 */
 	@Override
-	public Object visit(ElementDOM node) {
+	public IValue visit(ElementDOM node) {
 		eval.getStdOut().println("ElementDOM");
 		eval.getStdOut().println("\t" + node.getElement());
-		return null;
+		
+		IValue domElement = values.string(node.getElement().getTagName());
+		return constructTypeNode("domElement", domElement);
 	}
 
 	@Override
-	public Object visit(ElementID node) {
+	public IValue visit(ElementID node) {
 		eval.getStdOut().println("ElementID");
 		eval.getStdOut().println("\t" + node.getID());
-		return null;
+		
+		IValue idName = values.string(node.getID());
+		return constructTypeNode("id", idName);
 	}
 
 	@Override
-	public Object visit(ElementName node) {
+	public IValue visit(ElementName node) {
 		eval.getStdOut().println("ElementName");
 		eval.getStdOut().println("\t" + node.getName());
-		return null;
+		
+		IValue elemName = values.string(node.getName());
+		return constructTypeNode("domElement", elemName);
 	}
 
 	@Override
-	public Object visit(PseudoPage node) {
+	public IValue visit(PseudoPage node) {
 		eval.getStdOut().println("PseudoPage");
 		eval.getStdOut().println("\t" + node.getValue());
-		return null;
+		
+		IValue pseudoPage = values.string(node.getValue());
+		return constructTypeNode("pseudoClass", pseudoPage);
 	}
 
 }
