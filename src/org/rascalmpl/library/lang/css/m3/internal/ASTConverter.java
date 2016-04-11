@@ -87,8 +87,9 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			IValue temp = (IValue) s.accept(this);
 			selectors.add(temp);
 		}
-
-		return constructStatementNode("combinedSelector", selectors.asList());
+		eval.getStdOut().println("CombinedSelector selectors: "+selectors.asList());
+		eval.getStdOut().println("constructTypeNode CombinedSelector");
+		return constructTypeNode("combinedSelector", selectors.asList());
 	}
 
 	@Override
@@ -105,7 +106,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			expressions.add(temp);
 		}
 
-		return constructStatementNode("mediaExpression", feature, expressions.asList());
+		return constructExpressionNode("mediaExpression", feature, expressions.asList());
 	}
 
 	@Override
@@ -122,7 +123,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			expressions.add(temp);
 		}
 
-		return constructStatementNode("mediaQuery", type, expressions.asList());
+		return constructTypeNode("MediaQuery", type, expressions.asList());
 	}
 
 	/**
@@ -131,7 +132,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	@Override
 	public IValue visit(MediaSpec node) {
 		eval.getStdOut().println("MediaSpec");
-
 		return null;
 	}
 
@@ -261,9 +261,12 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			statements.add(temp);
 		}
 		
-		IValue combinator = values.string(node.getCombinator().toString());
-
-		return constructStatementNode("selector", statements.asList(), combinator);
+		if (node.getCombinator() != null) {
+			IValue combinator = values.string(node.getCombinator().toString());
+			return constructExpressionNode("selector", statements.asList(), combinator);
+		} else {
+			return constructExpressionNode("selector", statements.asList());
+		}
 	}
 
 	@Override
@@ -371,8 +374,9 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermLength");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue integer = values.real(node.getValue());
-		return constructTypeNode("integer", integer);
+		IValue length = values.real(node.getValue());
+		IValue unit = values.string(node.getUnit().toString());
+		return constructTypeNode("length", length, unit);
 	}
 
 	/**

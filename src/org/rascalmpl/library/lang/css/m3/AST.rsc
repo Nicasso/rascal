@@ -12,7 +12,7 @@ import List;
 data Statement
 	// Rulesets
     = stylesheet(list[Statement] rules) // #lol { color: red; } #lal { color: blue; }
-    | ruleSet(list[Expression] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors)
+    | ruleSet(list[Type] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors)
     // At rules
     | ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) // @media only screen and (max-width : 480px) {
     | ruleFontFace(Statement \value) // @font-face {
@@ -37,7 +37,7 @@ data Type
     = class(str name) // .lol
     | id(str name) // #lol
     | domElement(str name) // div
-    | combinedSelector(list[Type] selectors) // .lol.hej.you, #hej.you, #hi#there (single element with all noted attributes)
+    | combinedSelector(list[Expression] selectors) // .lol.hej.you, #hej.you, #hi#there (single element with all noted attributes)
     | attributeSelector(str attribute, str op, str \value) // div[class*="post"] (This rule only relates to the [class*="post"] part)
     | pseudoClass(str class) // :after, :link, :first-child
     // Values

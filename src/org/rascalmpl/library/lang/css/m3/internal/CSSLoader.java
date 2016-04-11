@@ -48,17 +48,25 @@ public class CSSLoader {
 		eval.getStdOut().println("createAstFromString");
 		eval.getStdOut().flush();
 		
+		StyleSheet style = null;
+		boolean go = true;
+		
 		try {
 			// @TODO This null needs to be replaced lated with a optional URL, for @import and url's. 
-			StyleSheet style = CSSFactory.parseString(contents.getValue(), null);
-			
-			TypeStore store = new TypeStore();
-	        store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
-	        
-			ASTConverter ast = new ASTConverter(style, store, eval);
+			style = CSSFactory.parseString(contents.getValue(), null);
 		} catch (CSSException | IOException e) {
+			eval.getStdErr().println("PARSING THE CSS HAS FAILED!");
 			eval.getStdErr().println(e.getMessage());
 			eval.getStdErr().flush();
+			go = false;
+		}
+		
+		if (go) {
+			TypeStore store = new TypeStore();
+	        store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
+	        //eval.getStdOut().println(store.getConstructors().toString());
+	        //eval.getStdOut().flush();
+			ASTConverter ast = new ASTConverter(style, store, eval);
 		}
 		// Return AST after it is converted to IValues.
 		return null;
