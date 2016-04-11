@@ -12,7 +12,7 @@ import List;
 data Statement
 	// Rulesets
     = stylesheet(list[Statement] rules) // #lol { color: red; } #lal { color: blue; }
-    | ruleSet(list[Type] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors)
+    | ruleSet(list[Type] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors) (@TODO selector is a list of types because of the combinedSelector)
     // At rules
     | ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) // @media only screen and (max-width : 480px) {
     | ruleFontFace(Statement \value) // @font-face {
@@ -27,8 +27,8 @@ data Declaration
     ;
 
 data Expression 
-    = selector(list[Type] selectorParts) // Combinator is not present with the first selector part, so made it optional by adding the rule below.
-    | selector(list[Type] selectorParts, str combinator) // See Type Selector, it is a list because ".hi #there" or ".hi > div" is one complete selector
+    = selector(list[Type] simpleSelectors) // Combinator is not present with the first selector part, so made it optional by adding the rule below.
+    | selector(list[Type] simpleSelectors, str combinator) // See Type Selector, it is a list because ".hi #there" or ".hi > div" is one complete selector
     | mediaExpression(str property, list[Type] values) // (max-width : 480px) and (orientation: landscape) in mediaqueries like "@media tv and (min-width: 700px) and (orientation: landscape)"
     ;
 
