@@ -15,9 +15,9 @@ data Statement
     | ruleSet(list[Type] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors) (@TODO selector is a list of types because of the combinedSelector)
     // At rules
     | ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) // @media only screen and (max-width : 480px) {
-    | ruleFontFace(Statement \value) // @font-face {
+    | ruleFontFace(list[Declaration] decs) // @font-face { (TODO WHY IS THIS A LIST OF DECLARATIONS?! AND NOT A STATEMENT)
     | ruleImport(Type uri) // @import url("style2.css");
-    | ruleMargin(Expression atRule, Statement \value) // (@TODO, never heard of this!)
+    | ruleMargin(Expression atRule, Statement stat) // (@TODO, never heard of this!)
     | rulePage(str pseudo, list[Declaration] declarations) // @page :left { "delcarations here" }
     | ruleViewport(list[Declaration] declarations) // @viewport { "delcarations here" }
     ;
@@ -41,7 +41,7 @@ data Type
     | attributeSelector(str attribute, str op, str \value) // div[class*="post"] (This rule only relates to the [class*="post"] part)
     | pseudoClass(str class) // :after, :link, :first-child
     // Values
-    | \angle(int angle, str unit) // 10deg, 10grad, 1rad, 0.25turn
+    | \angle(num angle, str unit) // 10deg, 10grad, 1rad, 0.25turn
     | \color(int red, int green, int blue, int alpha) // red, #000000, #888, rgb(0,0,255), rgb(0,0,255,0.5), hsl(120, 100%, 50%), hsla(120, 100%, 50%, 0.3)
     | \expression(str expression) // top: expression(body.scrollTop + 50 + "px");
     | \frequency(num freq, str unit) // 12Hz, 14KhZ (No space between the number and the literal! Not supported by any browser so far)
@@ -64,7 +64,7 @@ data Modifier
     = important() // !important (Will be added as @modifier annotation to declarations like the Java m3 does)
     ;
     
-public Declaration createAstFromFile(loc file) {
+public Statement createAstFromFile(loc file) {
     result = createAstsFromFiles({file});
     if ({oneResult} := result) {
         return oneResult;
@@ -80,11 +80,12 @@ public java set[Statement] createAstsFromFiles(set[loc] file);
 @reflect{Need access to stderr and stdout}
 public java Statement createAstFromString(str source);
 
-public set[Declaration] createAstsFromDirectory(loc project) {
+public set[Statement] createAstsFromDirectory(loc project) {
     if (!(isDirectory(project))) {
       throw "<project> is not a valid directory";
     }
     
-    allCSSFiles = [ j | j <- find(project, "css"), isFile(j) ];
+    allCSSFiles = { j | j <- find(project, "css"), isFile(j) };
+	iprintln(allCSSFiles);
     return createAstsFromFiles(allCSSFiles);
 }

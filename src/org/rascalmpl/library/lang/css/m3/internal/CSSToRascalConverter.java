@@ -50,8 +50,8 @@ public class CSSToRascalConverter {
 
 		CSSToRascalConverter.DATATYPE_RASCAL_AST_TYPE_NODE_TYPE = this.typeStore.lookupAbstractDataType(DATATYPE_RASCAL_AST_TYPE_NODE);
 		
-		eval.getStdOut().println("DATATYPE_RASCAL_AST_TYPE_NODE: "+DATATYPE_RASCAL_AST_TYPE_NODE);
-		eval.getStdOut().println("DATATYPE_RASCAL_AST_TYPE_NODE_TYPE: "+CSSToRascalConverter.DATATYPE_RASCAL_AST_TYPE_NODE_TYPE);
+		//eval.getStdOut().println("DATATYPE_RASCAL_AST_TYPE_NODE: "+DATATYPE_RASCAL_AST_TYPE_NODE);
+		//eval.getStdOut().println("DATATYPE_RASCAL_AST_TYPE_NODE_TYPE: "+CSSToRascalConverter.DATATYPE_RASCAL_AST_TYPE_NODE_TYPE);
 		
 		CSSToRascalConverter.DATATYPE_RASCAL_AST_MODIFIER_NODE_TYPE = this.typeStore
 				.lookupAbstractDataType(DATATYPE_RASCAL_AST_MODIFIER_NODE);
@@ -78,48 +78,48 @@ public class CSSToRascalConverter {
 	}
 
 	protected IValue constructDeclarationNode(String constructor, IValue... children) {
-		eval.getStdOut().println("constructDeclarationNode: "+constructor);
+		//eval.getStdOut().println("constructDeclarationNode: "+constructor);
 		org.rascalmpl.value.type.Type args = TF.tupleType(removeNulls(children));
-		eval.getStdOut().println("args: "+args);
+		//eval.getStdOut().println("args: "+args);
 		org.rascalmpl.value.type.Type constr = typeStore.lookupConstructor(DATATYPE_RASCAL_AST_DECLARATION_NODE_TYPE,
 				constructor, args);		
-		eval.getStdOut().println("constructDeclarationNode constr: "+constr);
+		//eval.getStdOut().println("constructDeclarationNode constr: "+constr);
 		return values.constructor(constr, removeNulls(children));
 	}
 
 	protected IValue constructExpressionNode(String constructor, IValue... children) {
-		eval.getStdOut().println("constructExpressionNode: "+constructor);
+		//eval.getStdOut().println("constructExpressionNode: "+constructor);
 		org.rascalmpl.value.type.Type args = TF.tupleType(removeNulls(children));
-		eval.getStdOut().println("args: "+args);
+		//eval.getStdOut().println("args: "+args);
 		org.rascalmpl.value.type.Type constr = typeStore.lookupConstructor(DATATYPE_RASCAL_AST_EXPRESSION_NODE_TYPE,
 				constructor, args);
-		eval.getStdOut().println("constructExpressionNode constr: "+constr);
+		//eval.getStdOut().println("constructExpressionNode constr: "+constr);
 		return values.constructor(constr, removeNulls(children));
 	}
 
 	protected IValue constructStatementNode(String constructor, IValue... children) {
-		eval.getStdOut().println("constructStatementNode: "+constructor);
+		//eval.getStdOut().println("constructStatementNode: "+constructor);
 		org.rascalmpl.value.type.Type args = TF.tupleType(removeNulls(children));
-		eval.getStdOut().println("args: "+args);
+		//eval.getStdOut().println("args: "+args);
 		org.rascalmpl.value.type.Type constr = typeStore.lookupConstructor(DATATYPE_RASCAL_AST_STATEMENT_NODE_TYPE,
 				constructor, args);
 		
-		eval.getStdOut().println("constructStatementNode constr: "+constr);
+		//eval.getStdOut().println("constructStatementNode constr: "+constr);
 		
 		return values.constructor(constr, removeNulls(children));
 	}
 
 	protected IValue constructTypeNode(String constructor, IValue... children) {
-		eval.getStdOut().println("constructTypeNode: "+constructor);
+		//eval.getStdOut().println("constructTypeNode: "+constructor);
 		
 		org.rascalmpl.value.type.Type args = TF.tupleType(removeNulls(children));
 		
-		eval.getStdOut().println("args: "+args);
+		//eval.getStdOut().println("args: "+args);
 		
 		org.rascalmpl.value.type.Type constr = typeStore.lookupConstructor(DATATYPE_RASCAL_AST_TYPE_NODE_TYPE,
 				constructor, args);		
 		
-		eval.getStdOut().println("constructTypeNode constr: "+constr);
+		//eval.getStdOut().println("constructTypeNode constr: "+constr);
 		
 		return values.constructor(constr, removeNulls(children));
 	}
