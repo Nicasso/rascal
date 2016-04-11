@@ -38,371 +38,363 @@ import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.type.TypeStore;
 
 public class JarConverter extends M3Converter {
-  private final int CLASSE = 0;
-  private final int METHODE = 1;
-  private final int FIELDE = 2;
+	private final int CLASSE = 0;
+	private final int METHODE = 1;
+	private final int FIELDE = 2;
 
-  private String jarFile;
-  private String ClassFile;
-  private String LogPath;
-  private String classScheme;
-  private String className;
-  private boolean classIsEnum;
+	private String jarFile;
+	private String ClassFile;
+	private String LogPath;
+	private String classScheme;
+	private String className;
+	private boolean classIsEnum;
 
-  JarConverter(TypeStore typeStore, Map<String, ISourceLocation> cache) {
-    super(typeStore, cache);
-  }
+	JarConverter(TypeStore typeStore, Map<String, ISourceLocation> cache) {
+		super(typeStore, cache);
+	}
 
-  private String extractJarName(ISourceLocation jarLoc) {
-    String tmp = jarLoc.getPath().substring(0, jarLoc.getPath().indexOf("!"));
-    return tmp.substring(tmp.lastIndexOf("/") + 1);
-  }
+	private String extractJarName(ISourceLocation jarLoc) {
+		String tmp = jarLoc.getPath().substring(0, jarLoc.getPath().indexOf("!"));
+		return tmp.substring(tmp.lastIndexOf("/") + 1);
+	}
 
-  private String extractClassName(ISourceLocation jarLoc) {
-    return jarLoc.getPath().substring(jarLoc.getPath().indexOf("!") + 1);
-  }
+	private String extractClassName(ISourceLocation jarLoc) {
+		return jarLoc.getPath().substring(jarLoc.getPath().indexOf("!") + 1);
+	}
 
-  @SuppressWarnings("unchecked")
-  public void convert(ISourceLocation jarLoc, IEvaluatorContext ctx) {
+	@SuppressWarnings("unchecked")
+	public void convert(ISourceLocation jarLoc, IEvaluatorContext ctx) {
 
-      this.loc = jarLoc;
-    this.jarFile = extractJarName(jarLoc);
-    this.ClassFile = extractClassName(jarLoc);
-    this.LogPath = this.ClassFile.replace(".class", "");
-    String packageName;
+		this.loc = jarLoc;
+		this.jarFile = extractJarName(jarLoc);
+		this.ClassFile = extractClassName(jarLoc);
+		this.LogPath = this.ClassFile.replace(".class", "");
+		String packageName;
 
-    // System.out.println(this.ClassFile);
-    packageName = LogPath.substring(0, LogPath.lastIndexOf("/"));
-    if (this.LogPath.contains("$")) {
-      this.LogPath = LogPath.replace("$", "/");
-    }
-    try {
-      ClassReader cr = new ClassReader(URIResolverRegistry.getInstance().getInputStream(jarLoc));
-      ClassNode cn = new ClassNode();
+		// System.out.println(this.ClassFile);
+		packageName = LogPath.substring(0, LogPath.lastIndexOf("/"));
+		if (this.LogPath.contains("$")) {
+			this.LogPath = LogPath.replace("$", "/");
+		}
+		try {
+			ClassReader cr = new ClassReader(URIResolverRegistry.getInstance().getInputStream(jarLoc));
+			ClassNode cn = new ClassNode();
 
-      cr.accept(cn, ClassReader.SKIP_DEBUG);
+			cr.accept(cn, ClassReader.SKIP_DEBUG);
 
-      this.className = cn.name.replace("$", "/");
-      classIsEnum = false;
-      if ((cn.access & Opcodes.ACC_INTERFACE) != 0)
-        classScheme = "java+interface";
-      else if ((cn.access & Opcodes.ACC_ENUM) != 0) {
-        classScheme = "java+enum";
-        classIsEnum = true;
-      }
-      else
-        this.classScheme = "java+class";
+			this.className = cn.name.replace("$", "/");
+			classIsEnum = false;
+			if ((cn.access & Opcodes.ACC_INTERFACE) != 0)
+				classScheme = "java+interface";
+			else if ((cn.access & Opcodes.ACC_ENUM) != 0) {
+				classScheme = "java+enum";
+				classIsEnum = true;
+			} else
+				this.classScheme = "java+class";
 
-      this.insert(this.containment, values.sourceLocation(classScheme, "", "/" + className),
-          values.sourceLocation("java+compilationUnit", "", "/jar:///" + jarFile));
-      this.insert(this.containment, values.sourceLocation("java+package", "", "/" + packageName),
-          values.sourceLocation("java+compilationUnit", "", "/jar:///" + jarFile));
-      this.insert(this.containment, values.sourceLocation("java+compilationUnit", "", "/jar:///" + jarFile),
-          values.sourceLocation("java+class", "", "/" + LogPath));
+			this.insert(this.containment, values.sourceLocation(classScheme, "", "/" + className),
+					values.sourceLocation("java+compilationUnit", "", "/jar:///" + jarFile));
+			this.insert(this.containment, values.sourceLocation("java+package", "", "/" + packageName),
+					values.sourceLocation("java+compilationUnit", "", "/jar:///" + jarFile));
+			this.insert(this.containment, values.sourceLocation("java+compilationUnit", "", "/jar:///" + jarFile),
+					values.sourceLocation("java+class", "", "/" + LogPath));
 
-      // <|java+package:///Main|,|java+compilationUnit:///src/Main/BaseInt.java|>,
+			// <|java+package:///Main|,|java+compilationUnit:///src/Main/BaseInt.java|>,
 
-      this.insert(this.declarations, values.sourceLocation(classScheme, "", "/" + className),
-          values.sourceLocation(jarFile + "!" + ClassFile));
+			this.insert(this.declarations, values.sourceLocation(classScheme, "", "/" + className),
+					values.sourceLocation(jarFile + "!" + ClassFile));
 
-      if (cn.superName != null
-          && !(cn.superName.equalsIgnoreCase("java/lang/Object") || cn.superName.equalsIgnoreCase("java/lang/Enum"))) {
-        this.insert(this.extendsRelations, values.sourceLocation(classScheme, "", "/" + className),
-            values.sourceLocation(classScheme, "", cn.superName));
-      }
+			if (cn.superName != null && !(cn.superName.equalsIgnoreCase("java/lang/Object")
+					|| cn.superName.equalsIgnoreCase("java/lang/Enum"))) {
+				this.insert(this.extendsRelations, values.sourceLocation(classScheme, "", "/" + className),
+						values.sourceLocation(classScheme, "", cn.superName));
+			}
 
-      for (int fs = 0; fs < 15; fs++) {
-        if ((cn.access & (0x0001 << fs)) != 0) {
-          IConstructor cons = mapFieldAccesCode(0x0001 << fs, CLASSE);
-          if (cons != null)
-            this.insert(this.modifiers, values.sourceLocation(classScheme, "", "/" + className), cons);
-        }
-      }
+			for (int fs = 0; fs < 15; fs++) {
+				if ((cn.access & (0x0001 << fs)) != 0) {
+					IConstructor cons = mapFieldAccesCode(0x0001 << fs, CLASSE);
+					if (cons != null)
+						this.insert(this.modifiers, values.sourceLocation(classScheme, "", "/" + className), cons);
+				}
+			}
 
-      // Deprecated method emit type annotation dependency Deprecated.
-      if ((cn.access & 0x20000) == 0x20000)
-        this.insert(this.annotations, values.sourceLocation(classScheme, "", "/" + className),
-            values.sourceLocation("java+interface", "", "/java/lang/Deprecated"));
+			// Deprecated method emit type annotation dependency Deprecated.
+			if ((cn.access & 0x20000) == 0x20000)
+				this.insert(this.annotations, values.sourceLocation(classScheme, "", "/" + className),
+						values.sourceLocation("java+interface", "", "/java/lang/Deprecated"));
 
+			// @implements={<|java+class:///m3startv2/viaInterface|,|java+interface:///m3startv2/m3Interface|>},
+			for (int i = 0; i < cn.interfaces.size(); ++i) {
+				String iface = (String) cn.interfaces.get(i);
+				// System.out.println(iface);
+				this.insert(this.implementsRelations, values.sourceLocation(classScheme, "", "/" + className),
+						values.sourceLocation("java+interface", "", "/" + iface));
+			}
 
+			for (int fs = 0; fs < cn.innerClasses.size(); fs++) {
+				InnerClassNode a = (InnerClassNode) cn.innerClasses.get(fs);
+				String parsedName = a.name.replace("$", "/");
+				this.insert(this.containment, values.sourceLocation(classScheme, "", "/" + className),
+						values.sourceLocation(classScheme, "", "/" + parsedName));
+			}
 
-      // @implements={<|java+class:///m3startv2/viaInterface|,|java+interface:///m3startv2/m3Interface|>},
-      for (int i = 0; i < cn.interfaces.size(); ++i) {
-        String iface = (String) cn.interfaces.get(i);
-        // System.out.println(iface);
-        this.insert(this.implementsRelations, values.sourceLocation(classScheme, "", "/" + className),
-            values.sourceLocation("java+interface", "", "/" + iface));
-      }
+			emitMethods(cn.methods);
+			emitFields(cn.fields);
 
-      for (int fs = 0; fs < cn.innerClasses.size(); fs++) {
-        InnerClassNode a = (InnerClassNode) cn.innerClasses.get(fs);
-        String parsedName = a.name.replace("$", "/");
-        this.insert(this.containment, values.sourceLocation(classScheme, "", "/" + className),
-            values.sourceLocation(classScheme, "", "/" + parsedName));
-      }
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException("Should not happen", e);
+		}
+	}
 
+	private void emitMethods(List<MethodNode> methods) {
+		try {
+			for (int i = 0; i < methods.size(); ++i) {
+				MethodNode method = methods.get(i);
+				// System.out.println(new String("Signature :") + className + "
+				// " + method.name + " " +
+				// method.signature + " " + method.desc);
 
-      emitMethods(cn.methods);
-      emitFields(cn.fields);
+				if (classIsEnum
+						&& (method.name.equalsIgnoreCase("values") || method.name.equalsIgnoreCase("valueOf"))) {
+					continue;
+				}
 
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-    catch (URISyntaxException e) {
-      throw new RuntimeException("Should not happen", e);
-    }
-  }
+				if (method.name.contains("<")) {
+					String name = LogPath.substring(LogPath.lastIndexOf("/"));
+					insertDeclMethod("java+constructor", method.signature, eliminateOutterClass(method.desc), name,
+							method.access);
+				} else {
+					insertDeclMethod("java+method", method.signature, method.desc, method.name, method.access);
+				}
+			}
 
-  private void emitMethods(List<MethodNode> methods) {
-    try {
-      for (int i = 0; i < methods.size(); ++i) {
-        MethodNode method = methods.get(i);
-        // System.out.println(new String("Signature :") + className + " " + method.name + " " +
-        // method.signature + "  " + method.desc);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-        if (classIsEnum && (method.name.equalsIgnoreCase("values") || method.name.equalsIgnoreCase("valueOf"))) {
-          continue;
-        }
+	private void insertDeclMethod(String type, String signature, String desc, String name, int access)
+			throws URISyntaxException {
+		String sig;
+		if (signature != null) {
+			sig = extractSignature(signature);
+			// TypeVariables
+			SignatureReader sr = new SignatureReader(signature);
+			sr.accept(new SigVisitor(Opcodes.ASM4));
+		} else {
+			sig = extractSignature(desc);
+		}
+		// Typedepency methods
+		String TypeSig = sig;
+		// Loop over all parameters in the signature
+		String[] params;
 
-        if (method.name.contains("<")) {
-          String name = LogPath.substring(LogPath.lastIndexOf("/"));
-          insertDeclMethod("java+constructor", method.signature, eliminateOutterClass(method.desc), name, method.access);
-        }
-        else {
-          insertDeclMethod("java+method", method.signature, method.desc, method.name, method.access);
-        }
-      }
+		if ((TypeSig != null) && (!TypeSig.equals(""))) {
+			params = TypeSig.split(",");
+			for (int i = 0; i < params.length; i++) {
+				this.insert(this.typeDependency,
+						values.sourceLocation("java+parameter", "",
+								LogPath + "/" + name + "(" + sig + ")" + "/" + params[i] + i),
+						values.sourceLocation(printParameterType(params[i]), "", params[i]));
+			}
+		}
 
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+		// Return type
+		if (type.equals("java+constructor")) {
+			this.insert(this.typeDependency,
+					values.sourceLocation("java+constructor", "", LogPath + "/" + name + "(" + sig + ")"),
+					values.sourceLocation("java+class", "", LogPath));
+		} else {
+			String rType = null;
+			if (signature != null) {
+				rType = Signature.toString(signature);
+			} else {
+				rType = Signature.toString(desc);
+			}
+			rType = rType.substring(0, rType.indexOf(' '));
+			this.insert(this.typeDependency,
+					values.sourceLocation("java+method", "", LogPath + "/" + name + "(" + sig + ")"),
+					values.sourceLocation(printParameterType(rType), "", rType));
+		}
 
-  private void insertDeclMethod(String type, String signature, String desc, String name, int access)
-      throws URISyntaxException {
-    String sig;
-    if (signature != null) {
-      sig = extractSignature(signature);
-      // TypeVariables
-      SignatureReader sr = new SignatureReader(signature);
-      sr.accept(new SigVisitor(Opcodes.ASM4));
-    }
-    else {
-      sig = extractSignature(desc);
-    }
-    // Typedepency methods
-    String TypeSig = sig;
-    // Loop over all parameters in the signature
-    String[] params;
+		this.insert(this.declarations, values.sourceLocation(type, "", LogPath + "/" + name + "(" + sig + ")"),
+				values.sourceLocation(jarFile + "!" + ClassFile));
+		for (int fs = 0; fs < 15; fs++) {
+			if ((access & (0x0001 << fs)) != 0) {
+				this.insert(this.modifiers, values.sourceLocation(type, "", LogPath + "/" + name + "(" + sig + ")"),
+						mapFieldAccesCode(0x0001 << fs, METHODE));
+			}
+		}
 
-    if ((TypeSig != null) && (!TypeSig.equals(""))) {
-      params = TypeSig.split(",");
-      for (int i = 0; i < params.length; i++) {
-        this.insert(this.typeDependency,
-            values.sourceLocation("java+parameter", "", LogPath + "/" + name + "(" + sig + ")" + "/" + params[i] + i),
-            values.sourceLocation(printParameterType(params[i]), "", params[i]));
-      }
-    }
+		// Containment of methods.
+		this.insert(this.containment, values.sourceLocation(classScheme, "", LogPath),
+				values.sourceLocation(type, "", LogPath + "/" + name + "(" + sig + ")"));
 
-    // Return type
-    if (type.equals("java+constructor")) {
-      this.insert(this.typeDependency,
-          values.sourceLocation("java+constructor", "", LogPath + "/" + name + "(" + sig + ")"),
-          values.sourceLocation("java+class", "", LogPath));
-    }
-    else {
-      String rType = null;
-      if (signature != null) {
-        rType = Signature.toString(signature);
-      }
-      else {
-        rType = Signature.toString(desc);
-      }
-      rType = rType.substring(0, rType.indexOf(' '));
-      this.insert(this.typeDependency,
-          values.sourceLocation("java+method", "", LogPath + "/" + name + "(" + sig + ")"),
-          values.sourceLocation(printParameterType(rType), "", rType));
-    }
+		// Deprecated method emit type annotation dependency Deprecated.
+		if ((access & 0x20000) == 0x20000)
+			this.insert(this.annotations,
+					values.sourceLocation("java+method", "", LogPath + "/" + name + "(" + sig + ")"),
+					values.sourceLocation("java+interface", "", "/java/lang/Deprecated"));
+		// <|java+method:///Main/Main/FindMe(java.lang.String)|,|java+interface:///java/lang/Deprecated|>,
 
-    this.insert(this.declarations, values.sourceLocation(type, "", LogPath + "/" + name + "(" + sig + ")"),
-        values.sourceLocation(jarFile + "!" + ClassFile));
-    for (int fs = 0; fs < 15; fs++) {
-      if ((access & (0x0001 << fs)) != 0) {
-        this.insert(this.modifiers, values.sourceLocation(type, "", LogPath + "/" + name + "(" + sig + ")"),
-            mapFieldAccesCode(0x0001 << fs, METHODE));
-      }
-    }
+	}
 
-    // Containment of methods.
-    this.insert(this.containment, values.sourceLocation(classScheme, "", LogPath),
-        values.sourceLocation(type, "", LogPath + "/" + name + "(" + sig + ")"));
+	private String eliminateOutterClass(String desc) {
+		// Find the end of the first class argument
+		int semi = desc.indexOf(';');
+		String outter = null;
 
+		// Create the possible path
+		if (semi > 0) {
+			outter = desc.substring(desc.indexOf('(') + 2, semi) + "$";
+		}
 
-    // Deprecated method emit type annotation dependency Deprecated.
-    if ((access & 0x20000) == 0x20000)
-      this.insert(this.annotations, values.sourceLocation("java+method", "", LogPath + "/" + name + "(" + sig + ")"),
-          values.sourceLocation("java+interface", "", "/java/lang/Deprecated"));
-    // <|java+method:///Main/Main/FindMe(java.lang.String)|,|java+interface:///java/lang/Deprecated|>,
+		// if the first argument is contained in the class path, remove it
+		if ((outter != null) && ClassFile.contains(outter))
+			return "(" + desc.substring(semi + 1);
+		else
+			return desc;
+	}
 
-  }
+	private String printParameterType(String t) {
+		if (t != null) {
+			switch (t) {
+			case "void":
+			case "boolean":
+			case "char":
+			case "byte":
+			case "short":
+			case "int":
+			case "float":
+			case "long":
+			case "double":
+				return "java+primitiveType";
+			default:
+				return "java+class";
+			}
+		}
+		throw new RuntimeException("This should not happen, because i know everything");
+	}
 
-  private String eliminateOutterClass(String desc) {
-    // Find the end of the first class argument
-    int semi = desc.indexOf(';');
-    String outter = null;
+	private String extractSignature(String sig) {
+		String args = Signature.toString(sig);
+		args = args.substring(args.indexOf("(") + 1, args.indexOf(")"));
+		args = args.replaceAll("\\s+", "");
+		args = args.replaceAll("/", ".");
+		return args;
+	}
 
-    // Create the possible path
-    if (semi > 0) {
-      outter = desc.substring(desc.indexOf('(') + 2, semi) + "$";
-    }
+	private IConstructor mapFieldAccesCode(int code, int where) {
+		// Check the original M3 implementation for possible IConstructor types.
+		switch (code) {
+		case Opcodes.ACC_PUBLIC:
+			return constructModifierNode("public");
+		case Opcodes.ACC_PRIVATE:
+			return constructModifierNode("private");
+		case Opcodes.ACC_PROTECTED:
+			return constructModifierNode("protected");
+		case Opcodes.ACC_STATIC:
+			return constructModifierNode("static");
+		case Opcodes.ACC_FINAL:
+			return constructModifierNode("final");
+		case Opcodes.ACC_SYNCHRONIZED:
+			if (where == CLASSE)
+				return null;
+			return constructModifierNode("synchronized");
+		case Opcodes.ACC_ABSTRACT:
+			return constructModifierNode("abstract");
+		case Opcodes.ACC_VOLATILE:
+			return constructModifierNode("volatile");
+		case Opcodes.ACC_TRANSIENT:
+			return constructModifierNode("transient");
+		case Opcodes.ACC_NATIVE:
+			return constructModifierNode("native");
 
-    // if the first argument is contained in the class path, remove it
-    if ((outter != null) && ClassFile.contains(outter))
-      return "(" + desc.substring(semi + 1);
-    else
-      return desc;
-  }
+		// TODO: GIT PULL/MERGE ORIGINAL RASCAL VERSION < 2013-11-30 (Shahin
+		// commit)
+		// case Opcodes.ACC_DEPRECATED:
+		// return constructModifierNode("deprecated");
 
-  private String printParameterType(String t) {
-    if (t != null) {
-      switch (t) {
-        case "void":
-        case "boolean":
-        case "char":
-        case "byte":
-        case "short":
-        case "int":
-        case "float":
-        case "long":
-        case "double":
-          return "java+primitiveType";
-        default:
-          return "java+class";
-      }
-    }
-    throw new RuntimeException("This should not happen, because i know everything");
-  }
+		default:
+			return null;
+		}
+	}
 
-  private String extractSignature(String sig) {
-    String args = Signature.toString(sig);
-    args = args.substring(args.indexOf("(") + 1, args.indexOf(")"));
-    args = args.replaceAll("\\s+", "");
-    args = args.replaceAll("/", ".");
-    return args;
-  }
+	// <|java+field:///m3startv2/Main/intField|,|project://m3startv2/src/m3startv2/Main.java|(54,13,<5,12>,<5,25>)>,
+	private void emitFields(List<FieldNode> fields) {
+		try {
+			for (int i = 0; i < fields.size(); ++i) {
+				FieldNode field = fields.get(i);
 
-  private IConstructor mapFieldAccesCode(int code, int where) {
-    // Check the original M3 implementation for possible IConstructor types.
-    switch (code) {
-      case Opcodes.ACC_PUBLIC:
-        return constructModifierNode("public");
-      case Opcodes.ACC_PRIVATE:
-        return constructModifierNode("private");
-      case Opcodes.ACC_PROTECTED:
-        return constructModifierNode("protected");
-      case Opcodes.ACC_STATIC:
-        return constructModifierNode("static");
-      case Opcodes.ACC_FINAL:
-        return constructModifierNode("final");
-      case Opcodes.ACC_SYNCHRONIZED:
-        if (where == CLASSE)
-          return null;
-        return constructModifierNode("synchronized");
-      case Opcodes.ACC_ABSTRACT:
-        return constructModifierNode("abstract");
-      case Opcodes.ACC_VOLATILE:
-        return constructModifierNode("volatile");
-      case Opcodes.ACC_TRANSIENT:
-        return constructModifierNode("transient");
-      case Opcodes.ACC_NATIVE:
-        return constructModifierNode("native");
+				if ((field.access & Opcodes.ACC_SYNTHETIC) != 0)
+					continue;
 
+				if (field.name.startsWith("this$")) {
+					if ((field.desc.length() > 0) && (className
+							.contains(field.desc.substring(1, field.desc.length() - 1).replace('$', '/') + "/")))
 
-        // TODO: GIT PULL/MERGE ORIGINAL RASCAL VERSION < 2013-11-30 (Shahin commit)
-        // case Opcodes.ACC_DEPRECATED:
-        // return constructModifierNode("deprecated");
+						break;
+				}
 
+				boolean isEnum = (field.access & Opcodes.ACC_ENUM) != 0;
+				String fieldScheme = isEnum ? "java+enumConstant" : "java+field";
 
-      default:
-        return null;
-    }
-  }
+				// System.out.println("Debug......." + field.name);
+				this.insert(this.declarations, values.sourceLocation(fieldScheme, "", LogPath + "/" + field.name),
+						values.sourceLocation(jarFile + "!" + ClassFile));
 
-  // <|java+field:///m3startv2/Main/intField|,|project://m3startv2/src/m3startv2/Main.java|(54,13,<5,12>,<5,25>)>,
-  private void emitFields(List<FieldNode> fields) {
-    try {
-      for (int i = 0; i < fields.size(); ++i) {
-        FieldNode field = fields.get(i);
+				// Containment of fields.
+				this.insert(this.containment, values.sourceLocation(classScheme, "", LogPath),
+						values.sourceLocation(fieldScheme, "", LogPath + "/" + field.name));
 
-        if ((field.access & Opcodes.ACC_SYNTHETIC) != 0)
-          continue;
+				if (!isEnum) {
+					// The jvm acces codes specify 15 different modifiers (more
+					// then in the Java language
+					// itself)
+					for (int fs = 0; fs < 15; fs++) {
+						if ((field.access & (0x0001 << fs)) != 0) {
+							this.insert(this.modifiers,
+									values.sourceLocation("java+field", "", LogPath + "/" + field.name),
+									mapFieldAccesCode(1 << fs, FIELDE));
+						}
+					}
+				}
+				// Put deprecated field in the annotations anno.
+				if ((field.access & 0x20000) == 0x20000)
+					this.insert(this.annotations, values.sourceLocation("java+field", "", LogPath + "/" + field.name),
+							values.sourceLocation("java+interface", "", "/java/lang/Deprecated"));
+				// <|java+method:///Main/Main/FindMe(java.lang.String)|,|java+interface:///java/lang/Deprecated|>,
 
-        if (field.name.startsWith("this$")) {
-          if ((field.desc.length() > 0)
-              && (className.contains(field.desc.substring(1, field.desc.length() - 1).replace('$', '/') + "/")))
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            break;
-        }
+	private class SigVisitor extends SignatureVisitor {
 
-        boolean isEnum = (field.access & Opcodes.ACC_ENUM) != 0;
-        String fieldScheme = isEnum ? "java+enumConstant" : "java+field";
+		public SigVisitor(int api) {
+			super(api);
+			// TODO Auto-generated constructor stub
+		}
 
-        // System.out.println("Debug......." + field.name);
-        this.insert(this.declarations, values.sourceLocation(fieldScheme, "", LogPath + "/" + field.name),
-            values.sourceLocation(jarFile + "!" + ClassFile));
+		public void visitFormalTypeParameter(String name) {
+			try {
+				// System.out.println(name);
+				JarConverter.this.insert(JarConverter.this.declarations,
+						values.sourceLocation("java+typeVariable", "", LogPath + "/" + name),
+						values.sourceLocation(jarFile + "!" + ClassFile));
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
-        // Containment of fields.
-        this.insert(this.containment, values.sourceLocation(classScheme, "", LogPath),
-            values.sourceLocation(fieldScheme, "", LogPath + "/" + field.name));
+		public void visitBaseType(char descriptor) {
+			// System.out.println(descriptor);
+		}
 
-        if (!isEnum) {
-          // The jvm acces codes specify 15 different modifiers (more then in the Java language
-          // itself)
-          for (int fs = 0; fs < 15; fs++) {
-            if ((field.access & (0x0001 << fs)) != 0) {
-              this.insert(this.modifiers, values.sourceLocation("java+field", "", LogPath + "/" + field.name),
-                  mapFieldAccesCode(1 << fs, FIELDE));
-            }
-          }
-        }
-        // Put deprecated field in the annotations anno.
-        if ((field.access & 0x20000) == 0x20000)
-          this.insert(this.annotations, values.sourceLocation("java+field", "", LogPath + "/" + field.name),
-              values.sourceLocation("java+interface", "", "/java/lang/Deprecated"));
-        // <|java+method:///Main/Main/FindMe(java.lang.String)|,|java+interface:///java/lang/Deprecated|>,
-
-      }
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  private class SigVisitor extends SignatureVisitor {
-
-    public SigVisitor(int api) {
-      super(api);
-      // TODO Auto-generated constructor stub
-    }
-
-    public void visitFormalTypeParameter(String name) {
-      try {
-        // System.out.println(name);
-        JarConverter.this.insert(JarConverter.this.declarations,
-            values.sourceLocation("java+typeVariable", "", LogPath + "/" + name),
-            values.sourceLocation(jarFile + "!" + ClassFile));
-      }
-      catch (URISyntaxException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-
-    public void visitBaseType(char descriptor) {
-      // System.out.println(descriptor);
-    }
-
-  }
+	}
 }

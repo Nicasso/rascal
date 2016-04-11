@@ -37,26 +37,48 @@ import org.rascalmpl.value.ISourceLocation;
 
 public interface IBindingsResolver {
 	public ISourceLocation resolveBinding(TypeDeclaration node); // declaration
+
 	public ISourceLocation resolveBinding(EnumDeclaration node); // declaration
+
 	public ISourceLocation resolveBinding(AnnotationTypeDeclaration node); // declaration
+
 	public ISourceLocation resolveBinding(AnnotationTypeMemberDeclaration node); // declaration
+
 	public ISourceLocation resolveBinding(AnonymousClassDeclaration node); // declaration
+
 	public ISourceLocation resolveBinding(ImportDeclaration node); // declaration
+
 	public ISourceLocation resolveBinding(MemberRef node); // Java doc
+
 	public ISourceLocation resolveBinding(MethodDeclaration node);
+
 	public ISourceLocation resolveBinding(MethodRef node); // Java doc
+
 	public ISourceLocation resolveBinding(Name node); // Expression
+
 	public ISourceLocation resolveBinding(PackageDeclaration node);
+
 	public ISourceLocation resolveBinding(Type node); // type
+
 	public ISourceLocation resolveBinding(TypeParameter node); // type
+
 	public ISourceLocation resolveBinding(VariableDeclaration node); // declaration
+
 	public ISourceLocation resolveBinding(ClassInstanceCreation node); // Expression
+
 	public ISourceLocation resolveBinding(ConstructorInvocation node); // Statement
+
 	public ISourceLocation resolveBinding(EnumConstantDeclaration node); // declaration
+
 	public ISourceLocation resolveBinding(SuperConstructorInvocation node); // Statement
+
 	public ISourceLocation resolveBinding(FieldAccess node); // Expression
+
 	public ISourceLocation resolveBinding(SuperFieldAccess node); // Expression
+
 	public ISourceLocation resolveBinding(MethodInvocation node); // Expression
+
 	public ISourceLocation resolveBinding(SuperMethodInvocation node); // Expression
+
 	public ISourceLocation resolveBinding(ASTNode node);
 }

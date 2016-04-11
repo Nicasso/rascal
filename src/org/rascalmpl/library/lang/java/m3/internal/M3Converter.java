@@ -13,17 +13,17 @@ import org.rascalmpl.value.type.TypeFactory;
 import org.rascalmpl.value.type.TypeStore;
 
 public abstract class M3Converter extends JavaToRascalConverter {
-	private static final String DATATYPE_M3_NODE							= "M3";
+	private static final String DATATYPE_M3_NODE = "M3";
 	private final org.rascalmpl.value.type.Type DATATYPE_M3_NODE_TYPE;
 	private final org.rascalmpl.value.type.Type DATATYPE_TYPESYMBOL;
-	
-	private static final org.rascalmpl.value.type.Type locType 		= TF.sourceLocationType();
-	private static final org.rascalmpl.value.type.Type m3TupleType 	= TF.tupleType(locType, locType);
+
+	private static final org.rascalmpl.value.type.Type locType = TF.sourceLocationType();
+	private static final org.rascalmpl.value.type.Type m3TupleType = TF.tupleType(locType, locType);
 	private final org.rascalmpl.value.type.Type m3LOCModifierType;
 	private final org.rascalmpl.value.type.Type m3LOCTypeType;
-	
+
 	protected final Stack<ISourceLocation> scopeManager = new Stack<ISourceLocation>();
-	
+
 	protected ISetWriter uses;
 	protected ISetWriter declarations;
 	protected ISetWriter containment;
@@ -39,13 +39,14 @@ public abstract class M3Converter extends JavaToRascalConverter {
 	protected ISetWriter types;
 	protected ISetWriter annotations;
 	protected final org.rascalmpl.value.type.Type CONSTRUCTOR_M3;
-	
+
 	@SuppressWarnings("deprecation")
 	M3Converter(final TypeStore typeStore, java.util.Map<String, ISourceLocation> cache) {
 		super(typeStore, cache, true);
 		this.DATATYPE_M3_NODE_TYPE = this.typeStore.lookupAbstractDataType(DATATYPE_M3_NODE);
 		TypeFactory tf = TypeFactory.getInstance();
-    this.CONSTRUCTOR_M3= this.typeStore.lookupConstructor(DATATYPE_M3_NODE_TYPE, "m3", tf.tupleType(tf.sourceLocationType()));
+		this.CONSTRUCTOR_M3 = this.typeStore.lookupConstructor(DATATYPE_M3_NODE_TYPE, "m3",
+				tf.tupleType(tf.sourceLocationType()));
 		this.DATATYPE_TYPESYMBOL = this.typeStore.lookupAbstractDataType("TypeSymbol");
 		uses = values.relationWriter(m3TupleType);
 		declarations = values.relationWriter(m3TupleType);
@@ -64,7 +65,7 @@ public abstract class M3Converter extends JavaToRascalConverter {
 		annotations = values.relationWriter(TF.tupleType(locType, locType));
 		types = values.relationWriter(TF.tupleType(locType, DATATYPE_TYPESYMBOL));
 	}
-	
+
 	public IValue getModel(boolean insertErrors) {
 		ownValue = values.constructor(CONSTRUCTOR_M3, loc);
 		setAnnotation("declarations", declarations.done());
@@ -84,11 +85,11 @@ public abstract class M3Converter extends JavaToRascalConverter {
 		insertCompilationUnitMessages(insertErrors, messages.done());
 		return ownValue;
 	}
-	
+
 	public ISourceLocation getParent() {
 		return scopeManager.peek();
 	}
-	
+
 	public void insert(ISetWriter relW, IValue lhs, IValue rhs) {
 		if ((isValid((ISourceLocation) lhs) && isValid((ISourceLocation) rhs))) {
 			relW.insert(values.tuple(lhs, rhs));
@@ -96,23 +97,23 @@ public abstract class M3Converter extends JavaToRascalConverter {
 	}
 
 	public void insert(ISetWriter relW, IValue lhs, IValueList rhs) {
-		for (IValue oneRHS: (IList)rhs.asList())
+		for (IValue oneRHS : (IList) rhs.asList())
 			if (lhs.getType().isString() || (isValid((ISourceLocation) lhs) && isValid((ISourceLocation) oneRHS)))
 				insert(relW, lhs, oneRHS);
 	}
-	
+
 	public void insert(ISetWriter relW, IString lhs, IValue rhs) {
 		if (isValid((ISourceLocation) rhs)) {
 			relW.insert(values.tuple(lhs, rhs));
 		}
 	}
-	
+
 	public void insert(ISetWriter relW, IValue lhs, IConstructor rhs) {
 		if (isValid((ISourceLocation) lhs) && rhs != null) {
 			relW.insert(values.tuple(lhs, rhs));
 		}
 	}
-	
+
 	protected boolean isValid(ISourceLocation binding) {
 		return binding != null && !(binding.getScheme().equals("unknown") || binding.getScheme().equals("unresolved"));
 	}

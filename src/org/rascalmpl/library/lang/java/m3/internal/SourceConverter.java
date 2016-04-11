@@ -52,24 +52,24 @@ import org.rascalmpl.value.IConstructor;
 import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.type.TypeStore;
 
-@SuppressWarnings({"rawtypes", "deprecation"})
+@SuppressWarnings({ "rawtypes", "deprecation" })
 public class SourceConverter extends M3Converter {
 	SourceConverter(TypeStore typeStore, Map<String, ISourceLocation> cache) {
 		super(typeStore, cache);
 	}
-	
+
 	private void visitListOfModifiers(List modif) {
-		for (Iterator it = modif.iterator(); it.hasNext(); ) {
-			((ASTNode)it.next()).accept(this);
+		for (Iterator it = modif.iterator(); it.hasNext();) {
+			((ASTNode) it.next()).accept(this);
 		}
 	}
-	
+
 	private void visitFragments(List fragments) {
-		for (Iterator it = fragments.iterator(); it.hasNext(); ) {
+		for (Iterator it = fragments.iterator(); it.hasNext();) {
 			((VariableDeclarationFragment) it.next()).accept(this);
 		}
 	}
-	
+
 	private boolean simpleNameIsConstructorDecl(SimpleName node) {
 		ASTNode parent = node.getParent();
 		if (parent instanceof MethodDeclaration) {
@@ -79,16 +79,16 @@ public class SourceConverter extends M3Converter {
 		}
 		return false;
 	}
-	
+
 	private void addTypeDependency(ISourceLocation dependency) {
-	  if (!scopeManager.isEmpty()) {
-	    ISourceLocation parent = getParent();
-	    if (!parent.isEqual(dependency)) {
-	      insert(typeDependency, parent, dependency);
-	    }
-	  }
+		if (!scopeManager.isEmpty()) {
+			ISourceLocation parent = getParent();
+			if (!parent.isEqual(dependency)) {
+				insert(typeDependency, parent, dependency);
+			}
+		}
 	}
-	
+
 	public void preVisit(ASTNode node) {
 		if (node instanceof Annotation) {
 			insert(annotations, getParent(), resolveBinding(((Annotation) node).getTypeName()));
@@ -96,104 +96,104 @@ public class SourceConverter extends M3Converter {
 		}
 		ownValue = resolveBinding(node);
 	}
-	
+
 	public boolean visit(AnnotationTypeDeclaration node) {
 		insert(containment, getParent(), ownValue);
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(AnnotationTypeDeclaration node) {
 		ownValue = scopeManager.pop();
 		computeTypeSymbol(node);
 	}
-	
+
 	public boolean visit(AnnotationTypeMemberDeclaration node) {
 		insert(containment, getParent(), ownValue);
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(AnnotationTypeMemberDeclaration node) {
 		ownValue = scopeManager.pop();
 		IConstructor type = bindingsResolver.resolveType(node.getType().resolveBinding(), true);
-	    insert(types, ownValue, type);
+		insert(types, ownValue, type);
 	}
-	
+
 	public boolean visit(AnonymousClassDeclaration node) {
 		insert(containment, getParent(), ownValue);
-		// enum constant declaration and classinstancecreation gives types for anonymousclasses
+		// enum constant declaration and classinstancecreation gives types for
+		// anonymousclasses
 		ASTNode parent = node.getParent();
 		if (parent instanceof ClassInstanceCreation) {
 			ISourceLocation superclass = resolveBinding(((ClassInstanceCreation) parent).getType());
 			insert(typeDependency, ownValue, superclass);
-			IConstructor type = bindingsResolver.resolveType(((ClassInstanceCreation) parent).getType().resolveBinding(), false);
-		  	insert(types, ownValue, type);
-		  	
-		  	if (!superclass.getScheme().contains("+interface")) {
-		  		insert(extendsRelations, ownValue, superclass);
-		  	}
-		  	else {
-		  		insert(implementsRelations, ownValue, superclass);
-		  	}
-		}
-		else if (parent instanceof EnumConstantDeclaration) {
+			IConstructor type = bindingsResolver
+					.resolveType(((ClassInstanceCreation) parent).getType().resolveBinding(), false);
+			insert(types, ownValue, type);
+
+			if (!superclass.getScheme().contains("+interface")) {
+				insert(extendsRelations, ownValue, superclass);
+			} else {
+				insert(implementsRelations, ownValue, superclass);
+			}
+		} else if (parent instanceof EnumConstantDeclaration) {
 			IVariableBinding var = ((EnumConstantDeclaration) parent).resolveVariable();
-            insert(typeDependency, ownValue, resolveBinding(var));
-            
-            if (var != null) {
-                IConstructor type = bindingsResolver.resolveType(var.getType(), false);
-                insert(types, ownValue, type);
-            }
+			insert(typeDependency, ownValue, resolveBinding(var));
+
+			if (var != null) {
+				IConstructor type = bindingsResolver.resolveType(var.getType(), false);
+				insert(types, ownValue, type);
+			}
 		}
 		insert(declarations, ownValue, getSourceLocation(node));
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(AnonymousClassDeclaration node) {
 		ownValue = scopeManager.pop();
 	}
-	
+
 	public boolean visit(BlockComment node) {
 		insert(documentation, resolveBinding(node.getAlternateRoot()), getSourceLocation(node));
 		return true;
 	}
-	
+
 	public boolean visit(ClassInstanceCreation node) {
 		insert(methodInvocation, getParent(), ownValue);
-	  	insert(uses, getSourceLocation(node), ownValue);
+		insert(uses, getSourceLocation(node), ownValue);
 		return true;
 	}
-	
+
 	public boolean visit(CompilationUnit node) {
 		insert(declarations, ownValue, getSourceLocation(node));
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(CompilationUnit node) {
 		ownValue = scopeManager.pop();
 	}
-	
+
 	public boolean visit(ConstructorInvocation node) {
 		insert(methodInvocation, getParent(), ownValue);
 		return true;
 	}
-	
+
 	public boolean visit(EnumConstantDeclaration node) {
 		insert(containment, getParent(), ownValue);
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(EnumConstantDeclaration node) {
 		ownValue = scopeManager.pop();
 	}
-	
+
 	public boolean visit(EnumDeclaration node) {
 		insert(containment, getParent(), ownValue);
-		
+
 		IValueList implementedInterfaces = new IValueList(values);
 		if (!node.superInterfaceTypes().isEmpty()) {
 			for (Iterator it = node.superInterfaceTypes().iterator(); it.hasNext();) {
@@ -202,42 +202,42 @@ public class SourceConverter extends M3Converter {
 			}
 		}
 		insert(implementsRelations, ownValue, implementedInterfaces);
-		
+
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(EnumDeclaration node) {
 		ownValue = scopeManager.pop();
-	  computeTypeSymbol(node);
+		computeTypeSymbol(node);
 	}
 
-  private void computeTypeSymbol(AbstractTypeDeclaration node) {
-    IConstructor type = bindingsResolver.resolveType(node.resolveBinding(), true);
-    insert(types, ownValue, type);
-  }
-	
+	private void computeTypeSymbol(AbstractTypeDeclaration node) {
+		IConstructor type = bindingsResolver.resolveType(node.resolveBinding(), true);
+		insert(types, ownValue, type);
+	}
+
 	public boolean visit(FieldAccess node) {
 		insert(fieldAccess, getParent(), ownValue);
 		return true;
 	}
-	
+
 	public boolean visit(FieldDeclaration node) {
 		visitFragments(node.fragments());
 		return false;
 	}
-	
+
 	public boolean visit(Initializer node) {
 		insert(containment, getParent(), ownValue);
 		insert(declarations, ownValue, getSourceLocation(node));
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(Initializer node) {
 		ownValue = scopeManager.pop();
 	}
-	
+
 	public boolean visit(Javadoc node) {
 		ASTNode parent = node.getParent();
 		if (parent == null) {
@@ -246,50 +246,50 @@ public class SourceConverter extends M3Converter {
 		insert(documentation, resolveBinding(parent), getSourceLocation(node));
 		return false;
 	}
-	
+
 	public boolean visit(LineComment node) {
 		insert(documentation, resolveBinding(node.getAlternateRoot()), getSourceLocation(node));
 		return true;
 	}
-	
+
 	public boolean visit(MethodDeclaration node) {
 		insert(containment, getParent(), ownValue);
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(MethodDeclaration node) {
 		ownValue = scopeManager.pop();
 		ASTNode parent = node.getParent();
 		if (parent instanceof TypeDeclaration) {
-		  // TODO: why can this node.resolveBinding sometimes be null?
-			fillOverrides(node.resolveBinding(), ((TypeDeclaration)parent).resolveBinding());
+			// TODO: why can this node.resolveBinding sometimes be null?
+			fillOverrides(node.resolveBinding(), ((TypeDeclaration) parent).resolveBinding());
+		} else if (parent instanceof AnonymousClassDeclaration) {
+			fillOverrides(node.resolveBinding(), ((AnonymousClassDeclaration) parent).resolveBinding());
 		}
-		else if (parent instanceof AnonymousClassDeclaration) {
-			fillOverrides(node.resolveBinding(), ((AnonymousClassDeclaration)parent).resolveBinding());
-		}
-		
+
 		IConstructor type = bindingsResolver.resolveType(node.resolveBinding(), true);
 		insert(types, ownValue, type);
 	}
-	
+
 	private void fillOverrides(IMethodBinding node, ITypeBinding parent) {
 		if (node == null || parent == null) {
-			insert(messages, values.constructor(DATATYPE_RASCAL_MESSAGE_ERROR_NODE_TYPE,
-					values.string("parent or method binding is null, not proceeding with fillOverrides"),
-					getSourceLocation(compilUnit.findDeclaringNode(node))));
+			insert(messages,
+					values.constructor(DATATYPE_RASCAL_MESSAGE_ERROR_NODE_TYPE,
+							values.string("parent or method binding is null, not proceeding with fillOverrides"),
+							getSourceLocation(compilUnit.findDeclaringNode(node))));
 			return;
 		}
-		
+
 		List<ITypeBinding> parentClass = new ArrayList<ITypeBinding>();
 		parentClass.addAll(Arrays.asList(parent.getInterfaces()));
 		parentClass.add(parent.getSuperclass());
-		
-		for (ITypeBinding parentBinding: parentClass) {
+
+		for (ITypeBinding parentBinding : parentClass) {
 			if (parentBinding == null) {
 				return;
 			}
-			for (IMethodBinding parentMethod: parentBinding.getDeclaredMethods()) {
+			for (IMethodBinding parentMethod : parentBinding.getDeclaredMethods()) {
 				if (node.overrides(parentMethod) && node.isSubsignature(parentMethod)) {
 					insert(methodOverrides, resolveBinding(node), resolveBinding(parentMethod));
 				}
@@ -297,29 +297,29 @@ public class SourceConverter extends M3Converter {
 			fillOverrides(node, parentBinding);
 		}
 	}
-	
+
 	public boolean visit(MethodInvocation node) {
 		insert(methodInvocation, getParent(), ownValue);
-		//TODO: add to uses as well
+		// TODO: add to uses as well
 		return true;
 	}
-	
+
 	public boolean visit(Modifier node) {
 		String modifier = node.getKeyword().toString();
 		insert(modifiers, getParent(), constructModifierNode(modifier));
 		return true;
 	}
-	
+
 	private void generatePackageDecls(ISourceLocation parent, ISourceLocation pkg, ISourceLocation folder) {
-	    insert(declarations, pkg, folder);
-	  
-	    if (!(parent == null)) {
-	      insert(containment, parent, pkg);
-	      pkg = parent;
-	      generatePackageDecls(getParent(pkg), pkg, getParent(folder));
-	    }
-    }
-	
+		insert(declarations, pkg, folder);
+
+		if (!(parent == null)) {
+			insert(containment, parent, pkg);
+			pkg = parent;
+			generatePackageDecls(getParent(pkg), pkg, getParent(folder));
+		}
+	}
+
 	private ISourceLocation getParent(ISourceLocation sourceLoc) {
 		File file = new File(sourceLoc.getPath());
 		String parent = file.getParent();
@@ -336,55 +336,53 @@ public class SourceConverter extends M3Converter {
 		}
 		return null; // there is no parent;
 	}
-	
+
 	public boolean visit(PackageDeclaration node) {
 		IPackageBinding binding = node.resolveBinding();
-		
+
 		if (binding != null) {
-		  generatePackageDecls(getParent((ISourceLocation) ownValue), (ISourceLocation) ownValue, getParent(loc));
-		  insert(containment, ownValue, getParent());
+			generatePackageDecls(getParent((ISourceLocation) ownValue), (ISourceLocation) ownValue, getParent(loc));
+			insert(containment, ownValue, getParent());
 		} else {
 			insert(messages, values.constructor(DATATYPE_RASCAL_MESSAGE_ERROR_NODE_TYPE,
-					values.string("Unresolved binding for: " + node),
-					values.sourceLocation(loc, 0, 0)));
+					values.string("Unresolved binding for: " + node), values.sourceLocation(loc, 0, 0)));
 		}
-		
+
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(PackageDeclaration node) {
 		ownValue = scopeManager.pop();
 	}
-	
+
 	public boolean visit(QualifiedName node) {
 		if (((ISourceLocation) ownValue).getScheme().equals("java+field")) {
 			insert(fieldAccess, getParent(), ownValue);
 		}
 		return true;
 	}
-	
+
 	public boolean visit(SimpleName node) {
 		insert(names, values.string(node.getIdentifier()), ownValue);
-		
+
 		if (!simpleNameIsConstructorDecl(node)) {
 			addTypeDependency(resolveBinding(node.resolveTypeBinding()));
 			if (!node.isDeclaration()) {
 				addTypeDependency(resolveDeclaringClass(node.resolveBinding()));
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	public void endVisit(SimpleName node) {
 		if ((node.isDeclaration() || simpleNameIsConstructorDecl(node))) {
 			insert(declarations, ownValue, getSourceLocation(compilUnit.findDeclaringNode(node.resolveBinding())));
-		}
-		else {
+		} else {
 			insert(uses, getSourceLocation(node), ownValue);
 			if (((ISourceLocation) ownValue).getScheme().equals("java+field")) {
-			  insert(fieldAccess, getParent(), ownValue);
+				insert(fieldAccess, getParent(), ownValue);
 			}
 		}
 	}
@@ -394,36 +392,36 @@ public class SourceConverter extends M3Converter {
 		scopeManager.push((ISourceLocation) ownValue);
 		return true;
 	}
-	
+
 	public void endVisit(SingleVariableDeclaration node) {
 		ownValue = scopeManager.pop();
-	    IConstructor type = bindingsResolver.resolveType(node.getType().resolveBinding(), false);
-        insert(types, ownValue, type);
+		IConstructor type = bindingsResolver.resolveType(node.getType().resolveBinding(), false);
+		insert(types, ownValue, type);
 	}
-	
+
 	public boolean visit(SuperConstructorInvocation node) {
 		insert(methodInvocation, getParent(), ownValue);
 		return true;
 	}
-	
+
 	public boolean visit(SuperFieldAccess node) {
 		insert(fieldAccess, getParent(), ownValue);
 		return true;
 	}
-	
+
 	public boolean visit(SuperMethodInvocation node) {
 		insert(methodInvocation, getParent(), ownValue);
 		return true;
 	}
-	
+
 	public boolean visit(TypeDeclaration node) {
 		insert(containment, getParent(), ownValue);
-		
+
 		scopeManager.push((ISourceLocation) ownValue);
-		
+
 		IValueList extendsClass = new IValueList(values);
 		IValueList implementsInterfaces = new IValueList(values);
-		
+
 		if (node.getAST().apiLevel() == AST.JLS2) {
 			if (node.getSuperclass() != null) {
 				extendsClass.add(resolveBinding(node.getSuperclass()));
@@ -434,8 +432,7 @@ public class SourceConverter extends M3Converter {
 					implementsInterfaces.add(resolveBinding(n));
 				}
 			}
-		} 
-		else if (node.getAST().apiLevel() >= AST.JLS3) {
+		} else if (node.getAST().apiLevel() >= AST.JLS3) {
 			if (node.getSuperclassType() != null) {
 				extendsClass.add(resolveBinding(node.getSuperclassType()));
 			}
@@ -446,23 +443,22 @@ public class SourceConverter extends M3Converter {
 				}
 			}
 		}
-		
+
 		if (node.isInterface()) {
 			insert(extendsRelations, ownValue, implementsInterfaces);
 		} else {
 			insert(extendsRelations, ownValue, extendsClass);
 			insert(implementsRelations, ownValue, implementsInterfaces);
 		}
-		
+
 		return true;
 	}
-	
-	
+
 	public void endVisit(TypeDeclaration node) {
 		ownValue = scopeManager.pop();
 		computeTypeSymbol(node);
 	}
-	
+
 	public boolean visit(TypeParameter node) {
 		IValueList extendsList = new IValueList(values);
 		if (!node.typeBounds().isEmpty()) {
@@ -471,48 +467,44 @@ public class SourceConverter extends M3Converter {
 				extendsList.add(resolveBinding(t));
 			}
 		}
-		
+
 		insert(containment, getParent(), ownValue);
-		
+
 		return true;
 	}
-	
+
 	public boolean visit(VariableDeclarationExpression node) {
 		visitFragments(node.fragments());
 		return false;
 	}
-	
+
 	public boolean visit(VariableDeclarationFragment node) {
 		insert(containment, getParent(), ownValue);
 		scopeManager.push((ISourceLocation) ownValue);
 		IVariableBinding binding = node.resolveBinding();
-		
+
 		if (binding != null) {
-		  IConstructor type = bindingsResolver.resolveType(binding.getType(), false);
-		  insert(types, ownValue, type);
-		}
-		else {
+			IConstructor type = bindingsResolver.resolveType(binding.getType(), false);
+			insert(types, ownValue, type);
+		} else {
 			insert(messages, values.constructor(DATATYPE_RASCAL_MESSAGE_ERROR_NODE_TYPE,
-					values.string("No binding for: " + node),
-					values.sourceLocation(loc, 0, 0)));
+					values.string("No binding for: " + node), values.sourceLocation(loc, 0, 0)));
 		}
-		
+
 		ASTNode parentASTNode = node.getParent();
 		if (parentASTNode instanceof FieldDeclaration) {
-			FieldDeclaration parent = (FieldDeclaration)parentASTNode;
+			FieldDeclaration parent = (FieldDeclaration) parentASTNode;
 			parent.getType().accept(this);
 			visitListOfModifiers(parent.modifiers());
 			if (parent.getJavadoc() != null) {
 				parent.getJavadoc().accept(this);
 			}
-		} 
-		else if (parentASTNode instanceof VariableDeclarationExpression) {
-			VariableDeclarationExpression parent = (VariableDeclarationExpression)parentASTNode;
+		} else if (parentASTNode instanceof VariableDeclarationExpression) {
+			VariableDeclarationExpression parent = (VariableDeclarationExpression) parentASTNode;
 			parent.getType().accept(this);
 			visitListOfModifiers(parent.modifiers());
-		} 
-		else {
-			VariableDeclarationStatement parent = (VariableDeclarationStatement)parentASTNode;
+		} else {
+			VariableDeclarationStatement parent = (VariableDeclarationStatement) parentASTNode;
 			parent.getType().accept(this);
 			visitListOfModifiers(parent.modifiers());
 		}
