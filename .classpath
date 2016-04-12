@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Java 1.8"/>
 	<classpathentry excluding="**/example-project/*" kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="test"/>
@@ -37,11 +37,11 @@
 	<classpathentry exported="true" kind="lib" path="lib/commonmark-ext-autolink-0.4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commonmark-ext-gfm-tables-0.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/capsule-0.1.0.jar" sourcepath="lib/capsule-0.1.0-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nico/workspace/Rascal/rascal/lib/nico/antlr-3.5.2-complete.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nico/workspace/Rascal/rascal/lib/nico/slf4j-api-1.7.20.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nico/workspace/Rascal/rascal/lib/nico/slf4j-nop-1.7.20.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nico/workspace/Rascal/rascal/lib/nico/unbescape-1.1.2.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nico/workspace/Rascal/rascal/lib/nico/jStyleParserNico.jar"/>
 	<classpathentry kind="lib" path="lib/value-0.5.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/nico/antlr-3.5.2-complete.jar"/>
+	<classpathentry kind="lib" path="lib/nico/jStyleParserNico.jar"/>
+	<classpathentry kind="lib" path="lib/nico/unbescape-1.1.2.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/nico/slf4j-api-1.7.20.jar"/>
+	<classpathentry kind="lib" path="lib/nico/slf4j-nop-1.7.20.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
