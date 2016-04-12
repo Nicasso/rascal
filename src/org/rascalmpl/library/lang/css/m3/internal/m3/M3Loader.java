@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.css.m3.internal.FileHandler;
 import org.rascalmpl.library.lang.css.m3.internal.SourceConverter;
-import org.rascalmpl.library.lang.css.m3.internal.ast.ASTConverter;
 import org.rascalmpl.value.ISet;
 import org.rascalmpl.value.ISetWriter;
 import org.rascalmpl.value.ISourceLocation;
@@ -38,7 +38,7 @@ public class M3Loader extends FileHandler {
 		for (IValue f : files) {
 			fastPath &= safeResolve((ISourceLocation) f).getScheme().equals("file");
 		}
-		
+		eval.getStdOut().println("fastPath: "+fastPath);
 		if (!fastPath) {
 			for (IValue f : files) {
 				StyleSheet style = null;
@@ -48,13 +48,13 @@ public class M3Loader extends FileHandler {
 				boolean go = true;
 
 				try {
-					style = CSSFactory.parse(getFileContents(loc).toString(), "UTF-8");
+					style = CSSFactory.parse(getFileContents(loc).toString(), "utf-8");
 				} catch (CSSException | IOException e) {
 					eval.getStdErr().println(e.getMessage());
 					eval.getStdErr().flush();
 					go = false;
 				}
-
+				
 				if (go) {
 					TypeStore store = new TypeStore();
 					store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
@@ -65,19 +65,39 @@ public class M3Loader extends FileHandler {
 					
 					//ASTConverter ast = new ASTConverter(style, store, eval);
 					
-					result.insert(convertToM3(store, new HashMap<>(), style));
+					result.insert(convertToM3(store, new HashMap<>(), style, loc));
 				}
 			}
 		} else {
-			String[] converted = convertPaths(files);
+			//String[] converted = convertPaths(files);
 
 			TypeStore store = new TypeStore();
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
+			store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
 			// eval.getStdOut().println(store.getConstructors().toString());
 			// eval.getStdOut().flush();
 
+			for (IValue f : files) {
+				ISourceLocation loc = (ISourceLocation) f;
+				
+				boolean go = true;
+				
+				StyleSheet style = null;
+				try {
+					style = CSSFactory.parse(convertPath(f), "utf-8");
+				} catch (CSSException | IOException e) {
+					eval.getStdErr().println(e.getMessage());
+					eval.getStdErr().flush();
+					go = false;
+				}
+				if (go) {
+					result.insert(convertToM3(store, new HashMap<>(), style, loc));
+				}
+			}
+			/*
 			for (String f : converted) {
 				boolean go = true;
+			
 				StyleSheet style = null;
 				try {
 					style = CSSFactory.parse(f, "utf-8");
@@ -87,9 +107,11 @@ public class M3Loader extends FileHandler {
 					go = false;
 				}
 				if (go) {
-					result.insert(convertToM3(store, new HashMap<>(), style));
+					// TODO GET LOCATION
+					result.insert(convertToM3(store, new HashMap<>(), style, null));
 				}
 			}
+			*/
 
 		}
 
@@ -123,22 +145,25 @@ public class M3Loader extends FileHandler {
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
 			// eval.getStdOut().println(store.getConstructors().toString());
 			// eval.getStdOut().flush();
-			eval.getStdOut().println("2");
 			
 			//ASTConverter ast = new ASTConverter(style, store, eval);
 			
-			return convertToM3(store, new HashMap<>(), style);
+			//TODO ADD LOCATION
+			return convertToM3(store, new HashMap<>(), style, null);
 		}
 		// Return M3 after it is converted to IValues.
 		return null;
 	}
 	
-	protected IValue convertToM3(TypeStore store, Map<String, ISourceLocation> cache, StyleSheet ast) {
-		
+	protected IValue convertToM3(TypeStore store, Map<String, ISourceLocation> cache, StyleSheet ast, ISourceLocation loc) {
+		eval.getStdOut().println("convertToM3()");
+		eval.getStdOut().println("Create SourceConverter");
 		SourceConverter converter = new SourceConverter(store, cache, eval);
+		eval.getStdOut().println("SourceConverter.convert()");
         converter.convert(ast);
-        
-        return converter.getModel(true, null);
+        eval.getStdOut().println("SourceConverter.getModel()");
+        eval.getStdOut().println("SourceConverter loc: "+loc);
+        return converter.getModel(true, loc);
     }
 	
 }

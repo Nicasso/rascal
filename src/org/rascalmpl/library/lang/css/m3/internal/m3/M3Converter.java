@@ -47,9 +47,11 @@ public abstract class M3Converter extends CSSToRascalConverter {
 		
 		this.DATATYPE_M3_NODE_TYPE = this.typeStore.lookupAbstractDataType(DATATYPE_M3_NODE);
 		TypeFactory tf = TypeFactory.getInstance();
-		this.CONSTRUCTOR_M3 = this.typeStore.lookupConstructor(DATATYPE_M3_NODE_TYPE, "m3",
+
+		this.CONSTRUCTOR_M3 = typeStore.lookupConstructor(DATATYPE_M3_NODE_TYPE, "m3",
 				tf.tupleType(tf.sourceLocationType()));
-		this.DATATYPE_TYPESYMBOL = this.typeStore.lookupAbstractDataType("TypeSymbol");
+				
+		this.DATATYPE_TYPESYMBOL = typeStore.lookupAbstractDataType("TypeSymbol");
 		uses = values.relationWriter(m3TupleType);
 		declarations = values.relationWriter(m3TupleType);
 		containment = values.relationWriter(m3TupleType);
@@ -62,7 +64,16 @@ public abstract class M3Converter extends CSSToRascalConverter {
 	}
 
 	public IValue getModel(boolean insertErrors, ISourceLocation loc) {
-		IValue ownValue = values.constructor(CONSTRUCTOR_M3, loc);
+		
+		eval.getStdOut().println("1");
+		
+		eval.getStdOut().println(CONSTRUCTOR_M3);
+		eval.getStdOut().println(loc);
+		
+		ownValue = values.constructor(CONSTRUCTOR_M3, loc);
+		
+		eval.getStdOut().println("2");
+		eval.getStdOut().println(ownValue.toString());
 		
 		setAnnotation("declarations", declarations.done());
 		setAnnotation("uses", uses.done());

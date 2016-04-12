@@ -1,5 +1,6 @@
 package org.rascalmpl.library.lang.css.m3.internal;
 
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -7,7 +8,6 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.css.m3.internal.m3.M3Converter;
 import org.rascalmpl.value.ISourceLocation;
-import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
 
 import cz.vutbr.web.CSSNodeVisitor;
@@ -75,76 +75,60 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	}
 
 	@Override
-	public IValue visit(Declaration node) {
+	public Void visit(Declaration node) {
 		eval.getStdOut().println("Declaration");
 		eval.getStdOut().println("\t" + node.getProperty());
 
-		IValue property = values.string(node.getProperty());
-
-		IValueList declarationValues = new IValueList(values);
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
-			IValue temp = (IValue) t.accept(this);
-			declarationValues.add(temp);
+			t.accept(this);
 		}
 
-		return constructDeclarationNode("declaration", property, declarationValues.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(CombinedSelector node) {
+	public Void visit(CombinedSelector node) {
 		eval.getStdOut().println("CombinedSelector");
 
-		IValueList selectors = new IValueList(values);
 		for (Iterator<Selector> it = node.iterator(); it.hasNext();) {
 			Selector s = it.next();
-			IValue temp = (IValue) s.accept(this);
-			selectors.add(temp);
+			s.accept(this);
 		}
-		eval.getStdOut().println("CombinedSelector selectors: " + selectors.asList());
-		eval.getStdOut().println("constructTypeNode CombinedSelector");
-		return constructTypeNode("combinedSelector", selectors.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(MediaExpression node) {
+	public Void visit(MediaExpression node) {
 		eval.getStdOut().println("MediaExpression");
 		eval.getStdOut().println(node.getFeature());
 
-		IValue feature = values.string(node.getFeature());
-
-		IValueList expressions = new IValueList(values);
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
-			IValue temp = (IValue) t.accept(this);
-			expressions.add(temp);
+			t.accept(this);
 		}
 
-		return constructExpressionNode("mediaExpression", feature, expressions.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(MediaQuery node) {
+	public Void visit(MediaQuery node) {
 		eval.getStdOut().println("MediaQuery");
 		eval.getStdOut().println(node.getType());
 
-		IValue type = values.string(node.getType());
-
-		IValueList expressions = new IValueList(values);
 		for (Iterator<MediaExpression> it = node.iterator(); it.hasNext();) {
 			MediaExpression m = it.next();
-			IValue temp = (IValue) m.accept(this);
-			expressions.add(temp);
+			m.accept(this);
 		}
 
-		return constructTypeNode("mediaQuery", type, expressions.asList());
+		return null;
 	}
 
 	/**
 	 * Isn't this handled already? Check it out!
 	 */
 	@Override
-	public IValue visit(MediaSpec node) {
+	public Void visit(MediaSpec node) {
 		eval.getStdOut().println("MediaSpec");
 		return null;
 	}
@@ -153,7 +137,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	 * Wtf is this?! Never called so far.
 	 */
 	@Override
-	public IValue visit(RuleArrayList node) {
+	public Void visit(RuleArrayList node) {
 		eval.getStdOut().println("RuleArrayList");
 
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
@@ -165,24 +149,22 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	}
 
 	@Override
-	public IValue visit(RuleFontFace node) {
+	public Void visit(RuleFontFace node) {
 		eval.getStdOut().println("RuleFontFace");
 
-		IValueList declarations = new IValueList(values);
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
-			IValue temp = (IValue) d.accept(this);
-			declarations.add(temp);
+			d.accept(this);
 		}
 
-		return constructStatementNode("ruleFontFace", declarations.asList());
+		return null;
 	}
 
 	/**
 	 * No clue when this is used.
 	 */
 	@Override
-	public IValue visit(RuleMargin node) {
+	public Void visit(RuleMargin node) {
 		eval.getStdOut().println("RuleMargin");
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
@@ -194,289 +176,236 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	}
 
 	@Override
-	public IValue visit(RuleMedia node) {
+	public Void visit(RuleMedia node) {
 		eval.getStdOut().println("RuleMedia");
 
-		IValueList mediaQueries = new IValueList(values);
 		for (Iterator<MediaQuery> it = node.getMediaQueries().iterator(); it.hasNext();) {
 			MediaQuery m = it.next();
-			IValue temp = (IValue) m.accept(this);
-			mediaQueries.add(temp);
+			m.accept(this);
 		}
 
-		IValueList ruleSets = new IValueList(values);
 		for (Iterator<RuleSet> it = node.iterator(); it.hasNext();) {
 			RuleSet r = it.next();
-			IValue temp = (IValue) r.accept(this);
-			ruleSets.add(temp);
+			r.accept(this);
 		}
 
-		return constructStatementNode("ruleMedia", mediaQueries.asList(), ruleSets.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(RulePage node) {
+	public Void visit(RulePage node) {
 		eval.getStdOut().println("RulePage");
 
-		IValue pseudo = values.string(node.getPseudo());
-
-		IValueList declarations = new IValueList(values);
 		for (Iterator<Rule<?>> it = node.iterator(); it.hasNext();) {
 			Rule<?> r = it.next();
-			IValue temp = (IValue) r.accept(this);
-			declarations.add(temp);
+			r.accept(this);
 		}
 
-		return constructStatementNode("rulePage", pseudo, declarations.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(RuleSet node) {
+	public Void visit(RuleSet node) {
 		eval.getStdOut().println("RuleSet");
+		
+		ISourceLocation soLo = makeBinding("css+ruleset", null, "RuleSet");
+		ownValue = soLo;
+		
+		insert(containment, getParent(), ownValue);
+		
+		scopeManager.push(soLo);
 
-		IValueList selectors = new IValueList(values);
 		for (CombinedSelector cs : node.getSelectors()) {
-			IValue temp = (IValue) cs.accept(this);
-			selectors.add(temp);
+			cs.accept(this);
 		}
 
-		IValueList declarations = new IValueList(values);
 		for (Declaration cs : node) {
-			IValue temp = (IValue) cs.accept(this);
-			declarations.add(temp);
+			cs.accept(this);
 		}
 
-		return constructStatementNode("ruleSet", selectors.asList(), declarations.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(RuleViewport node) {
+	public Void visit(RuleViewport node) {
 		eval.getStdOut().println("RuleViewport");
 
-		IValueList declarations = new IValueList(values);
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
-			IValue temp = (IValue) d.accept(this);
-			declarations.add(temp);
+			d.accept(this);
 		}
 
-		return constructStatementNode("ruleViewport", declarations.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(Selector node) {
+	public Void visit(Selector node) {
 		eval.getStdOut().println("Selector");
 		eval.getStdOut().println("\t" + node.getCombinator());
 
-		IValueList statements = new IValueList(values);
 		for (Iterator<SelectorPart> it = node.iterator(); it.hasNext();) {
 			SelectorPart m = it.next();
-			IValue temp = (IValue) m.accept(this);
-			statements.add(temp);
+			m.accept(this);
 		}
 
-		if (node.getCombinator() != null) {
-			IValue combinator = values.string(node.getCombinator().toString());
-			return constructExpressionNode("selector", statements.asList(), combinator);
-		} else {
-			return constructExpressionNode("selector", statements.asList());
-		}
+		return null;
 	}
 
 	@Override
-	public IValue visit(StyleSheet node) {
+	public Void visit(StyleSheet node) {
 		eval.getStdOut().println("StyleSheet");
+		
+		// @TODO Find a way to get the file name here.
+		ISourceLocation soLo = makeBinding("css+stylesheet", null, "style1.css");
+		ownValue = soLo;
+		scopeManager.push(soLo);
 
-		IValueList statements = new IValueList(values);
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
 			RuleBlock<?> r = it.next();
-			IValue temp = (IValue) r.accept(this);
-			statements.add(temp);
+			r.accept(this);
 		}
+		
+		scopeManager.pop();
 
-		return constructStatementNode("stylesheet", statements.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermAngle node) {
+	public Void visit(TermAngle node) {
 		eval.getStdOut().println("TermAngle");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-
-		IValue angle = values.real(node.getValue().doubleValue());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("angle", angle, unit);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermColor node) {
+	public Void visit(TermColor node) {
 		eval.getStdOut().println("TermColor");
 		eval.getStdOut().println("\t" + node.getValue());
-
-		IValue red = values.integer(node.getValue().getRed());
-		IValue green = values.integer(node.getValue().getGreen());
-		IValue blue = values.integer(node.getValue().getBlue());
-		IValue alpha = values.integer(node.getValue().getAlpha());
-		return constructTypeNode("color", red, green, blue, alpha);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermExpression node) {
+	public Void visit(TermExpression node) {
 		eval.getStdOut().println("TermExpression");
 		eval.getStdOut().println("\t" + node.getValue());
-
-		IValue expression = values.string(node.getValue().toString());
-		return constructTypeNode("expression", expression);
+		return null;
 	}
 
 	/**
 	 * This one can go? Since all its children are covered?
 	 */
 	@Override
-	public IValue visit(TermFloatValue node) {
+	public Void visit(TermFloatValue node) {
 		eval.getStdOut().println("TermFloatValue");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
-	public IValue visit(TermFrequency node) {
+	public Void visit(TermFrequency node) {
 		eval.getStdOut().println("TermFrequency");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-
-		IValue freq = values.real(node.getValue());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("frequency", freq, unit);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermFunction node) {
+	public Void visit(TermFunction node) {
 		eval.getStdOut().println("TermFunction");
 		eval.getStdOut().println(node.getFunctionName());
 
-		IValue functionName = values.string(node.getFunctionName());
-
-		IValueList expressions = new IValueList(values);
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
-			IValue temp = (IValue) t.accept(this);
-			expressions.add(temp);
+			t.accept(this);
 		}
 
-		return constructTypeNode("function", functionName, expressions.asList());
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermIdent node) {
+	public Void visit(TermIdent node) {
 		eval.getStdOut().println("TermIdent");
 		eval.getStdOut().println("\t" + node.getValue());
-
-		IValue ident = values.string(node.getValue().toString());
-		return constructTypeNode("ident", ident);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermInteger node) {
+	public Void visit(TermInteger node) {
 		eval.getStdOut().println("TermInteger");
 		// For some strange reason termInteger contains floats...
 		eval.getStdOut().println("\t" + node.getValue().intValue() + " " + node.getUnit());
-
-		IValue integer = values.integer(node.getValue().intValue());
-		return constructTypeNode("integer", integer);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermLength node) {
+	public Void visit(TermLength node) {
 		eval.getStdOut().println("TermLength");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-
-		IValue length = values.real(node.getValue());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("length", length, unit);
+		return null;
 	}
 
 	/**
 	 * This one can go?
 	 */
 	@Override
-	public IValue visit(TermList node) {
+	public Void visit(TermList node) {
 		eval.getStdOut().println("TermList");
 		return null;
 	}
 
 	@Override
-	public IValue visit(TermNumber node) {
+	public Void visit(TermNumber node) {
 		eval.getStdOut().println("TermNumber");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-
-		IValue number = values.real(node.getValue());
-		return constructTypeNode("number", number);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermPercent node) {
+	public Void visit(TermPercent node) {
 		eval.getStdOut().println("TermPercent");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-
-		IValue percent = values.real(node.getValue());
-		return constructTypeNode("percent", percent);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermResolution node) {
+	public Void visit(TermResolution node) {
 		eval.getStdOut().println("TermResolution");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-
-		IValue resolution = values.real(node.getValue());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("resolution", resolution, unit);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermString node) {
+	public Void visit(TermString node) {
 		eval.getStdOut().println("TermString");
 		eval.getStdOut().println("\t" + node.getValue());
-
-		IValue string = values.string(node.getValue().toString());
-		return constructTypeNode("string", string);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermTime node) {
+	public Void visit(TermTime node) {
 		eval.getStdOut().println("TermTime");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-
-		IValue time = values.real(node.getValue());
-		IValue unit = values.string(node.getUnit().toString());
-		return constructTypeNode("time", time, unit);
+		return null;
 	}
 
 	@Override
-	public IValue visit(TermURI node) {
+	public Void visit(TermURI node) {
 		eval.getStdOut().println("TermURI");
 		eval.getStdOut().println("\t" + node.getValue());
-
-		IValue uri = values.string(node.getValue().toString());
-		return constructTypeNode("uri", uri);
+		return null;
 	}
 
 	@Override
-	public IValue visit(ElementAttribute node) {
+	public Void visit(ElementAttribute node) {
 		eval.getStdOut().println("ElementAttribute");
 		eval.getStdOut().println("\t" + node.getAttribute() + " " + node.getOperator() + " " + node.getValue());
-
-		IValue attribute = values.string(node.getAttribute().toString());
-		IValue operator = values.string(node.getOperator().toString());
-		IValue value = values.string(node.getValue().toString());
-		return constructTypeNode("attributeSelector", attribute, operator, value);
+		return null;
 	}
 
 	@Override
-	public IValue visit(ElementClass node) {
+	public Void visit(ElementClass node) {
 		eval.getStdOut().println("ElementClass");
 		eval.getStdOut().println("\t" + node.getClassName());
-
-		IValue className = values.string(node.getClassName());
-		return constructTypeNode("class", className);
+		return null;
 	}
 
 	/**
@@ -484,39 +413,39 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	 * "span". Not this one. Not even visited so far.
 	 */
 	@Override
-	public IValue visit(ElementDOM node) {
+	public Void visit(ElementDOM node) {
 		eval.getStdOut().println("ElementDOM");
 		eval.getStdOut().println("\t" + node.getElement());
-
-		IValue domElement = values.string(node.getElement().getTagName());
-		return constructTypeNode("domElement", domElement);
+		return null;
 	}
 
 	@Override
-	public IValue visit(ElementID node) {
+	public Void visit(ElementID node) {
 		eval.getStdOut().println("ElementID");
 		eval.getStdOut().println("\t" + node.getID());
-
-		IValue idName = values.string(node.getID());
-		return constructTypeNode("id", idName);
+		return null;
 	}
 
 	@Override
-	public IValue visit(ElementName node) {
+	public Void visit(ElementName node) {
 		eval.getStdOut().println("ElementName");
 		eval.getStdOut().println("\t" + node.getName());
-
-		IValue elemName = values.string(node.getName());
-		return constructTypeNode("domElement", elemName);
+		return null;
 	}
 
 	@Override
-	public IValue visit(PseudoPage node) {
+	public Void visit(PseudoPage node) {
 		eval.getStdOut().println("PseudoPage");
 		eval.getStdOut().println("\t" + node.getValue());
-
-		IValue pseudoPage = values.string(node.getValue());
-		return constructTypeNode("pseudoClass", pseudoPage);
+		return null;
+	}
+	
+	protected ISourceLocation makeBinding(String scheme, String authority, String path) {
+		try {
+			return values.sourceLocation(scheme, authority, path);
+		} catch (URISyntaxException | UnsupportedOperationException e) {
+			throw new RuntimeException("Should not happen", e);
+		}
 	}
 
 }

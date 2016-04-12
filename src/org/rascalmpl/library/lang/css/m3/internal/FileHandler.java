@@ -68,6 +68,18 @@ public class FileHandler {
 		}
 		return absolutePaths;
 	}
+	
+	protected String convertPath(IValue file) {
+		ISourceLocation loc = (ISourceLocation) file;
+		if (!URIResolverRegistry.getInstance().isFile(loc)) {
+			throw RuntimeExceptionFactory.io(valueFactory.string("" + loc + " is not a file"), null, null);
+		}
+		if (!URIResolverRegistry.getInstance().exists(loc)) {
+			throw RuntimeExceptionFactory.io(valueFactory.string("" + loc + " doesn't exist"), null, null);
+		}
+
+		return new File(safeResolve(loc).getPath()).getAbsolutePath();
+	}
 
 	protected ISourceLocation safeResolve(ISourceLocation loc) {
 		try {

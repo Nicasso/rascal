@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.rascalmpl.interpreter.IEvaluatorContext;
-import org.rascalmpl.library.lang.css.m3.internal.BindingsResolver;
-import org.rascalmpl.library.lang.css.m3.internal.IValueList;
 import org.rascalmpl.value.IConstructor;
 import org.rascalmpl.value.IList;
 import org.rascalmpl.value.ISourceLocation;
@@ -45,14 +43,10 @@ public class CSSToRascalConverter {
 	protected final TypeStore typeStore;
 	protected final Map<String, ISourceLocation> locationCache;
 
-	protected final BindingsResolver bindingsResolver;
-
 	public CSSToRascalConverter(final TypeStore typeStore, Map<String, ISourceLocation> cache, IEvaluatorContext eval) {
 		this.typeStore = typeStore;
 		this.locationCache = cache;
 		this.eval = eval;
-
-		this.bindingsResolver = new BindingsResolver(typeStore, cache, true);
 
 		CSSToRascalConverter.DATATYPE_RASCAL_AST_TYPE_NODE_TYPE = this.typeStore
 				.lookupAbstractDataType(DATATYPE_RASCAL_AST_TYPE_NODE);
