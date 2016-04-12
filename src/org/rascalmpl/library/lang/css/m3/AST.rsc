@@ -72,20 +72,19 @@ public Statement createAstFromFile(loc file) {
     throw "Unexpected number of ASTs returned from <file>";
 }
 
-@javaClass{org.rascalmpl.library.lang.css.m3.internal.CSSLoader}
-@reflect{Need access to stderr and stdout}
-public java set[Statement] createAstsFromFiles(set[loc] file);
-
-@javaClass{org.rascalmpl.library.lang.css.m3.internal.CSSLoader}
-@reflect{Need access to stderr and stdout}
-public java Statement createAstFromString(str source);
-
 public set[Statement] createAstsFromDirectory(loc project) {
     if (!(isDirectory(project))) {
       throw "<project> is not a valid directory";
     }
     
     allCSSFiles = { j | j <- find(project, "css"), isFile(j) };
-	iprintln(allCSSFiles);
     return createAstsFromFiles(allCSSFiles);
 }
+
+@javaClass{org.rascalmpl.library.lang.css.m3.internal.ast.ASTLoader}
+@reflect{Need access to stderr and stdout}
+public java set[Statement] createAstsFromFiles(set[loc] file);
+
+@javaClass{org.rascalmpl.library.lang.css.m3.internal.ast.ASTLoader}
+@reflect{Need access to stderr and stdout}
+public java Statement createAstFromString(str source);

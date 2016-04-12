@@ -18,27 +18,27 @@ import org.rascalmpl.value.IValueFactory;
 
 public class IValueList {
 	private final IValueFactory values;
-	
+
 	private List<IValue> valueList;
-	
+
 	public IValueList(final IValueFactory values) {
 		this.values = values;
-		
+
 		valueList = new ArrayList<IValue>();
 	}
 
 	public void add(IValue value) {
 		valueList.add(value);
 	}
-	
+
 	private IValue[] toArray() {
 		return valueList.toArray(new IValue[0]);
 	}
-	
+
 	public IValue asList() {
 		return values.list(toArray());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -46,7 +46,7 @@ public class IValueList {
 		result = prime * result + ((valueList == null) ? 0 : valueList.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

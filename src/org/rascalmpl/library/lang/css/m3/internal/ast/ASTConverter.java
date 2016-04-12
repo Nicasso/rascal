@@ -1,9 +1,11 @@
-package org.rascalmpl.library.lang.css.m3.internal;
+package org.rascalmpl.library.lang.css.m3.internal.ast;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.rascalmpl.interpreter.IEvaluatorContext;
+import org.rascalmpl.library.lang.css.m3.internal.CSSToRascalConverter;
+import org.rascalmpl.library.lang.css.m3.internal.IValueList;
 import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
 
