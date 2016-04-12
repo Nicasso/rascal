@@ -64,16 +64,7 @@ public abstract class M3Converter extends CSSToRascalConverter {
 	}
 
 	public IValue getModel(boolean insertErrors, ISourceLocation loc) {
-		
-		eval.getStdOut().println("1");
-		
-		eval.getStdOut().println(CONSTRUCTOR_M3);
-		eval.getStdOut().println(loc);
-		
 		ownValue = values.constructor(CONSTRUCTOR_M3, loc);
-		
-		eval.getStdOut().println("2");
-		eval.getStdOut().println(ownValue.toString());
 		
 		setAnnotation("declarations", declarations.done());
 		setAnnotation("uses", uses.done());

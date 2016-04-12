@@ -126,6 +126,14 @@ public class CSSToRascalConverter {
 
 		return values.constructor(constr, removeNulls(children));
 	}
+	
+	protected IConstructor constructModifierNode(String constructor, IValue... children) {
+		org.rascalmpl.value.type.Type args = TF.tupleType(removeNulls(children));
+		org.rascalmpl.value.type.Type constr = typeStore.lookupConstructor(DATATYPE_RASCAL_AST_MODIFIER_NODE_TYPE,
+				constructor, args);
+		
+		return values.constructor(constr, removeNulls(children));
+	}
 
 	// protected IValue visitChild(ASTNode node) {
 	// node.accept(this);

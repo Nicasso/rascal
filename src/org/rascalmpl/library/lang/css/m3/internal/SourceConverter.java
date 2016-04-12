@@ -78,11 +78,25 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Void visit(Declaration node) {
 		eval.getStdOut().println("Declaration");
 		eval.getStdOut().println("\t" + node.getProperty());
+		
+		ISourceLocation soLo = makeBinding("css+declaration", null, node.getProperty());
+		ownValue = soLo;
+		
+		insert(containment, getParent(), ownValue);
+		
+		scopeManager.push(soLo);
+
+		if (node.isImportant()) {
+			String modifier = "important";
+			insert(modifiers, soLo, constructModifierNode(modifier));
+		}
 
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
 			t.accept(this);
 		}
+		
+		scopeManager.pop();
 
 		return null;
 	}
@@ -90,11 +104,21 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	@Override
 	public Void visit(CombinedSelector node) {
 		eval.getStdOut().println("CombinedSelector");
+		
+		ISourceLocation soLo = makeBinding("css+selector", null, node.toString());
+		ownValue = soLo;
+		
+		insert(containment, getParent(), ownValue);
+		
+		scopeManager.push(soLo);
 
 		for (Iterator<Selector> it = node.iterator(); it.hasNext();) {
 			Selector s = it.next();
 			s.accept(this);
 		}
+		
+		scopeManager.pop();
+		
 		return null;
 	}
 
@@ -151,11 +175,30 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	@Override
 	public Void visit(RuleFontFace node) {
 		eval.getStdOut().println("RuleFontFace");
+		
+		
+		
+		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
+			Declaration d = it.next();
+			if (d.getProperty().equals("font-family") || d.getProperty().equals("font")) {
+
+				break;
+			}
+		}
+		
+		ISourceLocation soLo = makeBinding("css+fontfacerule", null, node.toString());
+		ownValue = soLo;
+		
+		insert(containment, getParent(), ownValue);
+		
+		scopeManager.push(soLo);
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
 			d.accept(this);
 		}
+		
+		scopeManager.pop();
 
 		return null;
 	}
@@ -166,11 +209,20 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	@Override
 	public Void visit(RuleMargin node) {
 		eval.getStdOut().println("RuleMargin");
+		
+		ISourceLocation soLo = makeBinding("css+marginrule", null, "RULEMARGIN");
+		ownValue = soLo;
+		
+		insert(containment, getParent(), ownValue);
+		
+		scopeManager.push(soLo);
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
 			d.accept(this);
 		}
+		
+		scopeManager.pop();
 
 		return null;
 	}
@@ -178,6 +230,13 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	@Override
 	public Void visit(RuleMedia node) {
 		eval.getStdOut().println("RuleMedia");
+		
+		ISourceLocation soLo = makeBinding("css+mediarule", null, "RULEMEDIA");
+		ownValue = soLo;
+		
+		insert(containment, getParent(), ownValue);
+		
+		scopeManager.push(soLo);
 
 		for (Iterator<MediaQuery> it = node.getMediaQueries().iterator(); it.hasNext();) {
 			MediaQuery m = it.next();
@@ -189,17 +248,28 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			r.accept(this);
 		}
 
+		scopeManager.pop();
+
 		return null;
 	}
 
 	@Override
 	public Void visit(RulePage node) {
 		eval.getStdOut().println("RulePage");
+		
+		ISourceLocation soLo = makeBinding("css+pagerule", null, "RULEPAGE");
+		ownValue = soLo;
+		
+		insert(containment, getParent(), ownValue);
+		
+		scopeManager.push(soLo);
 
 		for (Iterator<Rule<?>> it = node.iterator(); it.hasNext();) {
 			Rule<?> r = it.next();
 			r.accept(this);
 		}
+		
+		scopeManager.pop();
 
 		return null;
 	}
@@ -208,7 +278,15 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Void visit(RuleSet node) {
 		eval.getStdOut().println("RuleSet");
 		
-		ISourceLocation soLo = makeBinding("css+ruleset", null, "RuleSet");
+		String selectors = "";
+		
+		for (CombinedSelector cs : node.getSelectors()) {			
+			selectors += cs.toString()+",";
+		}
+		
+		selectors = selectors.substring(0, selectors.length()-1);
+		
+		ISourceLocation soLo = makeBinding("css+ruleset", null, selectors);
 		ownValue = soLo;
 		
 		insert(containment, getParent(), ownValue);
@@ -222,6 +300,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		for (Declaration cs : node) {
 			cs.accept(this);
 		}
+		
+		scopeManager.pop();
 
 		return null;
 	}
@@ -229,11 +309,29 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	@Override
 	public Void visit(RuleViewport node) {
 		eval.getStdOut().println("RuleViewport");
+		
+		String declarations = "";
+		
+		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
+			Declaration d = it.next();
+			declarations += d.toString();
+		}
+		
+		declarations = declarations.substring(0, -1);
+		
+		ISourceLocation soLo = makeBinding("css+viewportrule", null, declarations);
+		ownValue = soLo;
+		
+		insert(containment, getParent(), ownValue);
+		
+		scopeManager.push(soLo);
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
 			d.accept(this);
 		}
+		
+		scopeManager.pop();
 
 		return null;
 	}
@@ -405,6 +503,12 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Void visit(ElementClass node) {
 		eval.getStdOut().println("ElementClass");
 		eval.getStdOut().println("\t" + node.getClassName());
+		
+		ISourceLocation soLo = makeBinding("css+class", null, node.getClassName());
+		ownValue = soLo;
+		
+		insert(names, values.string(node.getClassName()), ownValue);
+		
 		return null;
 	}
 
@@ -423,6 +527,12 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Void visit(ElementID node) {
 		eval.getStdOut().println("ElementID");
 		eval.getStdOut().println("\t" + node.getID());
+		
+		ISourceLocation soLo = makeBinding("css+id", null, node.getID());
+		ownValue = soLo;
+		
+		insert(names, values.string(node.getID()), ownValue);
+		
 		return null;
 	}
 
