@@ -57,4 +57,4 @@ public java set[M3] createM3sFromFiles(set[loc] files);
     
 @javaClass{org.rascalmpl.library.lang.css.m3.internal.m3.M3Loader}
 @reflect
-public java M3 createM3FromString(str source);
+public java M3 createM3FromString(str source, loc file = |unknown:///|);

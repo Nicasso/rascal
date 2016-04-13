@@ -119,7 +119,7 @@ public class M3Loader extends FileHandler {
 		return result.done();
 	}
 	
-	public IValue createM3FromString(IString contents, IEvaluatorContext eval) {
+	public IValue createM3FromString(IString contents, ISourceLocation loc, IEvaluatorContext eval) {
 		this.eval = eval;
 		
 		eval.getStdOut().println("createM3FromString");
@@ -149,20 +149,15 @@ public class M3Loader extends FileHandler {
 			//ASTConverter ast = new ASTConverter(style, store, eval);
 			
 			//TODO ADD LOCATION
-			return convertToM3(store, new HashMap<>(), style, null);
+			return convertToM3(store, new HashMap<>(), style, loc);
 		}
 		// Return M3 after it is converted to IValues.
 		return null;
 	}
 	
 	protected IValue convertToM3(TypeStore store, Map<String, ISourceLocation> cache, StyleSheet ast, ISourceLocation loc) {
-		eval.getStdOut().println("convertToM3()");
-		eval.getStdOut().println("Create SourceConverter");
 		SourceConverter converter = new SourceConverter(store, cache, eval);
-		eval.getStdOut().println("SourceConverter.convert()");
-        converter.convert(ast);
-        eval.getStdOut().println("SourceConverter.getModel()");
-        eval.getStdOut().println("SourceConverter loc: "+loc);
+		converter.convert(ast);
         return converter.getModel(true, loc);
     }
 	

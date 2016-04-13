@@ -68,6 +68,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		// this.eval = eval;
 	}
 
+	// Can this one go?!
 	public void preVisit(Object node) {
 		if (node instanceof Annotation) {
 			// insert(annotations, getParent(), resolveBinding(((Annotation)
@@ -187,8 +188,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
-			// @TODO: Font also or not?
-			if (d.getProperty().equals("font-family") || d.getProperty().equals("font")) {
+
+			if (d.getProperty().equals("font-family")) {
 				fontTitle = d.asList().toString();
 				fontTitle = fontTitle.substring(1, fontTitle.length()-1);
 				break;
@@ -439,7 +440,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		eval.getStdOut().println("\t" + node.getValue());
 		
 		if (checkIfFontFace(node.getValue())) {
-			eval.getStdOut().println("BITCHESZ!");
 			ISourceLocation soLo = makeBinding("css+fontfacerule", null, node.getValue());
 			insert(uses, getParent(), soLo);
 		}

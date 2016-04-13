@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.css.m3.internal.CSSToRascalConverter;
 import org.rascalmpl.library.lang.css.m3.internal.IValueList;
+import org.rascalmpl.value.IConstructor;
 import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
 
@@ -82,7 +83,13 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			declarationValues.add(temp);
 		}
 
-		return constructDeclarationNode("declaration", property, declarationValues.asList());
+		IValue decl =  constructDeclarationNode("declaration", property, declarationValues.asList());
+		
+		if (node.isImportant()) {
+			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("modifier", values.string("important"));
+		}
+		
+		return decl;
 	}
 
 	@Override
