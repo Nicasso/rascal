@@ -1,4 +1,4 @@
-package org.rascalmpl.library.lang.css.m3.internal;
+package org.rascalmpl.library.lang.css.m3.internal.m3;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.eclipse.jdt.core.dom.Annotation;
 import org.rascalmpl.interpreter.IEvaluatorContext;
-import org.rascalmpl.library.lang.css.m3.internal.m3.M3Converter;
 import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.type.TypeStore;
 
@@ -56,26 +55,12 @@ import cz.vutbr.web.csskit.RuleArrayList;
 
 public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
-	// private IEvaluatorContext eval;
-	
 	private List<String> fontFaces; 
 
 	public SourceConverter(TypeStore typeStore, Map<String, ISourceLocation> cache, IEvaluatorContext eval) {
 		super(typeStore, cache, eval);
 		
-		fontFaces = new ArrayList<>();
-		
-		// this.eval = eval;
-	}
-
-	// Can this one go?!
-	public void preVisit(Object node) {
-		if (node instanceof Annotation) {
-			// insert(annotations, getParent(), resolveBinding(((Annotation)
-			// node).getTypeName()));
-			// return;
-		}
-		// ownValue = resolveBinding(node);
+		this.fontFaces = new ArrayList<>();
 	}
 
 	public void convert(StyleSheet rules) {

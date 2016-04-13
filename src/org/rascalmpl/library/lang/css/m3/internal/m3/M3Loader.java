@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.css.m3.internal.FileHandler;
-import org.rascalmpl.library.lang.css.m3.internal.SourceConverter;
 import org.rascalmpl.value.ISet;
 import org.rascalmpl.value.ISetWriter;
 import org.rascalmpl.value.ISourceLocation;
@@ -59,23 +57,14 @@ public class M3Loader extends FileHandler {
 					TypeStore store = new TypeStore();
 					store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 					store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
-					// eval.getStdOut().println(store.getConstructors().toString());
-					// eval.getStdOut().flush();
-					eval.getStdOut().println("2");
-					
-					//ASTConverter ast = new ASTConverter(style, store, eval);
 					
 					result.insert(convertToM3(store, new HashMap<>(), style, loc));
 				}
 			}
 		} else {
-			//String[] converted = convertPaths(files);
-
 			TypeStore store = new TypeStore();
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
-			// eval.getStdOut().println(store.getConstructors().toString());
-			// eval.getStdOut().flush();
 
 			for (IValue f : files) {
 				ISourceLocation loc = (ISourceLocation) f;
@@ -94,28 +83,9 @@ public class M3Loader extends FileHandler {
 					result.insert(convertToM3(store, new HashMap<>(), style, loc));
 				}
 			}
-			/*
-			for (String f : converted) {
-				boolean go = true;
-			
-				StyleSheet style = null;
-				try {
-					style = CSSFactory.parse(f, "utf-8");
-				} catch (CSSException | IOException e) {
-					eval.getStdErr().println(e.getMessage());
-					eval.getStdErr().flush();
-					go = false;
-				}
-				if (go) {
-					// TODO GET LOCATION
-					result.insert(convertToM3(store, new HashMap<>(), style, null));
-				}
-			}
-			*/
 
 		}
 
-		// Return AST after it is converted to IValues.
 		return result.done();
 	}
 	
@@ -130,7 +100,8 @@ public class M3Loader extends FileHandler {
 
 		try {
 			// @TODO This null needs to be replaced lated with a optional URL,
-			// for @import and url's.
+			// for @import and url's. Or not? @import in a string input would be very strange.
+			// Even more when the path is relative instead of absolute.
 			style = CSSFactory.parseString(contents.getValue(), null);
 		} catch (CSSException | IOException e) {
 			eval.getStdErr().println("PARSING THE CSS HAS FAILED!");
@@ -143,15 +114,9 @@ public class M3Loader extends FileHandler {
 			TypeStore store = new TypeStore();
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
-			// eval.getStdOut().println(store.getConstructors().toString());
-			// eval.getStdOut().flush();
-			
-			//ASTConverter ast = new ASTConverter(style, store, eval);
-			
-			//TODO ADD LOCATION
+
 			return convertToM3(store, new HashMap<>(), style, loc);
 		}
-		// Return M3 after it is converted to IValues.
 		return null;
 	}
 	
