@@ -87,4 +87,4 @@ public java set[Statement] createAstsFromFiles(set[loc] file);
 
 @javaClass{org.rascalmpl.library.lang.css.m3.internal.ast.ASTLoader}
 @reflect{Need access to stderr and stdout}
-public java Statement createAstFromString(str source);
+public java Statement createAstFromString(str source, loc file = |unknown:///|);

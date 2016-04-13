@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.type.TypeStore;

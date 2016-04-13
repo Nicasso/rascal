@@ -90,7 +90,7 @@ public class ASTLoader extends FileHandler {
 		return result.done();
 	}
 
-	public IValue createAstFromString(IString contents, IEvaluatorContext eval) {
+	public IValue createAstFromString(IString contents, ISourceLocation loc, IEvaluatorContext eval) {
 		this.eval = eval;
 		
 		eval.getStdOut().println("createAstFromString");
