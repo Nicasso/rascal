@@ -33,7 +33,7 @@ public abstract class M3Converter extends CSSToRascalConverter {
 	protected ISetWriter documentation;// Comments
 	protected ISetWriter modifiers;// The !important tag
 	protected ISetWriter names;// Names of classes and id's
-	protected ISetWriter methodInvocation;// Could be used later for animation functions
+	protected ISetWriter invocation;// Could be used later for animation functions
 	
 	protected final org.rascalmpl.value.type.Type CONSTRUCTOR_M3;
 	
@@ -55,12 +55,12 @@ public abstract class M3Converter extends CSSToRascalConverter {
 		uses = values.relationWriter(m3TupleType);
 		declarations = values.relationWriter(m3TupleType);
 		containment = values.relationWriter(m3TupleType);
-		methodInvocation = values.relationWriter(m3TupleType);
 		m3LOCModifierType = TF.tupleType(locType, DATATYPE_RASCAL_AST_MODIFIER_NODE_TYPE);
 		modifiers = values.relationWriter(m3LOCModifierType);
 		m3LOCTypeType = TF.tupleType(locType, locType);
 		documentation = values.relationWriter(m3TupleType);
 		names = values.relationWriter(TF.tupleType(TF.stringType(), locType));
+		invocation = values.relationWriter(m3TupleType);
 	}
 
 	public IValue getModel(boolean insertErrors, ISourceLocation loc) {
@@ -69,7 +69,7 @@ public abstract class M3Converter extends CSSToRascalConverter {
 		setAnnotation("declarations", declarations.done());
 		setAnnotation("uses", uses.done());
 		setAnnotation("containment", containment.done());
-		setAnnotation("methodInvocation", methodInvocation.done());
+		setAnnotation("invocation", invocation.done());
 		setAnnotation("modifiers", modifiers.done());
 		setAnnotation("documentation", documentation.done());
 		setAnnotation("names", names.done());

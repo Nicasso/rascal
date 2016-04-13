@@ -1,7 +1,9 @@
 package org.rascalmpl.library.lang.css.m3.internal;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.dom.Annotation;
@@ -55,9 +57,14 @@ import cz.vutbr.web.csskit.RuleArrayList;
 public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	// private IEvaluatorContext eval;
+	
+	private List<String> fontFaces; 
 
 	public SourceConverter(TypeStore typeStore, Map<String, ISourceLocation> cache, IEvaluatorContext eval) {
 		super(typeStore, cache, eval);
+		
+		fontFaces = new ArrayList<>();
+		
 		// this.eval = eval;
 	}
 
@@ -174,28 +181,35 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(RuleFontFace node) {
-		eval.getStdOut().println("RuleFontFace");
+		eval.getStdOut().println("RuleFontFace");		
 		
-		
+		String fontTitle = "";
 		
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
+			// @TODO: Font also or not?
 			if (d.getProperty().equals("font-family") || d.getProperty().equals("font")) {
-
+				fontTitle = d.asList().toString();
+				fontTitle = fontTitle.substring(1, fontTitle.length()-1);
 				break;
 			}
 		}
 		
-		ISourceLocation soLo = makeBinding("css+fontfacerule", null, node.toString());
+		ISourceLocation soLo = makeBinding("css+fontfacerule", null, fontTitle);
 		ownValue = soLo;
 		
 		insert(containment, getParent(), ownValue);
+		insert(declarations, ownValue, getParent());
 		
 		scopeManager.push(soLo);
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
 			d.accept(this);
+		}
+		
+		if(!fontTitle.equals("")) {
+			fontFaces.add(fontTitle);
 		}
 		
 		scopeManager.pop();
@@ -423,7 +437,23 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Void visit(TermIdent node) {
 		eval.getStdOut().println("TermIdent");
 		eval.getStdOut().println("\t" + node.getValue());
+		
+		if (checkIfFontFace(node.getValue())) {
+			eval.getStdOut().println("BITCHESZ!");
+			ISourceLocation soLo = makeBinding("css+fontfacerule", null, node.getValue());
+			insert(uses, getParent(), soLo);
+		}
+		
 		return null;
+	}
+	
+	private boolean checkIfFontFace(String cur) {
+		for (String element : fontFaces) {
+			if(element.equals(cur)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

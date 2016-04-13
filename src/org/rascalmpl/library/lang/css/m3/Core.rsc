@@ -23,12 +23,7 @@ import util::FileSystem;
 public M3 composeCSSM3(loc id, set[M3] models) {
   m = composeM3(id, models);
   
-  m@extends = {*model@extends | model <- models};
-  m@implements = {*model@implements | model <- models};
-  m@methodInvocation = {*model@methodInvocation | model <- models};
-  m@fieldAccess = {*model@fieldAccess | model <- models};
-  m@typeDependency = {*model@typeDependency | model <- models};
-  m@methodOverrides = {*model@methodOverrides | model <- models};
+  m@invocation = {*model@invocation | model <- models};
   m@annotations = {*model@annotations | model <- models};
   
   return m;
