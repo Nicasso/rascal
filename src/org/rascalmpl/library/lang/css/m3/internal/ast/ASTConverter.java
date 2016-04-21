@@ -7,10 +7,12 @@ import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.css.m3.internal.CSSToRascalConverter;
 import org.rascalmpl.library.lang.css.m3.internal.IValueList;
 import org.rascalmpl.value.IConstructor;
+import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
 
-import cz.vutbr.web.CSSNodeVisitor;
+import cz.vutbr.web.css.CSSComment;
+import cz.vutbr.web.css.CSSNodeVisitor;
 import cz.vutbr.web.css.CombinedSelector;
 import cz.vutbr.web.css.Declaration;
 import cz.vutbr.web.css.MediaExpression;
@@ -19,6 +21,7 @@ import cz.vutbr.web.css.MediaSpec;
 import cz.vutbr.web.css.Rule;
 import cz.vutbr.web.css.RuleBlock;
 import cz.vutbr.web.css.RuleFontFace;
+import cz.vutbr.web.css.RuleImport;
 import cz.vutbr.web.css.RuleMargin;
 import cz.vutbr.web.css.RuleMedia;
 import cz.vutbr.web.css.RulePage;
@@ -58,8 +61,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	
 	private IValue ast;
 
-	public ASTConverter(StyleSheet rules, TypeStore store, IEvaluatorContext eval) {
-		super(store, new HashMap<>(), eval);
+	public ASTConverter(StyleSheet rules, TypeStore store, ISourceLocation loc, IEvaluatorContext eval) {
+		super(store, new HashMap<>(), loc, eval);
 		this.eval = eval;
 
 		ast = (IValue) rules.accept(this);
@@ -87,6 +90,10 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.isImportant()) {
 			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("modifier", values.string("important"));
+		}
+		
+		if (node.getComment() != null) {
+			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
 		}
 		
 		return decl;
@@ -175,8 +182,14 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			IValue temp = (IValue) d.accept(this);
 			declarations.add(temp);
 		}
+		
+		IValue rule = constructStatementNode("ruleFontFace", declarations.asList());
+		
+		if (node.getComment() != null) {
+			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
 
-		return constructStatementNode("ruleFontFace", declarations.asList());
+		return rule;
 	}
 
 	/**
@@ -211,8 +224,14 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			IValue temp = (IValue) r.accept(this);
 			ruleSets.add(temp);
 		}
+		
+		IValue rule = constructStatementNode("ruleMedia", mediaQueries.asList(), ruleSets.asList());
+		
+		if (node.getComment() != null) {
+			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
 
-		return constructStatementNode("ruleMedia", mediaQueries.asList(), ruleSets.asList());
+		return rule;
 	}
 
 	@Override
@@ -228,7 +247,13 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			declarations.add(temp);
 		}
 
-		return constructStatementNode("rulePage", pseudo, declarations.asList());
+		IValue rule = constructStatementNode("rulePage", pseudo, declarations.asList());
+		
+		if (node.getComment() != null) {
+			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
+
+		return rule;
 	}
 
 	@Override
@@ -246,8 +271,14 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			IValue temp = (IValue) cs.accept(this);
 			declarations.add(temp);
 		}
+		
+		IValue ruleSet = constructStatementNode("ruleSet", selectors.asList(), declarations.asList());
+		
+		if (node.getComment() != null) {
+			ruleSet = ((IConstructor) ruleSet).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
 
-		return constructStatementNode("ruleSet", selectors.asList(), declarations.asList());
+		return ruleSet;
 	}
 
 	@Override
@@ -261,7 +292,13 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			declarations.add(temp);
 		}
 
-		return constructStatementNode("ruleViewport", declarations.asList());
+		IValue rule = constructStatementNode("ruleViewport", declarations.asList());
+		
+		if (node.getComment() != null) {
+			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
+
+		return rule;
 	}
 
 	@Override
@@ -294,8 +331,14 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			IValue temp = (IValue) r.accept(this);
 			statements.add(temp);
 		}
-
-		return constructStatementNode("stylesheet", statements.asList());
+		
+		IValue stylesheet = constructStatementNode("stylesheet", values.string(node.getName()), statements.asList());
+		
+		if (node.getComment() != null) {
+			stylesheet = ((IConstructor) stylesheet).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
+		
+		return stylesheet;
 	}
 
 	@Override
@@ -518,6 +561,31 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		IValue pseudoPage = values.string(node.getValue());
 		return constructTypeNode("pseudoClass", pseudoPage);
+	}
+
+	@Override
+	public Object visit(RuleImport node) {
+		//eval.getStdOut().println("RuleImport");
+		//eval.getStdOut().println("\t" + node.getURI());
+		
+		IValue uri = values.string(node.getURI());
+		
+		IValue rule = constructStatementNode("ruleImport", uri);
+		
+		if (node.getComment() != null) {
+			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
+
+		return rule;
+	}
+
+	@Override
+	public Object visit(CSSComment node) {
+		//eval.getStdOut().println("CSSComment");
+		//eval.getStdOut().println("\t" + node.getText());
+		
+		IValue text = values.string(node.getText());
+		return constructStatementNode("comment", text);
 	}
 
 }

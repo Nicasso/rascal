@@ -11,15 +11,16 @@ import List;
 
 data Statement
 	// Rulesets
-    = stylesheet(list[Statement] rules) // #lol { color: red; } #lal { color: blue; }
+    = stylesheet(str name, list[Statement] rules) // #lol { color: red; } #lal { color: blue; }
     | ruleSet(list[Type] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors) (@TODO selector is a list of types because of the combinedSelector)
     // At rules
     | ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) // @media only screen and (max-width : 480px) {
     | ruleFontFace(list[Declaration] decs) // @font-face { (TODO WHY IS THIS A LIST OF DECLARATIONS?! AND NOT A STATEMENT)
-    | ruleImport(Type uri) // @import url("style2.css");
+    | ruleImport(str uri) // @import url("style2.css");
     | ruleMargin(Expression atRule, Statement stat) // (@TODO, never heard of this!)
     | rulePage(str pseudo, list[Declaration] declarations) // @page :left { "delcarations here" }
     | ruleViewport(list[Declaration] declarations) // @viewport { "delcarations here" }
+    | comment(str text) // /* comment text here */
     ;
 
 data Declaration

@@ -121,7 +121,7 @@ public class M3Loader extends FileHandler {
 	}
 	
 	protected IValue convertToM3(TypeStore store, Map<String, ISourceLocation> cache, StyleSheet ast, ISourceLocation loc) {
-		SourceConverter converter = new SourceConverter(store, cache, eval);
+		SourceConverter converter = new SourceConverter(store, cache, loc, eval);
 		converter.convert(ast);
         return converter.getModel(true, loc);
     }

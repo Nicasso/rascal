@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.java.m3.internal.IValueList;
 import org.rascalmpl.value.IConstructor;
@@ -42,14 +44,16 @@ public class CSSToRascalConverter {
 	protected IValue ownValue;
 
 	private IEvaluatorContext eval;
+	protected ISourceLocation loc;
 
 	protected final TypeStore typeStore;
 	protected final Map<String, ISourceLocation> locationCache;
 
-	public CSSToRascalConverter(final TypeStore typeStore, Map<String, ISourceLocation> cache, IEvaluatorContext eval) {
+	public CSSToRascalConverter(final TypeStore typeStore, Map<String, ISourceLocation> cache, ISourceLocation loc, IEvaluatorContext eval) {
 		this.typeStore = typeStore;
 		this.locationCache = cache;
 		this.eval = eval;
+		this.loc = loc;
 		
 		messages = values.listWriter();
 
@@ -126,40 +130,6 @@ public class CSSToRascalConverter {
 			ownValue = ((IConstructor) ownValue).asAnnotatable().setAnnotation(annoName, annoValue);
 		}
 	}
-	
-//	protected void insertCompilationUnitMessages(boolean insertErrors, IList otherMessages) {
-//		org.rascalmpl.value.type.Type args = TF.tupleType(TF.stringType(), TF.sourceLocationType());
-//
-//		IValueList result = new IValueList(values);
-//
-//		if (otherMessages != null) {
-//			for (IValue message : otherMessages) {
-//				result.add(message);
-//			}
-//		}
-//
-//		if (insertErrors) {
-//			int i;
-//
-//			IProblem[] problems = null;//compilUnit.getProblems();
-//			for (i = 0; i < problems.length; i++) {
-//				int offset = problems[i].getSourceStart();
-//				int length = problems[i].getSourceEnd() - offset + 1;
-//				int sl = problems[i].getSourceLineNumber();
-//				ISourceLocation pos = values.sourceLocation(loc, offset, length, sl, sl, 0, 0);
-//				org.rascalmpl.value.type.Type constr;
-//				if (problems[i].isError()) {
-//					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "error",
-//							args);
-//				} else {
-//					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "warning",
-//							args);
-//				}
-//				result.add(values.constructor(constr, values.string(problems[i].getMessage()), pos));
-//			}
-//		}
-//		setAnnotation("messages", result.asList());
-//	}
 
 	protected void setAnnotation(String annoName, IValueList annoList) {
 		IList annos = (IList) annoList.asList();

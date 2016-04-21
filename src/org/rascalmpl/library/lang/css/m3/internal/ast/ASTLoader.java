@@ -55,7 +55,7 @@ public class ASTLoader extends FileHandler {
 					TypeStore store = new TypeStore();
 					store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 
-					ASTConverter ast = new ASTConverter(style, store, eval);
+					ASTConverter ast = new ASTConverter(style, store, loc, eval);
 					result.insert(ast.getAST());
 				}
 			}
@@ -76,7 +76,7 @@ public class ASTLoader extends FileHandler {
 					go = false;
 				}
 				if (go) {
-					ASTConverter ast = new ASTConverter(style, store, eval);
+					ASTConverter ast = new ASTConverter(style, store, null, eval);
 					result.insert(ast.getAST());
 				}
 			}
@@ -109,7 +109,7 @@ public class ASTLoader extends FileHandler {
 			TypeStore store = new TypeStore();
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 
-			ASTConverter ast = new ASTConverter(style, store, eval);
+			ASTConverter ast = new ASTConverter(style, store, loc, eval);
 			return ast.getAST();
 		}
 		return null;

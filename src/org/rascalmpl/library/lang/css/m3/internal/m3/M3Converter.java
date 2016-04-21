@@ -40,8 +40,8 @@ public abstract class M3Converter extends CSSToRascalConverter {
 	public IEvaluatorContext eval;
 
 	@SuppressWarnings("deprecation")
-	public M3Converter(final TypeStore typeStore, java.util.Map<String, ISourceLocation> cache, IEvaluatorContext eval) {
-		super(typeStore, cache, eval);
+	public M3Converter(final TypeStore typeStore, java.util.Map<String, ISourceLocation> cache, ISourceLocation loc, IEvaluatorContext eval) {
+		super(typeStore, cache, loc, eval);
 		this.eval = eval;
 		eval.getStdOut().println("M3Converter");
 		
