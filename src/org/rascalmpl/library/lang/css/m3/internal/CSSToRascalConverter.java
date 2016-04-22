@@ -7,7 +7,6 @@ import java.util.Map;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.rascalmpl.interpreter.IEvaluatorContext;
-import org.rascalmpl.library.lang.java.m3.internal.IValueList;
 import org.rascalmpl.value.IConstructor;
 import org.rascalmpl.value.IList;
 import org.rascalmpl.value.IListWriter;
@@ -54,7 +53,7 @@ public class CSSToRascalConverter {
 		this.locationCache = cache;
 		this.eval = eval;
 		this.loc = loc;
-		
+
 		messages = values.listWriter();
 
 		CSSToRascalConverter.DATATYPE_RASCAL_AST_TYPE_NODE_TYPE = this.typeStore

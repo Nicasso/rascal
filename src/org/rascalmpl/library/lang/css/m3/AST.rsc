@@ -46,7 +46,7 @@ data Type
     | \color(int red, int green, int blue, int alpha) // red, #000000, #888, rgb(0,0,255), rgb(0,0,255,0.5), hsl(120, 100%, 50%), hsla(120, 100%, 50%, 0.3)
     | \expression(str expression) // top: expression(body.scrollTop + 50 + "px");
     | \frequency(num freq, str unit) // 12Hz, 14KhZ (No space between the number and the literal! Not supported by any browser so far)
-    | \function(str func, list[Type] exp) // calc(100% - 100px), linear-gradient(red,yellow,blue). Example for content property: 'content: " (" attr(href) ")";'
+    | \function(str func, list[Type] exp) // url(lol.jpg), calc(100% - 100px), linear-gradient(red,yellow,blue). Example for content property: 'content: " (" attr(href) ")";'
     | \ident(str ident) // left, auto, none
     | \integer(int \val) // 1
     | \length(num \len, str unit) // 10cm, 10.00pt, 10em, etc.

@@ -20,11 +20,17 @@ import List;
 
 import util::FileSystem;
 
+@memo
+set[loc] getPaths(loc dir, str suffix) { 
+   bool containsFile(loc d) = isDirectory(d) ? (x <- d.ls && x.extension == suffix) : false;
+   return find(dir, containsFile);
+}
+
 public M3 composeCSSM3(loc id, set[M3] models) {
   m = composeM3(id, models);
   
-  m@invocation = {*model@invocation | model <- models};
-  m@annotations = {*model@annotations | model <- models};
+  //m@invocation = {*model@invocation | model <- models};
+  //m@annotations = {*model@annotations | model <- models};
   
   return m;
 }
