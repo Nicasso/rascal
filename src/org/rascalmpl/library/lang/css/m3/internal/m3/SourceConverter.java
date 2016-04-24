@@ -95,11 +95,11 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			node.getComment().accept(this);
 		}
 		
-		insert(containment, getParent(), ownValue);
+		ISourceLocation bindedLocation = makeBinding("css+declaration", null, node.getProperty());
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
-		insert(declarations, makeBinding("css+declaration", null, node.getProperty()), nodeLocation);
-		
-		scopeManager.push(nodeLocation);
+		scopeManager.push(bindedLocation);
 
 		if (node.isImportant()) {
 			String modifier = "important";
@@ -124,10 +124,11 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		insert(containment, getParent(), ownValue);
-		insert(declarations, makeBinding("css+selector", null, node.toString()), nodeLocation);
+		ISourceLocation bindedLocation = makeBinding("css+selector", null, node.toString());
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
-		scopeManager.push(nodeLocation);
+		scopeManager.push(bindedLocation);
 
 		for (Iterator<Selector> it = node.iterator(); it.hasNext();) {
 			Selector s = it.next();
@@ -213,10 +214,11 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			node.getComment().accept(this);
 		}
 		
-		insert(containment, getParent(), ownValue);
-		insert(declarations, makeBinding("css+fontfacerule", null, fontTitle), nodeLocation);
+		ISourceLocation bindedLocation = makeBinding("css+fontfacerule", null, fontTitle);
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
-		scopeManager.push(nodeLocation);
+		scopeManager.push(bindedLocation);
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
@@ -247,10 +249,11 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			node.getComment().accept(this);
 		}
 		
-		insert(containment, getParent(), ownValue);
-		insert(declarations, makeBinding("css+marginrule", null, node.getMarginArea().toString()), nodeLocation);
+		ISourceLocation bindedLocation = makeBinding("css+marginrule", null, node.getMarginArea().toString());
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
-		scopeManager.push(nodeLocation);
+		scopeManager.push(bindedLocation);
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
@@ -273,11 +276,12 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		if (node.getComment() != null) {
 			node.getComment().accept(this);
 		}
+
+		ISourceLocation bindedLocation = makeBinding("css+mediarule", null, node.getMediaQueries().toString());
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
-		insert(containment, getParent(), ownValue);
-		insert(declarations, makeBinding("css+mediarule", null, node.getMediaQueries().toString()), nodeLocation);
-		
-		scopeManager.push(nodeLocation);
+		scopeManager.push(bindedLocation);
 
 		for (Iterator<MediaQuery> it = node.getMediaQueries().iterator(); it.hasNext();) {
 			MediaQuery m = it.next();
@@ -306,10 +310,11 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			node.getComment().accept(this);
 		}
 		
-		insert(containment, getParent(), ownValue);
-		insert(declarations, makeBinding("css+pagerule", null, node.getName()), nodeLocation);
+		ISourceLocation bindedLocation = makeBinding("css+pagerule", null, node.getName());
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
-		scopeManager.push(nodeLocation);
+		scopeManager.push(bindedLocation);
 
 		for (Iterator<Rule<?>> it = node.iterator(); it.hasNext();) {
 			Rule<?> r = it.next();
@@ -341,11 +346,12 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			node.getComment().accept(this);
 		}
 		
-		insert(containment, getParent(), ownValue);
+		ISourceLocation bindedLocation = makeBinding("css+ruleset", null, selectors);
+		insert(containment, getParent(), bindedLocation);
 		
-		insert(declarations, makeBinding("css+ruleset", null, selectors), nodeLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
-		scopeManager.push(nodeLocation);
+		scopeManager.push(bindedLocation);
 
 		for (CombinedSelector cs : node.getSelectors()) {
 			cs.accept(this);
@@ -381,11 +387,12 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			node.getComment().accept(this);
 		}
 		
-		insert(containment, getParent(), ownValue);
+		ISourceLocation bindedLocation = makeBinding("css+viewportrule", null, declarationsKey);
 		
-		insert(declarations, makeBinding("css+viewportrule", null, declarationsKey), nodeLocation);
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
-		scopeManager.push(nodeLocation);
+		scopeManager.push(bindedLocation);
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
@@ -417,7 +424,10 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		// @TODO Find a way to get the file name here.
 		//makeBinding("css+stylesheet", null, "style1.css");
 		ownValue = loc;
-		scopeManager.push(loc);
+
+		ISourceLocation bindedLocation = makeBinding("css+stylesheet", null, loc.getPath());
+		
+		scopeManager.push(bindedLocation);
 		
 		if (node.getComment() != null) {
 			node.getComment().accept(this);
@@ -428,7 +438,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			r.accept(this);
 		}
 		
-		insert(declarations, makeBinding("css+stylesheet", null, loc.toString()), loc);
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		insert(declarations, bindedLocation, nodeLocation);
 		
 		scopeManager.pop();
 
@@ -491,6 +502,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		eval.getStdOut().println("TermIdent");
 		eval.getStdOut().println("\t" + node.getValue());
 		
+		// @TODO Figure out how to get this working.
 		if (checkIfFontFace(node.getValue())) {
 			ISourceLocation soLo = makeBinding("css+fontfacerule", null, node.getValue());
 			insert(uses, getParent(), soLo);
@@ -586,16 +598,14 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		eval.getStdOut().println("ElementClass");
 		eval.getStdOut().println("\t" + node.getClassName());
 		
-		//;
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		insert(names, values.string(node.getClassName()), makeBinding("css+class", null, node.getClassName()));
-		insert(declarations, makeBinding("css+class", null, node.getClassName()), nodeLocation);
+		ISourceLocation bindedLocation = makeBinding("css+class", null, node.getClassName());
 		
-		eval.getStdOut().print("COOL: "+makeBinding("css+class", null, node.getClassName()).toString());
-		
-		locationCache.put(makeBinding("css+class", null, node.getClassName()).toString(), nodeLocation);
+		insert(names, values.string(node.getClassName()), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
+
 		return null;
 	}
 
@@ -619,8 +629,10 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		insert(names, values.string(node.getID()), ownValue);
-		insert(declarations, makeBinding("css+id", null, node.getID()), nodeLocation);
+		ISourceLocation bindedLocation = makeBinding("css+id", null, node.getID());
+		
+		insert(names, values.string(node.getID()), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 		
 		return null;
 	}
@@ -651,8 +663,10 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			node.getComment().accept(this);
 		}
 		
-		insert(containment, getParent(), ownValue);
-		insert(declarations, makeBinding("css+importrule", null, node.getURI()), nodeLocation);
+		ISourceLocation bindedLocation = makeBinding("css+importrule", null, node.getURI());
+		
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 
 		return null;
 	}
@@ -665,9 +679,11 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		insert(documentation, getParent(), nodeLocation);
-		insert(containment, getParent(), ownValue);
-		insert(declarations, makeBinding("css+comment", null, node.getText()), nodeLocation);
+		ISourceLocation bindedLocation = makeBinding("css+comment", null, node.getText());
+		
+		insert(documentation, getParent(), bindedLocation);
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
 
 		return null;
 	}
