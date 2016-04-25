@@ -6,9 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.omg.CORBA.portable.ValueFactory;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.type.TypeStore;
@@ -61,10 +58,13 @@ import cz.vutbr.web.csskit.RuleArrayList;
 public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	private List<String> fontFaces; 
+	List<ISourceLocation> bindingLocations;
+	ISourceLocation commentTarget;
 
 	public SourceConverter(TypeStore typeStore, Map<String, ISourceLocation> cache, ISourceLocation loc, IEvaluatorContext eval) {
 		super(typeStore, cache, loc, eval);
 		
+		bindingLocations = new ArrayList<>();
 		this.fontFaces = new ArrayList<>();
 	}
 
@@ -91,15 +91,16 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		if (node.getComment() != null) {
-			node.getComment().accept(this);
-		}
-		
 		ISourceLocation bindedLocation = makeBinding("css+declaration", null, node.getProperty());
 		insert(containment, getParent(), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
 		
 		scopeManager.push(bindedLocation);
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
 
 		if (node.isImportant()) {
 			String modifier = "important";
@@ -210,13 +211,14 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		if (node.getComment() != null) {
-			node.getComment().accept(this);
-		}
-		
 		ISourceLocation bindedLocation = makeBinding("css+fontfacerule", null, fontTitle);
 		insert(containment, getParent(), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
 		
 		scopeManager.push(bindedLocation);
 
@@ -244,14 +246,15 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		//makeBinding("css+marginrule", null, "RULEMARGIN");
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
-		
-		if (node.getComment() != null) {
-			node.getComment().accept(this);
-		}
-		
+
 		ISourceLocation bindedLocation = makeBinding("css+marginrule", null, node.getMarginArea().toString());
 		insert(containment, getParent(), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
 		
 		scopeManager.push(bindedLocation);
 
@@ -273,13 +276,14 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		if (node.getComment() != null) {
-			node.getComment().accept(this);
-		}
-
 		ISourceLocation bindedLocation = makeBinding("css+mediarule", null, node.getMediaQueries().toString());
 		insert(containment, getParent(), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
 		
 		scopeManager.push(bindedLocation);
 
@@ -306,13 +310,14 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		if (node.getComment() != null) {
-			node.getComment().accept(this);
-		}
-		
 		ISourceLocation bindedLocation = makeBinding("css+pagerule", null, node.getName());
 		insert(containment, getParent(), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
 		
 		scopeManager.push(bindedLocation);
 
@@ -342,14 +347,14 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
+		ISourceLocation bindedLocation = makeBinding("css+ruleset", null, selectors);
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
+		
+		commentTarget = bindedLocation;
 		if (node.getComment() != null) {
 			node.getComment().accept(this);
 		}
-		
-		ISourceLocation bindedLocation = makeBinding("css+ruleset", null, selectors);
-		insert(containment, getParent(), bindedLocation);
-		
-		insert(declarations, bindedLocation, nodeLocation);
 		
 		scopeManager.push(bindedLocation);
 
@@ -383,11 +388,12 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
+		ISourceLocation bindedLocation = makeBinding("css+viewportrule", null, declarationsKey);
+		
+		commentTarget = bindedLocation;
 		if (node.getComment() != null) {
 			node.getComment().accept(this);
 		}
-		
-		ISourceLocation bindedLocation = makeBinding("css+viewportrule", null, declarationsKey);
 		
 		insert(containment, getParent(), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
@@ -428,7 +434,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation bindedLocation = makeBinding("css+stylesheet", null, loc.getPath());
 		
 		scopeManager.push(bindedLocation);
-		
+
+		commentTarget = bindedLocation;
 		if (node.getComment() != null) {
 			node.getComment().accept(this);
 		}
@@ -501,12 +508,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Void visit(TermIdent node) {
 		eval.getStdOut().println("TermIdent");
 		eval.getStdOut().println("\t" + node.getValue());
-		
-		// @TODO Figure out how to get this working.
-		if (checkIfFontFace(node.getValue())) {
-			ISourceLocation soLo = makeBinding("css+fontfacerule", null, node.getValue());
-			insert(uses, getParent(), soLo);
-		}
 		
 		return null;
 	}
@@ -659,11 +660,12 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
+		ISourceLocation bindedLocation = makeBinding("css+importrule", null, node.getURI());
+		
+		commentTarget = bindedLocation;
 		if (node.getComment() != null) {
 			node.getComment().accept(this);
 		}
-		
-		ISourceLocation bindedLocation = makeBinding("css+importrule", null, node.getURI());
 		
 		insert(containment, getParent(), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
@@ -675,25 +677,51 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Object visit(CSSComment node) {
 		eval.getStdOut().println("CSSComment");
 		
+		eval.getStdOut().println(node.getText());
+		
+		eval.getStdOut().println("Parent: "+getParent().getPath());
+		
 		//makeBinding("css+comment", null, node.getText());
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		ISourceLocation bindedLocation = makeBinding("css+comment", null, node.getText());
+		//ISourceLocation bindedLocation = makeBinding("css+comment", null, node.getText());
 		
-		insert(documentation, getParent(), bindedLocation);
-		insert(containment, getParent(), bindedLocation);
-		insert(declarations, bindedLocation, nodeLocation);
+		insert(documentation, commentTarget, nodeLocation);
+		//insert(containment, commentTarget, nodeLocation);
+		//insert(declarations, bindedLocation, nodeLocation);
 
 		return null;
 	}
 	
-	protected ISourceLocation makeBinding(String scheme, String authority, String path) {
+	
+	
+	private ISourceLocation checkBinding(String scheme, String authority, String path, int i) {
+		ISourceLocation loc;
 		try {
-			return values.sourceLocation(scheme, authority, path);
-		} catch (URISyntaxException | UnsupportedOperationException e) {
-			throw new RuntimeException("Should not happen", e);
+			if (i==0) {
+				loc = values.sourceLocation(scheme, authority, path);
+			} else {
+				loc = values.sourceLocation(scheme, authority, path+"("+i+")");
+			}
+			if (bindingLocations.contains(loc)) {
+				int a = i+1;
+				return checkBinding(scheme, authority, path, a);
+			} else {
+				return loc;
+			}
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		return null;
+	}
+	
+	protected ISourceLocation makeBinding(String scheme, String authority, String path) {
+		ISourceLocation loc = checkBinding(scheme, authority, path, 0);
+		bindingLocations.add(loc);
+		return loc;
 	}
 	
 }

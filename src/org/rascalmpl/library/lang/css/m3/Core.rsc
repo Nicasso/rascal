@@ -78,6 +78,15 @@ public bool isRuleSet(loc entity) = entity.scheme == "css+ruleset";
 public bool isViewportRule(loc entity) = entity.scheme == "css+viewportrule";
 
 // Think about usefull ones. Java uses declarations here, but CSS does not really have these.
-//@memo public set[loc] stylesheets(M3 m) =  {e | <e,_> <- m@statements, isStyleSheet(e)};
-//@memo public set[loc] ids(M3 m) =  {e | <_,e> <- m@names, isId(e)};
-//@memo public set[loc] classes(M3 m) = {e | <_,e> <- m@names, isClass(e)};
+@memo public set[loc] stylesheets(M3 m) =  {e | <e,_> <- m@declarations, isStyleSheet(e)};
+@memo public set[loc] ids(M3 m) =  {e | <_,e> <- m@names, isId(e)};
+@memo public set[loc] classes(M3 m) = {e | <_,e> <- m@names, isClass(e)};
+@memo public set[loc] declarations(M3 m) = {e | <e,_> <- m@declarations, isDeclaration(e)};
+@memo public set[loc] selectors(M3 m) = {e | <e,_> <- m@declarations, isSelector(e)};
+
+@memo public set[loc] fontFaceRules(M3 m) = {e | <e,_> <- m@declarations, isFontFaceRule(e)};
+@memo public set[loc] marginRules(M3 m) = {e | <e,_> <- m@declarations, isMarginRule(e)};
+@memo public set[loc] mediaRules(M3 m) = {e | <e,_> <- m@declarations, isMediaRule(e)};
+@memo public set[loc] pageRules(M3 m) = {e | <e,_> <- m@declarations, isPageRule(e)};
+@memo public set[loc] ruleSets(M3 m) = {e | <e,_> <- m@declarations, isRuleSet(e)};
+@memo public set[loc] viewportRules(M3 m) = {e | <e,_> <- m@declarations, isViewportRule(e)};
