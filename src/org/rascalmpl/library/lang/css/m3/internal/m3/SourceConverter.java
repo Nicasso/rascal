@@ -602,9 +602,9 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		ISourceLocation bindedLocation = makeBinding("css+class", null, node.getClassName());
+		ISourceLocation bindedLocation = makeBinding("css+class", null, node.getClassName().substring(1, node.getClassName().length()));
 		
-		insert(names, values.string(node.getClassName()), bindedLocation);
+		insert(names, values.string(node.getClassName().substring(1, node.getClassName().length())), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
 
 		return null;
@@ -630,9 +630,9 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
 		
-		ISourceLocation bindedLocation = makeBinding("css+id", null, node.getID());
+		ISourceLocation bindedLocation = makeBinding("css+id", null, node.getID().substring(1, node.getID().length()));
 		
-		insert(names, values.string(node.getID()), bindedLocation);
+		insert(names, values.string(node.getID().substring(1, node.getID().length())), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
 		
 		return null;
