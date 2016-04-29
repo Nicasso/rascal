@@ -60,23 +60,26 @@ public class ASTLoader extends FileHandler {
 				}
 			}
 		} else {
-			String[] converted = convertPaths(files);
-
 			TypeStore store = new TypeStore();
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 
-			for (String f : converted) {
+			for (IValue f : files) {
 				boolean go = true;
 				StyleSheet style = null;
+				
+				ISourceLocation loc = (ISourceLocation) f;
+				
+				String converted = convertPath(f);
+				
 				try {
-					style = CSSFactory.parse(f, "utf-8");
+					style = CSSFactory.parse(converted, "utf-8");
 				} catch (CSSException | IOException e) {
 					eval.getStdErr().println(e.getMessage());
 					eval.getStdErr().flush();
 					go = false;
 				}
 				if (go) {
-					ASTConverter ast = new ASTConverter(style, store, null, eval);
+					ASTConverter ast = new ASTConverter(style, store, loc, eval);
 					result.insert(ast.getAST());
 				}
 			}
