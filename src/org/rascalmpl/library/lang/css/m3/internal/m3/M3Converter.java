@@ -2,6 +2,7 @@ package org.rascalmpl.library.lang.css.m3.internal.m3;
 
 import java.util.Stack;
 
+import org.eclipse.jdt.core.compiler.IProblem;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.css.m3.internal.CSSToRascalConverter;
 import org.rascalmpl.library.lang.java.m3.internal.IValueList;
@@ -74,7 +75,7 @@ public abstract class M3Converter extends CSSToRascalConverter {
 		setAnnotation("documentation", documentation.done());
 		setAnnotation("names", names.done());
 		
-		//insertCompilationUnitMessages(insertErrors, messages.done());
+		insertCompilationUnitMessages(insertErrors, messages.done());
 		
 		return ownValue;
 	}
@@ -111,4 +112,37 @@ public abstract class M3Converter extends CSSToRascalConverter {
 		return binding != null && !(binding.getScheme().equals("unknown") || binding.getScheme().equals("unresolved"));
 	}
 
+	protected void insertCompilationUnitMessages(boolean insertErrors, IList otherMessages) {
+		org.rascalmpl.value.type.Type args = TF.tupleType(TF.stringType(), TF.sourceLocationType());
+
+		IValueList result = new IValueList(values);
+
+		if (otherMessages != null) {
+			for (IValue message : otherMessages) {
+				result.add(message);
+			}
+		}
+
+		if (insertErrors) {
+			int i;
+
+			IProblem[] problems = compilUnit.getProblems();
+			for (i = 0; i < problems.length; i++) {
+				int offset = problems[i].getSourceStart();
+				int length = problems[i].getSourceEnd() - offset + 1;
+				int sl = problems[i].getSourceLineNumber();
+				ISourceLocation pos = values.sourceLocation(loc, offset, length, sl, sl, 0, 0);
+				org.rascalmpl.value.type.Type constr;
+				if (problems[i].isError()) {
+					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "error",
+							args);
+				} else {
+					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "warning",
+							args);
+				}
+				result.add(values.constructor(constr, values.string(problems[i].getMessage()), pos));
+			}
+		}
+		setAnnotation("messages", result.asList());
+	}
 }

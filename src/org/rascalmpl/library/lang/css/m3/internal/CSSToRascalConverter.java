@@ -116,6 +116,12 @@ public class CSSToRascalConverter {
 				constructor, args);
 		return values.constructor(constr, removeNulls(children));
 	}
+	
+	public void insert(IListWriter listW, IValue message) {
+		if (message.getType().isConstructor() && message.getType().getAbstractDataType().getName().equals("Message")) {
+			listW.insert(message);
+		}
+	}
 
 	public IValue getValue() {
 		return this.ownValue;
