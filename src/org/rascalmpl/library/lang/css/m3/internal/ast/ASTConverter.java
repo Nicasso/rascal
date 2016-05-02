@@ -66,6 +66,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	public ASTConverter(StyleSheet rules, TypeStore store, ISourceLocation loc, IEvaluatorContext eval) {
 		super(store, new HashMap<>(), loc, eval);
 		this.eval = eval;
+		
+		eval.getStdOut().println("COOL: "+loc);
 
 		ast = (IValue) rules.accept(this);
 	}
@@ -96,8 +98,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(Declaration node) {
-		//eval.getStdOut().println("Declaration");
-		//eval.getStdOut().println("\t" + node.getProperty());
+		eval.getStdOut().println("Declaration");
+		eval.getStdOut().println("\t" + node.getProperty());
 		
 		IValue property = values.string(node.getProperty());
 
@@ -126,7 +128,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(CombinedSelector node) {
-		//eval.getStdOut().println("CombinedSelector");
+		eval.getStdOut().println("CombinedSelector");
 
 		IValueList selectors = new IValueList(values);
 		for (Iterator<Selector> it = node.iterator(); it.hasNext();) {
@@ -134,8 +136,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			IValue temp = (IValue) s.accept(this);
 			selectors.add(temp);
 		}
-		//eval.getStdOut().println("CombinedSelector selectors: "+selectors.asList());
-		//eval.getStdOut().println("constructTypeNode CombinedSelector");
+		eval.getStdOut().println("CombinedSelector selectors: "+selectors.asList());
+		eval.getStdOut().println("constructTypeNode CombinedSelector");
 		
 		IValue val = constructTypeNode("combinedSelector", selectors.asList());
 				
@@ -147,8 +149,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(MediaExpression node) {
-		//eval.getStdOut().println("MediaExpression");
-		//eval.getStdOut().println(node.getFeature());
+		eval.getStdOut().println("MediaExpression");
+		eval.getStdOut().println(node.getFeature());
 		
 		IValue feature = values.string(node.getFeature());
 		
@@ -169,8 +171,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(MediaQuery node) {
-		//eval.getStdOut().println("MediaQuery");
-		//eval.getStdOut().println(node.getType());
+		eval.getStdOut().println("MediaQuery");
+		eval.getStdOut().println(node.getType());
 		
 		IValue type = values.string(node.getType());
 
@@ -194,7 +196,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	 */
 	@Override
 	public IValue visit(MediaSpec node) {
-		//eval.getStdOut().println("MediaSpec");
+		eval.getStdOut().println("MediaSpec");
 		return null;
 	}
 
@@ -203,7 +205,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	 */
 	@Override
 	public IValue visit(RuleArrayList node) {
-		//eval.getStdOut().println("RuleArrayList");
+		eval.getStdOut().println("RuleArrayList");
 
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
 			RuleBlock<?> r = it.next();
@@ -215,7 +217,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(RuleFontFace node) {
-		//eval.getStdOut().println("RuleFontFace");
+		eval.getStdOut().println("RuleFontFace");
 
 		IValueList declarations = new IValueList(values);
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
@@ -241,7 +243,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	 */
 	@Override
 	public IValue visit(RuleMargin node) {
-		//eval.getStdOut().println("RuleMargin");
+		eval.getStdOut().println("RuleMargin");
 
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
 			Declaration d = it.next();
@@ -253,7 +255,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(RuleMedia node) {
-		//eval.getStdOut().println("RuleMedia");
+		eval.getStdOut().println("RuleMedia");
 
 		IValueList mediaQueries = new IValueList(values);
 		for (Iterator<MediaQuery> it = node.getMediaQueries().iterator(); it.hasNext();) {
@@ -283,7 +285,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(RulePage node) {
-		//eval.getStdOut().println("RulePage");
+		eval.getStdOut().println("RulePage");
 		
 		IValue pseudo = values.string(node.getPseudo());
 
@@ -308,7 +310,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(RuleSet node) {
-		//eval.getStdOut().println("RuleSet");
+		eval.getStdOut().println("RuleSet");
 
 		IValueList selectors = new IValueList(values);
 		for (CombinedSelector cs : node.getSelectors()) {
@@ -336,7 +338,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(RuleViewport node) {
-		//eval.getStdOut().println("RuleViewport");
+		eval.getStdOut().println("RuleViewport");
 
 		IValueList declarations = new IValueList(values);
 		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
@@ -359,8 +361,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(Selector node) {
-		//eval.getStdOut().println("Selector");
-		//eval.getStdOut().println("\t"+node.getCombinator());
+		eval.getStdOut().println("Selector");
+		eval.getStdOut().println("\t"+node.getCombinator());
 
 		IValueList statements = new IValueList(values);
 		for (Iterator<SelectorPart> it = node.iterator(); it.hasNext();) {
@@ -391,7 +393,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(StyleSheet node) {
-		//eval.getStdOut().println("StyleSheet");
+		eval.getStdOut().println("StyleSheet");
 
 		IValueList statements = new IValueList(values);
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
@@ -415,8 +417,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermAngle node) {
-		//eval.getStdOut().println("TermAngle");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		eval.getStdOut().println("TermAngle");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
 		IValue angle = values.real(node.getValue().doubleValue());
 	    IValue unit = values.string(node.getUnit().toString());
@@ -431,8 +433,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermColor node) {
-		//eval.getStdOut().println("TermColor");
-		//eval.getStdOut().println("\t" + node.getValue());
+		eval.getStdOut().println("TermColor");
+		eval.getStdOut().println("\t" + node.getValue());
 		
 		IValue red = values.integer(node.getValue().getRed());
 		IValue green = values.integer(node.getValue().getGreen());
@@ -449,8 +451,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermExpression node) {
-		//eval.getStdOut().println("TermExpression");
-		//eval.getStdOut().println("\t" + node.getValue());
+		eval.getStdOut().println("TermExpression");
+		eval.getStdOut().println("\t" + node.getValue());
 		
 		IValue expression = values.string(node.getValue().toString());
 		
@@ -467,15 +469,15 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	 */
 	@Override
 	public IValue visit(TermFloatValue node) {
-		//eval.getStdOut().println("TermFloatValue");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		eval.getStdOut().println("TermFloatValue");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public IValue visit(TermFrequency node) {
-		//eval.getStdOut().println("TermFrequency");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		eval.getStdOut().println("TermFrequency");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
 		IValue freq = values.real(node.getValue());
 		IValue unit = values.string(node.getUnit().toString());
@@ -490,8 +492,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermFunction node) {
-		//eval.getStdOut().println("TermFunction");
-		//eval.getStdOut().println(node.getFunctionName());
+		eval.getStdOut().println("TermFunction");
+		eval.getStdOut().println(node.getFunctionName());
 
 		IValue functionName = values.string(node.getFunctionName());
 		
@@ -512,8 +514,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermIdent node) {
-		//eval.getStdOut().println("TermIdent");
-		//eval.getStdOut().println("\t" + node.getValue());
+		eval.getStdOut().println("TermIdent");
+		eval.getStdOut().println("\t" + node.getValue());
 		
 		IValue ident = values.string(node.getValue().toString());
 
@@ -527,9 +529,9 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermInteger node) {
-		//eval.getStdOut().println("TermInteger");
+		eval.getStdOut().println("TermInteger");
 		// For some strange reason termInteger contains floats...
-		//eval.getStdOut().println("\t" + node.getValue().intValue()+ " " + node.getUnit());
+		eval.getStdOut().println("\t" + node.getValue().intValue()+ " " + node.getUnit());
 		
 		IValue integer = values.integer(node.getValue().intValue());
 		
@@ -543,8 +545,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	
 	@Override
 	public IValue visit(TermLength node) {
-		//eval.getStdOut().println("TermLength");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		eval.getStdOut().println("TermLength");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
 		IValue length = values.real(node.getValue());
 		IValue unit = values.string(node.getUnit().toString());
@@ -563,14 +565,14 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	 */
 	@Override
 	public IValue visit(TermList node) {
-		//eval.getStdOut().println("TermList");
+		eval.getStdOut().println("TermList");
 		return null;
 	}
 
 	@Override
 	public IValue visit(TermNumber node) {
-		//eval.getStdOut().println("TermNumber");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		eval.getStdOut().println("TermNumber");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
 		IValue number = values.real(node.getValue());
 		
@@ -585,8 +587,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermPercent node) {
-		//eval.getStdOut().println("TermPercent");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		eval.getStdOut().println("TermPercent");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
 		IValue percent = values.real(node.getValue());
 		
@@ -600,8 +602,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermResolution node) {
-		//eval.getStdOut().println("TermResolution");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		eval.getStdOut().println("TermResolution");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
 		IValue resolution = values.real(node.getValue());
 		IValue unit = values.string(node.getUnit().toString());
@@ -617,8 +619,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermString node) {
-		//eval.getStdOut().println("TermString");
-		//eval.getStdOut().println("\t" + node.getValue());
+		eval.getStdOut().println("TermString");
+		eval.getStdOut().println("\t" + node.getValue());
 		
 		IValue string = values.string(node.getValue().toString());
 		
@@ -632,8 +634,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermTime node) {
-		//eval.getStdOut().println("TermTime");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		eval.getStdOut().println("TermTime");
+		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
 		IValue time = values.real(node.getValue());
 		IValue unit = values.string(node.getUnit().toString());
@@ -648,8 +650,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(TermURI node) {
-		//eval.getStdOut().println("TermURI");
-		//eval.getStdOut().println("\t" + node.getValue());
+		eval.getStdOut().println("TermURI");
+		eval.getStdOut().println("\t" + node.getValue());
 
 		IValue uri = values.string(node.getValue().toString());
 		
@@ -663,8 +665,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(ElementAttribute node) {
-		//eval.getStdOut().println("ElementAttribute");
-		//eval.getStdOut().println("\t" + node.getAttribute() + " " + node.getOperator() + " " + node.getValue());
+		eval.getStdOut().println("ElementAttribute");
+		eval.getStdOut().println("\t" + node.getAttribute() + " " + node.getOperator() + " " + node.getValue());
 		
 		IValue attribute = values.string(node.getAttribute().toString());
 		IValue operator = values.string(node.getOperator().toString());
@@ -680,8 +682,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(ElementClass node) {
-		//eval.getStdOut().println("ElementClass");
-		//eval.getStdOut().println("\t" + node.getClassName());
+		eval.getStdOut().println("ElementClass");
+		eval.getStdOut().println("\t" + node.getClassName());
 		
 		IValue className = values.string(node.getClassName());
 		
@@ -699,8 +701,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	 */
 	@Override
 	public IValue visit(ElementDOM node) {
-		//eval.getStdOut().println("ElementDOM");
-		//eval.getStdOut().println("\t" + node.getElement());
+		eval.getStdOut().println("ElementDOM");
+		eval.getStdOut().println("\t" + node.getElement());
 		
 		IValue domElement = values.string(node.getElement().getTagName());
 		
@@ -714,8 +716,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(ElementID node) {
-		//eval.getStdOut().println("ElementID");
-		//eval.getStdOut().println("\t" + node.getID());
+		eval.getStdOut().println("ElementID");
+		eval.getStdOut().println("\t" + node.getID());
 		
 		IValue idName = values.string(node.getID());
 		
@@ -729,12 +731,14 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(ElementName node) {
-		//eval.getStdOut().println("ElementName");
-		//eval.getStdOut().println("\t" + node.getName());
+		eval.getStdOut().println("ElementName");
+		eval.getStdOut().println("\t" + node.getName());
 		
 		IValue elemName = values.string(node.getName());
 		
 		IValue val = constructTypeNode("domElement", elemName);
+		
+		eval.getStdOut().println(node.getLocation().toString());
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
@@ -744,8 +748,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(PseudoPage node) {
-		//eval.getStdOut().println("PseudoPage");
-		//eval.getStdOut().println("\t" + node.getValue());
+		eval.getStdOut().println("PseudoPage");
+		eval.getStdOut().println("\t" + node.getValue());
 		
 		IValue pseudoPage = values.string(node.getValue());
 		
@@ -759,8 +763,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public Object visit(RuleImport node) {
-		//eval.getStdOut().println("RuleImport");
-		//eval.getStdOut().println("\t" + node.getURI());
+		eval.getStdOut().println("RuleImport");
+		eval.getStdOut().println("\t" + node.getURI());
 		
 		IValue uri = values.string(node.getURI());
 		
@@ -778,8 +782,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public Object visit(CSSComment node) {
-		//eval.getStdOut().println("CSSComment");
-		//eval.getStdOut().println("\t" + node.getText());
+		eval.getStdOut().println("CSSComment");
+		eval.getStdOut().println("\t" + node.getText());
 		
 		IValue text = values.string(node.getText());
 		return constructStatementNode("comment", text);

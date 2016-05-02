@@ -27,16 +27,13 @@ public class M3Loader extends FileHandler {
 	public IValue createM3sFromFiles(ISet files, IEvaluatorContext eval) {
 		this.eval = eval;
 
-		eval.getStdOut().println("createM3sFromFiles");
-		eval.getStdOut().flush();
-
 		ISetWriter result = valueFactory.setWriter();
 
 		boolean fastPath = true;
 		for (IValue f : files) {
 			fastPath &= safeResolve((ISourceLocation) f).getScheme().equals("file");
 		}
-		eval.getStdOut().println("fastPath: "+fastPath);
+		
 		if (!fastPath) {
 			for (IValue f : files) {
 				StyleSheet style = null;

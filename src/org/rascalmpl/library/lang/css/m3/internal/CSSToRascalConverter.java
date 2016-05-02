@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.value.IConstructor;
 import org.rascalmpl.value.IList;

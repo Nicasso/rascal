@@ -12,7 +12,6 @@ import org.rascalmpl.value.type.TypeStore;
 
 import cz.vutbr.web.css.CSSComment;
 import cz.vutbr.web.css.CSSNodeVisitor;
-import cz.vutbr.web.css.CodeLocation;
 import cz.vutbr.web.css.CombinedSelector;
 import cz.vutbr.web.css.Declaration;
 import cz.vutbr.web.css.MediaExpression;
@@ -75,8 +74,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(Declaration node) {
-		eval.getStdOut().println("Declaration");
-		eval.getStdOut().println("\t" + node.getProperty());
+		//eval.getStdOut().println("Declaration");
+		//eval.getStdOut().println("\t" + node.getProperty());
 		
 		//makeBinding("css+declaration", null, node.getProperty());
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
@@ -110,7 +109,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(CombinedSelector node) {
-		eval.getStdOut().println("CombinedSelector");
+		//eval.getStdOut().println("CombinedSelector");
 		
 		//makeBinding("css+selector", null, node.toString());
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
@@ -134,8 +133,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(MediaExpression node) {
-		eval.getStdOut().println("MediaExpression");
-		eval.getStdOut().println(node.getFeature());
+		//eval.getStdOut().println("MediaExpression");
+		//eval.getStdOut().println(node.getFeature());
 
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
@@ -147,8 +146,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(MediaQuery node) {
-		eval.getStdOut().println("MediaQuery");
-		eval.getStdOut().println(node.getType());
+		//eval.getStdOut().println("MediaQuery");
+		//eval.getStdOut().println(node.getType());
 
 		for (Iterator<MediaExpression> it = node.iterator(); it.hasNext();) {
 			MediaExpression m = it.next();
@@ -163,7 +162,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	 */
 	@Override
 	public Void visit(MediaSpec node) {
-		eval.getStdOut().println("MediaSpec");
+		//eval.getStdOut().println("MediaSpec");
 		return null;
 	}
 
@@ -172,7 +171,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	 */
 	@Override
 	public Void visit(RuleArrayList node) {
-		eval.getStdOut().println("RuleArrayList");
+		//eval.getStdOut().println("RuleArrayList");
 
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
 			RuleBlock<?> r = it.next();
@@ -184,7 +183,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(RuleFontFace node) {
-		eval.getStdOut().println("RuleFontFace");		
+		//eval.getStdOut().println("RuleFontFace");		
 		
 		String fontTitle = "";
 		
@@ -232,7 +231,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	 */
 	@Override
 	public Void visit(RuleMargin node) {
-		eval.getStdOut().println("RuleMargin");
+		//eval.getStdOut().println("RuleMargin");
 		
 		//makeBinding("css+marginrule", null, "RULEMARGIN");
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
@@ -261,7 +260,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(RuleMedia node) {
-		eval.getStdOut().println("RuleMedia");
+		//eval.getStdOut().println("RuleMedia");
 		
 		//makeBinding("css+mediarule", null, "RULEMEDIA");
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
@@ -295,7 +294,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(RulePage node) {
-		eval.getStdOut().println("RulePage");
+		//eval.getStdOut().println("RulePage");
 		
 		//makeBinding("css+pagerule", null, "RULEPAGE");
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
@@ -324,7 +323,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(RuleSet node) {
-		eval.getStdOut().println("RuleSet");
+		//eval.getStdOut().println("RuleSet");
 		
 		String selectors = "";
 		
@@ -364,7 +363,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(RuleViewport node) {
-		eval.getStdOut().println("RuleViewport");
+		//eval.getStdOut().println("RuleViewport");
 		
 		String declarationsKey = "";
 		
@@ -403,8 +402,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(Selector node) {
-		eval.getStdOut().println("Selector");
-		eval.getStdOut().println("\t" + node.getCombinator());
+		//eval.getStdOut().println("Selector");
+		//eval.getStdOut().println("\t" + node.getCombinator());
 
 		for (Iterator<SelectorPart> it = node.iterator(); it.hasNext();) {
 			SelectorPart m = it.next();
@@ -416,7 +415,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(StyleSheet node) {
-		eval.getStdOut().println("StyleSheet");
+		//eval.getStdOut().println("StyleSheet");
 		
 		// @TODO Find a way to get the file name here.
 		//makeBinding("css+stylesheet", null, "style1.css");
@@ -448,22 +447,22 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(TermAngle node) {
-		eval.getStdOut().println("TermAngle");
-		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		//eval.getStdOut().println("TermAngle");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermColor node) {
-		eval.getStdOut().println("TermColor");
-		eval.getStdOut().println("\t" + node.getValue());
+		//eval.getStdOut().println("TermColor");
+		//eval.getStdOut().println("\t" + node.getValue());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermExpression node) {
-		eval.getStdOut().println("TermExpression");
-		eval.getStdOut().println("\t" + node.getValue());
+		//eval.getStdOut().println("TermExpression");
+		//eval.getStdOut().println("\t" + node.getValue());
 		return null;
 	}
 
@@ -472,22 +471,22 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	 */
 	@Override
 	public Void visit(TermFloatValue node) {
-		eval.getStdOut().println("TermFloatValue");
-		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		//eval.getStdOut().println("TermFloatValue");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermFrequency node) {
-		eval.getStdOut().println("TermFrequency");
-		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		//eval.getStdOut().println("TermFrequency");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermFunction node) {
-		eval.getStdOut().println("TermFunction");
-		eval.getStdOut().println(node.getFunctionName());
+		//eval.getStdOut().println("TermFunction");
+		//eval.getStdOut().println(node.getFunctionName());
 
 		for (Iterator<Term<?>> it = node.iterator(); it.hasNext();) {
 			Term<?> t = it.next();
@@ -499,8 +498,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(TermIdent node) {
-		eval.getStdOut().println("TermIdent");
-		eval.getStdOut().println("\t" + node.getValue());
+		//eval.getStdOut().println("TermIdent");
+		//eval.getStdOut().println("\t" + node.getValue());
 		
 		return null;
 	}
@@ -516,16 +515,16 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(TermInteger node) {
-		eval.getStdOut().println("TermInteger");
+		//eval.getStdOut().println("TermInteger");
 		// For some strange reason termInteger contains floats...
-		eval.getStdOut().println("\t" + node.getValue().intValue() + " " + node.getUnit());
+		//eval.getStdOut().println("\t" + node.getValue().intValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermLength node) {
-		eval.getStdOut().println("TermLength");
-		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		//eval.getStdOut().println("TermLength");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
@@ -534,63 +533,63 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	 */
 	@Override
 	public Void visit(TermList node) {
-		eval.getStdOut().println("TermList");
+		//eval.getStdOut().println("TermList");
 		return null;
 	}
 
 	@Override
 	public Void visit(TermNumber node) {
-		eval.getStdOut().println("TermNumber");
-		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		//eval.getStdOut().println("TermNumber");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermPercent node) {
-		eval.getStdOut().println("TermPercent");
-		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		//eval.getStdOut().println("TermPercent");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermResolution node) {
-		eval.getStdOut().println("TermResolution");
-		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		//eval.getStdOut().println("TermResolution");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermString node) {
-		eval.getStdOut().println("TermString");
-		eval.getStdOut().println("\t" + node.getValue());
+		//eval.getStdOut().println("TermString");
+		//eval.getStdOut().println("\t" + node.getValue());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermTime node) {
-		eval.getStdOut().println("TermTime");
-		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		//eval.getStdOut().println("TermTime");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
 
 	@Override
 	public Void visit(TermURI node) {
-		eval.getStdOut().println("TermURI");
-		eval.getStdOut().println("\t" + node.getValue());
+		//eval.getStdOut().println("TermURI");
+		//eval.getStdOut().println("\t" + node.getValue());
 		return null;
 	}
 
 	@Override
 	public Void visit(ElementAttribute node) {
-		eval.getStdOut().println("ElementAttribute");
-		eval.getStdOut().println("\t" + node.getAttribute() + " " + node.getOperator() + " " + node.getValue());
+		//eval.getStdOut().println("ElementAttribute");
+		//eval.getStdOut().println("\t" + node.getAttribute() + " " + node.getOperator() + " " + node.getValue());
 		return null;
 	}
 
 	@Override
 	public Void visit(ElementClass node) {
-		eval.getStdOut().println("ElementClass");
-		eval.getStdOut().println("\t" + node.getClassName());
+		//eval.getStdOut().println("ElementClass");
+		//eval.getStdOut().println("\t" + node.getClassName());
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		ownValue = nodeLocation;
@@ -609,15 +608,15 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	 */
 	@Override
 	public Void visit(ElementDOM node) {
-		eval.getStdOut().println("ElementDOM");
-		eval.getStdOut().println("\t" + node.getElement());
+		//eval.getStdOut().println("ElementDOM");
+		//eval.getStdOut().println("\t" + node.getElement());
 		return null;
 	}
 
 	@Override
 	public Void visit(ElementID node) {
-		eval.getStdOut().println("ElementID");
-		eval.getStdOut().println("\t" + node.getID());
+		//eval.getStdOut().println("ElementID");
+		//eval.getStdOut().println("\t" + node.getID());
 		
 		//makeBinding("css+id", null, node.getID());
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
@@ -633,21 +632,21 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 	@Override
 	public Void visit(ElementName node) {
-		eval.getStdOut().println("ElementName");
-		eval.getStdOut().println("\t" + node.getName());
+		//eval.getStdOut().println("ElementName");
+		//eval.getStdOut().println("\t" + node.getName());
 		return null;
 	}
 
 	@Override
 	public Void visit(PseudoPage node) {
-		eval.getStdOut().println("PseudoPage");
-		eval.getStdOut().println("\t" + node.getValue());
+		//eval.getStdOut().println("PseudoPage");
+		//eval.getStdOut().println("\t" + node.getValue());
 		return null;
 	}
 	
 	@Override
 	public Object visit(RuleImport node) {
-		eval.getStdOut().println("RuleImport");
+		//eval.getStdOut().println("RuleImport");
 		
 		//makeBinding("css+importrule", null, node.getURI());
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
@@ -668,11 +667,11 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	
 	@Override
 	public Object visit(CSSComment node) {
-		eval.getStdOut().println("CSSComment");
+		//eval.getStdOut().println("CSSComment");
 		
-		eval.getStdOut().println(node.getText());
+		//eval.getStdOut().println(node.getText());
 		
-		eval.getStdOut().println("Parent: "+getParent().getPath());
+		//eval.getStdOut().println("Parent: "+getParent().getPath());
 		
 		//makeBinding("css+comment", null, node.getText());
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());

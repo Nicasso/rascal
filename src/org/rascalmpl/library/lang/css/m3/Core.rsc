@@ -54,7 +54,7 @@ public M3 createM3FromDirectory(loc project) {
     return result;
 }
 
-public M3 createM3FromFiles(set[loc] files)
+public M3 createM3FromFiles(loc projectName, set[loc] files)
     = composeCSSM3(projectName, createM3sFromFiles(files));
 
 @javaClass{org.rascalmpl.library.lang.css.m3.internal.m3.M3Loader}

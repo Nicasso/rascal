@@ -3,7 +3,6 @@ package org.rascalmpl.library.lang.css.m3.internal.m3;
 import java.util.List;
 import java.util.Stack;
 
-import org.eclipse.jdt.core.compiler.IProblem;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.css.m3.internal.CSSToRascalConverter;
 import org.rascalmpl.library.lang.java.m3.internal.IValueList;
@@ -61,7 +60,7 @@ public abstract class M3Converter extends CSSToRascalConverter {
 	public M3Converter(final TypeStore typeStore, java.util.Map<String, ISourceLocation> cache, ISourceLocation loc, IEvaluatorContext eval) {
 		super(typeStore, cache, loc, eval);
 		this.eval = eval;
-		eval.getStdOut().println("M3Converter");
+		//eval.getStdOut().println("M3Converter");
 		
 		this.DATATYPE_M3_NODE_TYPE = this.typeStore.lookupAbstractDataType(DATATYPE_M3_NODE);
 		TypeFactory tf = TypeFactory.getInstance();
@@ -139,8 +138,6 @@ public abstract class M3Converter extends CSSToRascalConverter {
 				result.add(message);
 			}
 		}
-
-		eval.getStdOut().println("ER ZIJN "+stylesheet.getCSSErrors().size()+" ERRORS GEVONDEN!");
 		
 		if (insertErrors) {
 			int i;
