@@ -60,7 +60,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	private List<String> fontFaces; 
 	List<ISourceLocation> bindingLocations;
 	ISourceLocation commentTarget;
-	private StyleSheet stylesheet;
 
 	public SourceConverter(TypeStore typeStore, Map<String, ISourceLocation> cache, ISourceLocation loc, IEvaluatorContext eval) {
 		super(typeStore, cache, loc, eval);
@@ -72,16 +71,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public void convert(StyleSheet rules) {	
 		this.stylesheet = rules;
 		rules.accept(this);
-	}
-	
-	private ISourceLocation createLocation(ISourceLocation loc, CodeLocation location) {
-		return values.sourceLocation(loc, 
-				location.getOffset(), 
-				location.getLength(), 
-				location.getStartLine(),
-				location.getEndLine(), 
-				location.getStartColumn(), 
-				location.getEndColumn());
 	}
 
 	@Override
@@ -433,9 +422,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		//makeBinding("css+stylesheet", null, "style1.css");
 		ownValue = loc;
 		
-		eval.getStdOut().println("HOMOOO");
-		eval.getStdOut().println(node.getCSSErrors().size());
-
 		ISourceLocation bindedLocation = makeBinding("css+stylesheet", null, loc.getPath());
 		
 		scopeManager.push(bindedLocation);
@@ -700,8 +686,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 		return null;
 	}
-	
-	
 	
 	private ISourceLocation checkBinding(String scheme, String authority, String path, int i) {
 		ISourceLocation loc;

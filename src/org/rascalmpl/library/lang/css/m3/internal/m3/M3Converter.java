@@ -1,5 +1,6 @@
 package org.rascalmpl.library.lang.css.m3.internal.m3;
 
+import java.util.List;
 import java.util.Stack;
 
 import org.eclipse.jdt.core.compiler.IProblem;
@@ -15,7 +16,13 @@ import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeFactory;
 import org.rascalmpl.value.type.TypeStore;
 
+import cz.vutbr.web.css.CodeLocation;
+import cz.vutbr.web.css.StyleSheet;
+import cz.vutbr.web.csskit.CSSError;
+
 public abstract class M3Converter extends CSSToRascalConverter {
+	
+	protected StyleSheet stylesheet;
 
 	private static final String DATATYPE_M3_NODE = "M3";
 	private final org.rascalmpl.value.type.Type DATATYPE_M3_NODE_TYPE;
@@ -39,6 +46,16 @@ public abstract class M3Converter extends CSSToRascalConverter {
 	protected final org.rascalmpl.value.type.Type CONSTRUCTOR_M3;
 	
 	public IEvaluatorContext eval;
+	
+	public ISourceLocation createLocation(ISourceLocation loc, CodeLocation location) {
+		return values.sourceLocation(loc, 
+				location.getOffset(), 
+				location.getLength(), 
+				location.getStartLine(),
+				location.getEndLine(), 
+				location.getStartColumn(), 
+				location.getEndColumn());
+	}
 
 	@SuppressWarnings("deprecation")
 	public M3Converter(final TypeStore typeStore, java.util.Map<String, ISourceLocation> cache, ISourceLocation loc, IEvaluatorContext eval) {
@@ -123,24 +140,24 @@ public abstract class M3Converter extends CSSToRascalConverter {
 			}
 		}
 
+		eval.getStdOut().println("ER ZIJN "+stylesheet.getCSSErrors().size()+" ERRORS GEVONDEN!");
+		
 		if (insertErrors) {
 			int i;
 
-			IProblem[] problems = compilUnit.getProblems();
-			for (i = 0; i < problems.length; i++) {
-				int offset = problems[i].getSourceStart();
-				int length = problems[i].getSourceEnd() - offset + 1;
-				int sl = problems[i].getSourceLineNumber();
-				ISourceLocation pos = values.sourceLocation(loc, offset, length, sl, sl, 0, 0);
+			List<CSSError> problems = stylesheet.getCSSErrors();
+			for (i = 0; i < problems.size(); i++) {
+				ISourceLocation pos = createLocation(loc, problems.get(i).getLocation());
+				
 				org.rascalmpl.value.type.Type constr;
-				if (problems[i].isError()) {
+//				if (problems.get(i).isError()) {
 					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "error",
 							args);
-				} else {
-					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "warning",
-							args);
-				}
-				result.add(values.constructor(constr, values.string(problems[i].getMessage()), pos));
+//				} else {
+//					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "warning",
+//							args);
+//				}
+				result.add(values.constructor(constr, values.string(problems.get(i).getMessage()), pos));
 			}
 		}
 		setAnnotation("messages", result.asList());

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Java 1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_60"/>
 	<classpathentry excluding="**/example-project/*" kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="test"/>
@@ -43,6 +43,6 @@
 	<classpathentry kind="lib" path="lib/nico/slf4j-api-1.7.20.jar"/>
 	<classpathentry kind="lib" path="lib/nico/slf4j-nop-1.7.20.jar"/>
 	<classpathentry kind="lib" path="lib/nico/antlr-4.5.3-complete.jar"/>
-	<classpathentry kind="lib" path="/Users/nicodegroot/Documents/workspace/Rascal/rascal/lib/nico/jstyleparserNicoV2.jar"/>
+	<classpathentry kind="lib" path="lib/nico/jstyleparserNicoV2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
