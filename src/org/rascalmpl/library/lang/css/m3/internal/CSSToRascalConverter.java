@@ -46,7 +46,8 @@ public class CSSToRascalConverter {
 	protected final TypeStore typeStore;
 	protected final Map<String, ISourceLocation> locationCache;
 
-	public CSSToRascalConverter(final TypeStore typeStore, Map<String, ISourceLocation> cache, ISourceLocation loc, IEvaluatorContext eval) {
+	public CSSToRascalConverter(final TypeStore typeStore, Map<String, ISourceLocation> cache, ISourceLocation loc,
+			IEvaluatorContext eval) {
 		this.typeStore = typeStore;
 		this.locationCache = cache;
 		this.eval = eval;
@@ -107,14 +108,14 @@ public class CSSToRascalConverter {
 				constructor, args);
 		return values.constructor(constr, removeNulls(children));
 	}
-	
+
 	protected IConstructor constructModifierNode(String constructor, IValue... children) {
 		org.rascalmpl.value.type.Type args = TF.tupleType(removeNulls(children));
 		org.rascalmpl.value.type.Type constr = typeStore.lookupConstructor(DATATYPE_RASCAL_AST_MODIFIER_NODE_TYPE,
 				constructor, args);
 		return values.constructor(constr, removeNulls(children));
 	}
-	
+
 	public void insert(IListWriter listW, IValue message) {
 		if (message.getType().isConstructor() && message.getType().getAbstractDataType().getName().equals("Message")) {
 			listW.insert(message);

@@ -34,13 +34,13 @@ public abstract class M3Converter extends CSSToRascalConverter {
 
 	protected final Stack<ISourceLocation> scopeManager = new Stack<ISourceLocation>();
 
-	protected ISetWriter uses; //@Font-face gets used
-	protected ISetWriter declarations;//@Font-face gets declared maybe functions too
-	protected ISetWriter containment;// rules within declarations and declarations within viewport or media at-rules
+	protected ISetWriter uses; // Nothing really gets "used"
+	protected ISetWriter declarations;// 
+	protected ISetWriter containment;// Rules within declarations and declarations within viewport or media at-rules
 	protected ISetWriter documentation;// Comments
 	protected ISetWriter modifiers;// The !important tag
 	protected ISetWriter names;// Names of classes and id's
-	protected ISetWriter invocation;// Could be used later for animation functions
+	protected ISetWriter invocation;// Could be used later for animation functions? OR NOT!
 	
 	protected final org.rascalmpl.value.type.Type CONSTRUCTOR_M3;
 	
@@ -141,19 +141,12 @@ public abstract class M3Converter extends CSSToRascalConverter {
 		
 		if (insertErrors) {
 			int i;
-
 			List<CSSError> problems = stylesheet.getCSSErrors();
 			for (i = 0; i < problems.size(); i++) {
 				ISourceLocation pos = createLocation(loc, problems.get(i).getLocation());
 				
 				org.rascalmpl.value.type.Type constr;
-//				if (problems.get(i).isError()) {
-					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "error",
-							args);
-//				} else {
-//					constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "warning",
-//							args);
-//				}
+				constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "error", args);
 				result.add(values.constructor(constr, values.string(problems.get(i).getMessage()), pos));
 			}
 		}

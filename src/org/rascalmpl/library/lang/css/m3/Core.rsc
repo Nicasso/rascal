@@ -29,9 +29,6 @@ set[loc] getPaths(loc dir, str suffix) {
 public M3 composeCSSM3(loc id, set[M3] models) {
   m = composeM3(id, models);
   
-  //m@invocation = {*model@invocation | model <- models};
-  //m@annotations = {*model@annotations | model <- models};
-  
   return m;
 }
 
@@ -77,7 +74,6 @@ public bool isPageRule(loc entity) = entity.scheme == "css+pagerule";
 public bool isRuleSet(loc entity) = entity.scheme == "css+ruleset";
 public bool isViewportRule(loc entity) = entity.scheme == "css+viewportrule";
 
-// Think about usefull ones. Java uses declarations here, but CSS does not really have these.
 @memo public set[loc] stylesheets(M3 m) =  {e | <e,_> <- m@declarations, isStyleSheet(e)};
 @memo public set[loc] ids(M3 m) =  {e | <_,e> <- m@names, isId(e)};
 @memo public set[loc] classes(M3 m) = {e | <_,e> <- m@names, isClass(e)};

@@ -98,8 +98,6 @@ public class ASTLoader extends FileHandler {
 		boolean go = true;
 
 		try {
-			// @TODO This null needs to be replaced lated with a optional URL,
-			// for @import and url's.
 			style = CSSFactory.parseString(contents.getValue(), null);
 		} catch (CSSException | IOException e) {
 			eval.getStdErr().println("PARSING THE CSS HAS FAILED!");

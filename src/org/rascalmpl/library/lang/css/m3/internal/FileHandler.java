@@ -68,7 +68,7 @@ public class FileHandler {
 		}
 		return absolutePaths;
 	}
-	
+
 	protected String convertPath(IValue file) {
 		ISourceLocation loc = (ISourceLocation) file;
 		if (!URIResolverRegistry.getInstance().isFile(loc)) {
