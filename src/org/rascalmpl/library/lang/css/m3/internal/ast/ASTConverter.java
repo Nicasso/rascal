@@ -22,6 +22,7 @@ import cz.vutbr.web.css.MediaQuery;
 import cz.vutbr.web.css.MediaSpec;
 import cz.vutbr.web.css.Rule;
 import cz.vutbr.web.css.RuleBlock;
+import cz.vutbr.web.css.RuleCharset;
 import cz.vutbr.web.css.RuleFontFace;
 import cz.vutbr.web.css.RuleImport;
 import cz.vutbr.web.css.RuleMargin;
@@ -787,6 +788,25 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		IValue text = values.string(node.getText());
 		return constructStatementNode("comment", text);
+	}
+
+	@Override
+	public Object visit(RuleCharset node) {
+		eval.getStdOut().println("RuleCharset");
+		eval.getStdOut().println("\t" + node.getCharset());
+		
+		IValue text = values.string(node.getCharset());
+		
+		IValue rule = constructStatementNode("ruleCharset", text);
+		
+		if (node.getComment() != null) {
+			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
+
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		rule = ((IConstructor) rule).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		return rule;
 	}
 
 }

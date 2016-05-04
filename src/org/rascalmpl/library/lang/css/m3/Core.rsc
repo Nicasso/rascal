@@ -46,6 +46,13 @@ public M3 createM3FromDirectory(loc project) {
     }
     
     sourcePaths = getPaths(project, "css");
+    
+    iprintln(size(sourcePaths));
+    iprintln(sourcePaths);
+    iprintln("-------");
+    iprintln({p | sp <- sourcePaths, p <- find(sp, "css"), isFile(p)});
+    createM3sFromFiles({p | sp <- sourcePaths, p <- find(sp, "css"), isFile(p)});
+    
     M3 result = composeCSSM3(project, createM3sFromFiles({p | sp <- sourcePaths, p <- find(sp, "css"), isFile(p)}));
     registerProject(project, result);
     return result;

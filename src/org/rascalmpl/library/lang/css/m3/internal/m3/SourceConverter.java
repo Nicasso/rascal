@@ -19,6 +19,7 @@ import cz.vutbr.web.css.MediaQuery;
 import cz.vutbr.web.css.MediaSpec;
 import cz.vutbr.web.css.Rule;
 import cz.vutbr.web.css.RuleBlock;
+import cz.vutbr.web.css.RuleCharset;
 import cz.vutbr.web.css.RuleFontFace;
 import cz.vutbr.web.css.RuleImport;
 import cz.vutbr.web.css.RuleMargin;
@@ -712,6 +713,27 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		ISourceLocation loc = checkBinding(scheme, authority, path, 0);
 		bindingLocations.add(loc);
 		return loc;
+	}
+
+	@Override
+	public Object visit(RuleCharset node) {
+		//eval.getStdOut().println("RuleCharset");
+
+		//makeBinding("css+importrule", null, node.getURI());
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		ownValue = nodeLocation;
+		
+		ISourceLocation bindedLocation = makeBinding("css+charsetrule", null, node.getCharset());
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
+		
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
+
+		return null;
 	}
 	
 }
