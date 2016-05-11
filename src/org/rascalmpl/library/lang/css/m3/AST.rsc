@@ -40,6 +40,7 @@ data Type
     | domElement(str name) // div
     | combinedSelector(list[Expression] selectors) // .lol.hej.you, #hej.you, #hi#there (single element with all noted attributes)
     | attributeSelector(str attribute, str op, str \value) // div[class*="post"] (This rule only relates to the [class*="post"] part)
+    | attributeSelector(str attribute) // div[disabled] (This rule only relates to the [disabled] part)
     | pseudoClass(str class) // :after, :link, :first-child
     // Values
     | \angle(num angle, str unit) // 10deg, 10grad, 1rad, 0.25turn
