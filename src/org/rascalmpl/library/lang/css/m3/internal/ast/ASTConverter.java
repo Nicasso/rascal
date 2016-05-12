@@ -41,6 +41,7 @@ import cz.vutbr.web.css.Selector.SelectorPart;
 import cz.vutbr.web.css.StyleSheet;
 import cz.vutbr.web.css.Term;
 import cz.vutbr.web.css.TermAngle;
+import cz.vutbr.web.css.TermCalc;
 import cz.vutbr.web.css.TermColor;
 import cz.vutbr.web.css.TermExpression;
 import cz.vutbr.web.css.TermFloatValue;
@@ -814,6 +815,21 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		rule = ((IConstructor) rule).asAnnotatable().setAnnotation("src", nodeLocation);
 		
 		return rule;
+	}
+
+	@Override
+	public Object visit(TermCalc node) {
+		//eval.getStdOut().println("TermCalc");
+		//eval.getStdOut().println("\t" + node.getValue());
+		
+		IValue expression = values.string(node.getValue().toString());
+		
+		IValue val = constructTypeNode("calc", expression);
+		
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		return val;
 	}
 
 }

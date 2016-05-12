@@ -38,6 +38,7 @@ import cz.vutbr.web.css.Selector.SelectorPart;
 import cz.vutbr.web.css.StyleSheet;
 import cz.vutbr.web.css.Term;
 import cz.vutbr.web.css.TermAngle;
+import cz.vutbr.web.css.TermCalc;
 import cz.vutbr.web.css.TermColor;
 import cz.vutbr.web.css.TermExpression;
 import cz.vutbr.web.css.TermFloatValue;
@@ -737,6 +738,13 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		insert(containment, getParent(), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
 
+		return null;
+	}
+
+	@Override
+	public Object visit(TermCalc node) {
+		//eval.getStdOut().println("TermCalc");
+		//eval.getStdOut().println("\t" + node.getValue());
 		return null;
 	}
 	
