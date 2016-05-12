@@ -43,6 +43,7 @@ import cz.vutbr.web.css.Selector.SelectorPart;
 import cz.vutbr.web.css.StyleSheet;
 import cz.vutbr.web.css.Term;
 import cz.vutbr.web.css.TermAngle;
+import cz.vutbr.web.css.TermAudio;
 import cz.vutbr.web.css.TermCalc;
 import cz.vutbr.web.css.TermColor;
 import cz.vutbr.web.css.TermExpression;
@@ -428,6 +429,22 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	    IValue unit = values.string(node.getUnit().toString());
 	    
 	    IValue val = constructTypeNode("angle", angle, unit);
+		
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		return val; 
+	}
+	
+	@Override
+	public Object visit(TermAudio node) {
+		//eval.getStdOut().println("TermAudio");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		
+		IValue angle = values.real(node.getValue().doubleValue());
+	    IValue unit = values.string(node.getUnit().toString());
+	    
+	    IValue val = constructTypeNode("audio", angle, unit);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
@@ -883,5 +900,4 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		return rule;
 	}
-
 }

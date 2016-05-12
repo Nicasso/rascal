@@ -46,6 +46,7 @@ data Type
     | attributeSelector(str attribute) // div[disabled] (This rule only relates to the [disabled] part)
     | pseudoClass(str class) // :after, :link, :first-child
     // Values
+    | \audio(num aud, str unit) // 10db, -10db
     | \angle(num angle, str unit) // 10deg, 10grad, 1rad, 0.25turn
     | \color(int red, int green, int blue, int alpha) // red, #000000, #888, rgb(0,0,255), rgb(0,0,255,0.5), hsl(120, 100%, 50%), hsla(120, 100%, 50%, 0.3)
     | \expression(str expression) // top: expression(body.scrollTop + 50 + "px");

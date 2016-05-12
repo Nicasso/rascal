@@ -47,6 +47,10 @@ public M3 createM3FromDirectory(loc project) {
     
     sourcePaths = getPaths(project, "css");
     
+    if (size(sourcePaths) == 0) {
+    	throw "<project> contains no .css files.";
+    }
+    
     M3 result = composeCSSM3(project, createM3sFromFiles({p | sp <- sourcePaths, p <- find(sp, "css"), isFile(p)}));
     registerProject(project, result);
     return result;
@@ -70,6 +74,8 @@ public bool isDeclaration(loc entity) = entity.scheme == "css+declaration";
 public bool isSelector(loc entity) = entity.scheme == "css+selector";
 public bool isFontFaceRule(loc entity) = entity.scheme == "css+fontfacerule";
 public bool isMarginRule(loc entity) = entity.scheme == "css+marginrule";
+public bool isNameSpaceRule(loc entity) = entity.scheme == "css+namespacerule";
+public bool isCounterStyleRule(loc entity) = entity.scheme == "css+counterstylerule";
 public bool isMediaRule(loc entity) = entity.scheme == "css+mediarule";
 public bool isPageRule(loc entity) = entity.scheme == "css+pagerule";
 public bool isRuleSet(loc entity) = entity.scheme == "css+ruleset";
@@ -82,6 +88,8 @@ public bool isViewportRule(loc entity) = entity.scheme == "css+viewportrule";
 @memo public set[loc] selectors(M3 m) = {e | <e,_> <- m@declarations, isSelector(e)};
 
 @memo public set[loc] fontFaceRules(M3 m) = {e | <e,_> <- m@declarations, isFontFaceRule(e)};
+@memo public set[loc] nameSpaceRules(M3 m) = {e | <e,_> <- m@declarations, isNameSpaceRule(e)};
+@memo public set[loc] counterStyleRules(M3 m) = {e | <e,_> <- m@declarations, isCounterStyleRule(e)};
 @memo public set[loc] marginRules(M3 m) = {e | <e,_> <- m@declarations, isMarginRule(e)};
 @memo public set[loc] mediaRules(M3 m) = {e | <e,_> <- m@declarations, isMediaRule(e)};
 @memo public set[loc] pageRules(M3 m) = {e | <e,_> <- m@declarations, isPageRule(e)};
