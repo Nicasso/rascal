@@ -23,10 +23,12 @@ import cz.vutbr.web.css.MediaSpec;
 import cz.vutbr.web.css.Rule;
 import cz.vutbr.web.css.RuleBlock;
 import cz.vutbr.web.css.RuleCharset;
+import cz.vutbr.web.css.RuleCounterStyle;
 import cz.vutbr.web.css.RuleFontFace;
 import cz.vutbr.web.css.RuleImport;
 import cz.vutbr.web.css.RuleMargin;
 import cz.vutbr.web.css.RuleMedia;
+import cz.vutbr.web.css.RuleNameSpace;
 import cz.vutbr.web.css.RulePage;
 import cz.vutbr.web.css.RuleSet;
 import cz.vutbr.web.css.RuleViewport;
@@ -830,6 +832,56 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
 		
 		return val;
+	}
+
+	@Override
+	public Object visit(RuleCounterStyle node) {
+		//eval.getStdOut().println("RuleCounterStyle");
+
+		IValueList declarations = new IValueList(values);
+		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
+			Declaration d = it.next();
+			IValue temp = (IValue) d.accept(this);
+			declarations.add(temp);
+		}
+		
+		IValue name = values.string(node.getName());
+		
+		IValue rule = constructStatementNode("ruleCounterStyle", name, declarations.asList());
+		
+		if (node.getComment() != null) {
+			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
+		
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		rule = ((IConstructor) rule).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		return rule;
+	}
+
+	@Override
+	public Object visit(RuleNameSpace node) {
+		//eval.getStdOut().println("RuleNameSpace");
+		//eval.getStdOut().println("\t" + node.getURI());
+		
+		IValue uri = values.string(node.getUri());
+		
+		IValue rule;
+		if (node.getPrefix().equals("")) {
+			rule = constructStatementNode("ruleNameSpace", uri);
+		} else {
+			IValue prefix = values.string(node.getPrefix());
+			rule = constructStatementNode("ruleNameSpace", prefix, uri);
+		}
+		
+		if (node.getComment() != null) {
+			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
+		}
+
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		rule = ((IConstructor) rule).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		return rule;
 	}
 
 }

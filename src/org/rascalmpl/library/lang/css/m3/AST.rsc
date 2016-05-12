@@ -17,6 +17,9 @@ data Statement
     | ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) // @media only screen and (max-width : 480px) {
     | ruleFontFace(list[Declaration] decs) // @font-face { (TODO WHY IS THIS A LIST OF DECLARATIONS?! AND NOT A STATEMENT)
     | ruleImport(str uri) // @import url("style2.css");
+    | ruleCounterStyle(str name, list[Declaration] decs)
+    | ruleNameSpace(str prefix, str uri)
+    | ruleNameSpace(str uri)
     | ruleMargin(Expression atRule, Statement stat) // (@TODO, never heard of this!)
     | rulePage(str pseudo, list[Declaration] declarations) // @page :left { "delcarations here" }
     | ruleViewport(list[Declaration] declarations) // @viewport { "delcarations here" }

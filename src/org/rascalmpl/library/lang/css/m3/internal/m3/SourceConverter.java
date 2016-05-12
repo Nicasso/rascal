@@ -20,10 +20,12 @@ import cz.vutbr.web.css.MediaSpec;
 import cz.vutbr.web.css.Rule;
 import cz.vutbr.web.css.RuleBlock;
 import cz.vutbr.web.css.RuleCharset;
+import cz.vutbr.web.css.RuleCounterStyle;
 import cz.vutbr.web.css.RuleFontFace;
 import cz.vutbr.web.css.RuleImport;
 import cz.vutbr.web.css.RuleMargin;
 import cz.vutbr.web.css.RuleMedia;
+import cz.vutbr.web.css.RuleNameSpace;
 import cz.vutbr.web.css.RulePage;
 import cz.vutbr.web.css.RuleSet;
 import cz.vutbr.web.css.RuleViewport;
@@ -745,6 +747,51 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Object visit(TermCalc node) {
 		//eval.getStdOut().println("TermCalc");
 		//eval.getStdOut().println("\t" + node.getValue());
+		return null;
+	}
+
+	@Override
+	public Object visit(RuleCounterStyle node) {
+		//eval.getStdOut().println("RuleCounterStyle");
+
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		ownValue = nodeLocation;
+		
+		ISourceLocation bindedLocation = makeBinding("css+counterstylerule", null, node.getName());
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
+		
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
+
+		return null;
+	}
+
+	@Override
+	public Object visit(RuleNameSpace node) {
+		//eval.getStdOut().println("RuleNameSpace");
+
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		ownValue = nodeLocation;
+				
+		ISourceLocation bindedLocation;
+		if(node.getPrefix().equals("")) {
+			bindedLocation = makeBinding("css+namespacerule", null, node.getUri());
+		} else {
+			bindedLocation = makeBinding("css+namespacerule", null, node.getPrefix()+"-"+node.getUri());
+		}
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
+		
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
+
 		return null;
 	}
 	
