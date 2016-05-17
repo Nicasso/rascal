@@ -23,6 +23,7 @@ import cz.vutbr.web.css.RuleCharset;
 import cz.vutbr.web.css.RuleCounterStyle;
 import cz.vutbr.web.css.RuleFontFace;
 import cz.vutbr.web.css.RuleImport;
+import cz.vutbr.web.css.RuleKeyframes;
 import cz.vutbr.web.css.RuleMargin;
 import cz.vutbr.web.css.RuleMedia;
 import cz.vutbr.web.css.RuleNameSpace;
@@ -35,6 +36,8 @@ import cz.vutbr.web.css.Selector.ElementClass;
 import cz.vutbr.web.css.Selector.ElementDOM;
 import cz.vutbr.web.css.Selector.ElementID;
 import cz.vutbr.web.css.Selector.ElementName;
+import cz.vutbr.web.css.Selector.KeyframesIdent;
+import cz.vutbr.web.css.Selector.KeyframesPercentage;
 import cz.vutbr.web.css.Selector.PseudoPage;
 import cz.vutbr.web.css.Selector.SelectorPart;
 import cz.vutbr.web.css.StyleSheet;
@@ -802,5 +805,47 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		return null;
 	}
+
+	@Override
+	public Object visit(KeyframesPercentage node) {
+		//eval.getStdOut().println("keyframesPercentage");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
+	}
+
+	@Override
+	public Object visit(KeyframesIdent node) {
+		//eval.getStdOut().println("keyframesIdent");
+		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
+		return null;
+	}
+
+	@Override
+	public Object visit(RuleKeyframes node) {
+		//eval.getStdOut().println("RuleMedia");
+
+		//makeBinding("css+mediarule", null, "RULEMEDIA");
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		ownValue = nodeLocation;
+		
+		ISourceLocation bindedLocation = makeBinding("css+keyframesrule", null, node.getName());
+		insert(containment, getParent(), bindedLocation);
+		insert(declarations, bindedLocation, nodeLocation);
+		
+		commentTarget = bindedLocation;
+		if (node.getComment() != null) {
+			node.getComment().accept(this);
+		}
+		
+		scopeManager.push(bindedLocation);
+
+		for (Iterator<RuleSet> it = node.iterator(); it.hasNext();) {
+			RuleSet r = it.next();
+			r.accept(this);
+		}
+
+		scopeManager.pop();
+
+		return null;	}
 	
 }
