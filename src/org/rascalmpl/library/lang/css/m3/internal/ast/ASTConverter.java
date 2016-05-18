@@ -295,7 +295,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	public IValue visit(RulePage node) {
 		eval.getStdOut().println("RulePage");
 		
-		IValue pseudo = values.string(node.getPseudo());
+		IValue pseudo = values.string(node.getPseudo()+node.getName());
 
 		IValueList declarations = new IValueList(values);
 		for (Iterator<Rule<?>> it = node.iterator(); it.hasNext();) {
@@ -799,7 +799,19 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		IValue uri = values.string(node.getURI());
 		
-		IValue rule = constructStatementNode("ruleImport", uri);
+		IValue rule;
+		if (node.getMediaQueries().size() == 0) {
+			rule = constructStatementNode("ruleImport", uri);
+		} else {
+			IValueList mediaQueries = new IValueList(values);
+			for (Iterator<MediaQuery> it = node.getMediaQueries().iterator(); it.hasNext();) {
+				MediaQuery m = it.next();
+				IValue temp = (IValue) m.accept(this);
+				mediaQueries.add(temp);
+			}
+			
+			rule = constructStatementNode("ruleImport", uri, mediaQueries.asList());
+		}
 		
 		if (node.getComment() != null) {
 			rule = ((IConstructor) rule).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));

@@ -18,9 +18,11 @@ data Statement
     | ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) // @media only screen and (max-width : 480px) {
     | ruleFontFace(list[Declaration] decs) // @font-face { (TODO WHY IS THIS A LIST OF DECLARATIONS?! AND NOT A STATEMENT)
     | ruleImport(str uri) // @import url("style2.css");
+    | ruleImport(str uri, list[Type] mediaQueries) // @import url("style2.css") handheld and (max-width: 400px);
     | ruleCounterStyle(str name, list[Declaration] decs)
     | ruleNameSpace(str prefix, str uri)
     | ruleNameSpace(str uri)
+    | ruleCharset(str name)
     | ruleKeyframes(str name, list[Statement] ruleSets)
     | ruleMargin(Expression atRule, Statement stat) // (@TODO, never heard of this!)
     | rulePage(str pseudo, list[Declaration] declarations) // @page :left { "delcarations here" }
@@ -100,91 +102,204 @@ public java Statement createAstFromString(str source, loc file = |unknown:///|);
 
 // put relevant imports here: ADT definitions and all necessary pp() functions!
 
-public str prettyPrint(Statement stylesheet) {
-	return ppx(stylesheet);
+public void prettyPrint(Statement stylesheet) {
+	print(trim(ppx(stylesheet)));
+}
+
+int statementTabCount = 0;
+
+public void increaseTabs() {
+	statementTabCount = statementTabCount + 1;
+}
+
+public void decreaseTabs() {
+	statementTabCount = statementTabCount - 1;
+}
+
+public str getTabs() {
+	int n = 0;
+	str tabs = "";
+	while( n < statementTabCount ) {
+		tabs += "\t";
+		n = n + 1;
+	}
+	return tabs;
 }
 
 public str pp(list[Statement] rules) {
 	str result = "";
 	for (Statement rule <- rules) {
-		result = result + ppx(rule);
+		result += "<ppx(rule)>";
 	}
 	return result;
 }
 
-public str pp(list[Type] selector) {
-	return "list[Type] selector";
+public str ppSelectors(list[Type] selector) {
+	str result = "";
+	for (Type sel <- selector) {
+		result += "<ppx(sel)> ";
+	}
+	return trim(result);
+}
+
+public str ppSelectors(list[Type] selector, str combinator) {
+	str result = "";
+	
+	if(combinator == "ADJACENT") {
+		combinator = "+";
+	} else if(combinator == "CHILD") {
+		combinator = "\>";
+	} else if(combinator == "PRECEDING") {
+		combinator = "~";
+	}
+	
+	for (Type sel <- selector) {
+		if (combinator == "DESCENDANT") {
+			result += "<ppx(sel)> ";
+		} else {
+			result += "<combinator> <ppx(sel)> ";
+		}
+	}
+	return result;
+}
+
+public str ppExpressions(list[Type] selector) {
+	str result = "";
+	for (Type sel <- selector) {
+		result += "<ppx(sel)>";
+	}
+	return result;
+}
+
+public str ppValues(list[Type] vals) {
+	str result = "";
+	for (Type val <- vals) {
+		result += "<ppx(val)> ";
+	}
+	return trim(result);
+}
+
+public str ppMediaQueries(list[Type] selector) {
+	str result = "";
+	for (Type sel <- selector) {
+		result += "<ppx(sel)>";
+	}
+	return result;
 }
 
 public str pp(list[Declaration] declarations) {
-	return "list[Declaration] declarations";
-}
-
-public str pp(list[Type] mediaQueries) {
-	return "list[Type] mediaQueries";
+	str result = "";
+	for (Declaration decl <- declarations) {
+		result += "<ppx(decl)>";
+	}
+	return result;
 }
 
 public str pp(Expression atRule) {
-	return "Expression atRule";
+	return ppx(atRule);
 }
 
 public str pp(Statement stat) {
-	return "Statement stat";
+	return ppx(stat);
+}
+
+public str ppMediaQueryExpressions(list[Expression] selectors) {
+	str result = "";
+	for (Expression sel <- selectors) {
+		result += "(<ppx(sel)>)";
+	}
+	return result;
 }
 
 public str pp(list[Expression] selectors) {
-	return "list[Expression] selectors";
+	str result = "";
+	for (Expression sel <- selectors) {
+		result += "<ppx(sel)>";
+	}
+	return result;
 }
 
 public str ppx(Statement::stylesheet(str name, list[Statement] rules)) = pp(rules);
-public str ppx(Statement::ruleSet(list[Type] selector, list[Declaration] declarations)) = "ruleSet(<pp(selector)>,<pp(declarations)>)";
-public str ppx(Statement::ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets)) = "ruleMedia(<pp(mediaQueries)>,<pp(ruleSets)>)";
-public str ppx(Statement::ruleFontFace(list[Declaration] decs)) = "ruleFontFace(<pp(decs)>)";
-public str ppx(Statement::ruleImport(str uri)) = "ruleImport(<uri>)";
-public str ppx(Statement::ruleCounterStyle(str name, list[Declaration] decs)) = "ruleCounterStyle(<name>,<pp(decs)>)";
-public str ppx(Statement::ruleNameSpace(str prefix, str uri)) = "ruleNameSpace(<prefix>,<uri>)";
-public str ppx(Statement::ruleNameSpace(str uri)) = "ruleNameSpace(<uri>)";
-public str ppx(Statement::ruleKeyframes(str name, list[Statement] ruleSets)) = "ruleKeyframes(<name>,<pp(ruleSets)>)";
-public str ppx(Statement::ruleMargin(Expression atRule, Statement stat)) = "ruleMargin(<pp(atRule)>,<pp(stat)>)";
-public str ppx(Statement::rulePage(str pseudo, list[Declaration] declarations)) = "rulePage(<pseudo>,<pp(declarations)>)";
-public str ppx(Statement::ruleViewport(list[Declaration] declarations)) = "ruleViewport(<pp(declarations)>)";
-public str ppx(Statement::comment(str text)) = "comment(<text>)";
+public str ppx(Statement::ruleSet(list[Type] selector, list[Declaration] declarations)) = "<getTabs()><ppSelectors(selector)> {\n<pp(declarations)><getTabs()>}\n";
+public str ppx(Statement::ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets)) {
+	
+	str result = "";
+	result += "<getTabs()>@media <ppMediaQueries(mediaQueries)> {\n";
+	increaseTabs();
+	result += "<pp(ruleSets)>}\n\n";
+	decreaseTabs();
+	
+	return result;
+}
+public str ppx(Statement::ruleFontFace(list[Declaration] decs)) = "<getTabs()>@font-face {\n<pp(decs)>}\n\n";
+public str ppx(Statement::ruleImport(str uri)) = "<getTabs()>@import <uri>;\n\n";
+public str ppx(Statement::ruleImport(str uri, list[Type] mediaQueries)) = "<getTabs()>@import <uri> <ppMediaQueries(mediaQueries)>;\n\n";
+public str ppx(Statement::ruleCounterStyle(str name, list[Declaration] decs)) = "<getTabs()>@counter-style <name> {\n<pp(decs)>}\n\n";
+public str ppx(Statement::ruleNameSpace(str prefix, str uri)) = "<getTabs()>@namespace <prefix> <uri>;\n\n";
+public str ppx(Statement::ruleNameSpace(str uri)) = "<getTabs()>@namespace <uri>;\n\n";
+public str ppx(Statement::ruleCharset(str name)) = "<getTabs()>@charset <name>;\n\n";
+public str ppx(Statement::ruleKeyframes(str name, list[Statement] ruleSets)) {
+	
+	str result = "";
+	result += "<getTabs()>@keyframes <name> {\n";
+	increaseTabs();
+	result += "<pp(ruleSets)>}\n\n";
+	decreaseTabs();
+	
+	return result;
+}
+
+public str ppx(Statement::ruleMargin(Expression atRule, Statement stat)) = "<getTabs()>@margin <pp(atRule)>{\n<pp(stat)>}\n\n";
+public str ppx(Statement::rulePage(str pseudo, list[Declaration] declarations)) = "<getTabs()>@page <pseudo> {\n<pp(declarations)>}\n\n";
+public str ppx(Statement::ruleViewport(list[Declaration] declarations)) = "<getTabs()>@viewport {\n<pp(declarations)>}\n\n";
+public str ppx(Statement::comment(str text)) = "<getTabs()><text>\n\n";
 public default str ppx(Statement smth) = "??<smth>??";
 
-public str ppx(Declaration::declaration(str property, list[Type] values)) = "declaration(<property>,<pp(values)>)";
+public str ppx(Declaration::declaration(str property, list[Type] values)) = "<getTabs()>\t<property>: <ppValues(values)>;\n";
 public default str ppx(Declaration smth) = "??<smth>??";
 
-public str ppx(Expression::selector(list[Type] simpleSelectors)) = "selector(<pp(simpleSelectors)>)";
-public str ppx(Expression::selector(list[Type] simpleSelectors, str combinator)) = "selector(<pp(simpleSelectors)>,<combinator>)";
-public str ppx(Expression::mediaExpression(str property, list[Type] values)) = "mediaExpression(<property>,<pp(values)>)";
+public str ppx(Expression::selector(list[Type] simpleSelectors)) = "<ppSelectors(simpleSelectors)>";
+public str ppx(Expression::selector(list[Type] simpleSelectors, str combinator)) = "<ppSelectors(simpleSelectors, combinator)>";
+public str ppx(Expression::mediaExpression(str property, list[Type] values)) = "<property>: <ppExpressions(values)>";
 public default str ppx(Expression smth) = "??<smth>??";
 
-public str ppx(Type::class(str name)) = "class(<name>)";
-public str ppx(Type::id(str name)) = "id(<name>)";
-public str ppx(Type::domElement(str name)) = "domElement(<name>)";
-public str ppx(Type::combinedSelector(list[Expression] selectors)) = "combinedSelector(<pp(selectors)>)";
-public str ppx(Type::attributeSelector(str attribute, str op, str \value)) = "attributeSelector(<attribute>,<op>,<\value>)";
-public str ppx(Type::attributeSelector(str attribute)) = "attributeSelector(<attribute>)";
-public str ppx(Type::pseudoClass(str class)) = "pseudoClass(<class>)";
-public str ppx(Type::audio(int aud, str unit)) = "audio(<aud>,<unit>)";
-public str ppx(Type::angle(int angle, str unit)) = "angle(<angle>,<unit>)";
+public str ppx(Type::class(str name)) = "<name>";
+public str ppx(Type::id(str name)) = "<name>";
+public str ppx(Type::domElement(str name)) = "<name>";
+public str ppx(Type::combinedSelector(list[Expression] selectors)) = "<pp(selectors)>";
+public str ppx(Type::attributeSelector(str attribute, str op, str \value)) = "[<attribute><op><\value>]";
+public str ppx(Type::attributeSelector(str attribute)) = "[<attribute>]";
+public str ppx(Type::pseudoClass(str class)) = ":<class>";
+public str ppx(Type::audio(num aud, str unit)) = "<aud><unit>";
+public str ppx(Type::angle(num angle, str unit)) = "<angle><unit>";
 public str ppx(Type::color(int red, int green, int blue, int alpha)) = "color(<red>,<green>,<blue>,<alpha>)";
 public str ppx(Type::expression(str expression)) = "expression(<expression>)";
 public str ppx(Type::calc(str expression)) = "calc(<expression>)";
-public str ppx(Type::frequency(int freq, str unit)) = "frequency(<freq>,<unit>)";
-public str ppx(Type::function(str func, list[Type] exp)) = "function(<func>,<pp(exp)>)";
-public str ppx(Type::ident(str ident)) = "ident(<ident>)";
-public str ppx(Type::integer(int val)) = "integer(<val>)";
-public str ppx(Type::length(int len, str unit)) = "length(<len>,<unit>)";
-public str ppx(Type::percent(int perc)) = "percent(<perc>)";
-public str ppx(Type::\list(list[Type] pair)) = "list(<pp(pair)>)";
-public str ppx(Type::number(int number)) = "number(<number>)";
-public str ppx(Type::resolution(int res, str unit)) = "resolution(<res>,<unit>)";
-public str ppx(Type::string(str string)) = "string(<string>)";
-public str ppx(Type::time(int time, str unit)) = "time(<time>,<unit>)";
-public str ppx(Type::uri(str uri)) = "uri(<uri>)";
-public str ppx(Type::mediaQuery(str \type, list[Expression] expressions)) = "mediaQuery(<\type>,<pp(expressions)>)";
+public str ppx(Type::frequency(num freq, str unit)) = "<freq><unit>";
+public str ppx(Type::function(str func, list[Type] exp)) = "<func>(<ppExpressions(exp)>)";
+public str ppx(Type::ident(str ident)) = "<ident>";
+public str ppx(Type::integer(int val)) = "<val>";
+public str ppx(Type::length(num len, str unit)) = "<len><unit>";
+public str ppx(Type::percent(num perc)) = "<perc>%";
+public str ppx(Type::\list(list[Type] pair)) = "PAIRS? <ppExpressions(pair)>";
+public str ppx(Type::number(num number)) = "<number>";
+public str ppx(Type::resolution(num res, str unit)) = "<res><unit>";
+public str ppx(Type::string(str string)) = "<string>";
+public str ppx(Type::time(num time, str unit)) = "<time><unit>";
+public str ppx(Type::uri(str uri)) = "<uri>";
+public str ppx(Type::mediaQuery(str \type, list[Expression] expressions)) {
+	
+	str result = "";
+	result += "<\type>";
+	str exp = trim(ppMediaQueryExpressions(expressions));
+	if (exp != "") {
+		result += " and <trim(ppMediaQueryExpressions(expressions))>";
+	}
+	
+	return result;
+}
+// = "<\type> <trim(ppMediaQueryExpressions(expressions))>";
 public default str ppx(Type smth) = "??<smth>??";
 
-public str ppx(Modifier::important()) = "important()";
+public str ppx(Modifier::important()) = "!important";
 public default str ppx(Modifier smth) = "??<smth>??";
