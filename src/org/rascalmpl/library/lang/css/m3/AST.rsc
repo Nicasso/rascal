@@ -9,6 +9,9 @@ import IO;
 import Set;
 import String;
 import List;
+import util::Math;
+
+anno str Type@op;
 
 data Statement
 	// Rulesets
@@ -52,7 +55,7 @@ data Type
     // Values
     | \audio(num aud, str unit) // 10db, -10db
     | \angle(num angle, str unit) // 10deg, 10grad, 1rad, 0.25turn
-    | \color(int red, int green, int blue, int alpha) // red, #000000, #888, rgb(0,0,255), rgb(0,0,255,0.5), hsl(120, 100%, 50%), hsla(120, 100%, 50%, 0.3)
+    | \color(int red, int green, int blue, num alpha) // red, #000000, #888, rgb(0,0,255), rgb(0,0,255,0.5), hsl(120, 100%, 50%), hsla(120, 100%, 50%, 0.3)
     | \expression(str expression) // top: expression(body.scrollTop + 50 + "px");
     | \calc(str expression) // top: calc(100% - 50px);
     | \frequency(num freq, str unit) // 12Hz, 14KhZ (No space between the number and the literal! Not supported by any browser so far)
@@ -102,8 +105,12 @@ public java Statement createAstFromString(str source, loc file = |unknown:///|);
 
 // put relevant imports here: ADT definitions and all necessary pp() functions!
 
+public void exportCSSToFile(loc file, Statement stylesheet) {
+	writeFile(file, trim(ppx(stylesheet)));
+}
+
 public void prettyPrint(Statement stylesheet) {
-	print(trim(ppx(stylesheet)));
+	print(trim(ppx(stylesheet))+"\n");
 }
 
 int statementTabCount = 0;
@@ -114,6 +121,18 @@ public void increaseTabs() {
 
 public void decreaseTabs() {
 	statementTabCount = statementTabCount - 1;
+}
+
+public str formatNumber(num number, str unit) { 
+	if (number != 0) {
+		if (round(number) == number) {
+			return "<round(number)><unit>";
+		} else {
+			return "<number><unit>";
+		}
+	} else {
+		return "0";
+	}
 }
 
 public str getTabs() {
@@ -137,7 +156,7 @@ public str pp(list[Statement] rules) {
 public str ppSelectors(list[Type] selector) {
 	str result = "";
 	for (Type sel <- selector) {
-		result += "<ppx(sel)> ";
+		result += "<ppx(sel)>";
 	}
 	return trim(result);
 }
@@ -151,14 +170,17 @@ public str ppSelectors(list[Type] selector, str combinator) {
 		combinator = "\>";
 	} else if(combinator == "PRECEDING") {
 		combinator = "~";
+	} else {
+		combinator = " ";	
 	}
-	
+
 	for (Type sel <- selector) {
-		if (combinator == "DESCENDANT") {
-			result += "<ppx(sel)> ";
+		if (stringChar(charAt(ppx(sel), 0)) == ":") {
+			result += "<ppx(sel)>";
 		} else {
-			result += "<combinator> <ppx(sel)> ";
+			result += " <combinator><ppx(sel)>";
 		}
+		
 	}
 	return result;
 }
@@ -174,7 +196,11 @@ public str ppExpressions(list[Type] selector) {
 public str ppValues(list[Type] vals) {
 	str result = "";
 	for (Type val <- vals) {
-		result += "<ppx(val)> ";
+		if (val@op?) {
+			result += "<val@op><ppx(val)>";
+		} else {
+			result += " <ppx(val)>";
+		}
 	}
 	return trim(result);
 }
@@ -219,8 +245,22 @@ public str pp(list[Expression] selectors) {
 	return result;
 }
 
+public str ppCombinatedSelectors(list[Type] selectors) {
+	str result = "";
+	int i = 0;
+	for (Type sel <- selectors) {
+		result += "<ppx(sel)>";
+		if (i < size(selectors)-1) {
+			result += ",";
+		}
+		i = i + 1;
+		
+	}
+	return trim(result);
+}
+
 public str ppx(Statement::stylesheet(str name, list[Statement] rules)) = pp(rules);
-public str ppx(Statement::ruleSet(list[Type] selector, list[Declaration] declarations)) = "<getTabs()><ppSelectors(selector)> {\n<pp(declarations)><getTabs()>}\n";
+public str ppx(Statement::ruleSet(list[Type] selector, list[Declaration] declarations)) = "<getTabs()><ppCombinatedSelectors(selector)> {\n<pp(declarations)><getTabs()>}\n\n";
 public str ppx(Statement::ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets)) {
 	
 	str result = "";
@@ -263,29 +303,29 @@ public str ppx(Expression::selector(list[Type] simpleSelectors, str combinator))
 public str ppx(Expression::mediaExpression(str property, list[Type] values)) = "<property>: <ppExpressions(values)>";
 public default str ppx(Expression smth) = "??<smth>??";
 
-public str ppx(Type::class(str name)) = "<name>";
-public str ppx(Type::id(str name)) = "<name>";
-public str ppx(Type::domElement(str name)) = "<name>";
-public str ppx(Type::combinedSelector(list[Expression] selectors)) = "<pp(selectors)>";
+public str ppx(Type::class(str name)) = " <name>";
+public str ppx(Type::id(str name)) = " <name>";
+public str ppx(Type::domElement(str name)) = " <name>";
+public str ppx(Type::combinedSelector(list[Expression] selectors)) = " <pp(selectors)>";
 public str ppx(Type::attributeSelector(str attribute, str op, str \value)) = "[<attribute><op><\value>]";
 public str ppx(Type::attributeSelector(str attribute)) = "[<attribute>]";
 public str ppx(Type::pseudoClass(str class)) = ":<class>";
-public str ppx(Type::audio(num aud, str unit)) = "<aud><unit>";
-public str ppx(Type::angle(num angle, str unit)) = "<angle><unit>";
-public str ppx(Type::color(int red, int green, int blue, int alpha)) = "color(<red>,<green>,<blue>,<alpha>)";
+public str ppx(Type::audio(num aud, str unit)) = formatNumber(aud, unit);
+public str ppx(Type::angle(num angle, str unit)) = formatNumber(angle, unit);
+public str ppx(Type::color(int red, int green, int blue, num alpha)) = "rgba(<red>,<green>,<blue>,<formatNumber(alpha,"")>)";
 public str ppx(Type::expression(str expression)) = "expression(<expression>)";
 public str ppx(Type::calc(str expression)) = "calc(<expression>)";
-public str ppx(Type::frequency(num freq, str unit)) = "<freq><unit>";
+public str ppx(Type::frequency(num freq, str unit)) = formatNumber(freq, unit);
 public str ppx(Type::function(str func, list[Type] exp)) = "<func>(<ppExpressions(exp)>)";
 public str ppx(Type::ident(str ident)) = "<ident>";
 public str ppx(Type::integer(int val)) = "<val>";
-public str ppx(Type::length(num len, str unit)) = "<len><unit>";
-public str ppx(Type::percent(num perc)) = "<perc>%";
-public str ppx(Type::\list(list[Type] pair)) = "PAIRS? <ppExpressions(pair)>";
-public str ppx(Type::number(num number)) = "<number>";
-public str ppx(Type::resolution(num res, str unit)) = "<res><unit>";
+public str ppx(Type::length(num len, str unit)) = formatNumber(len, unit);
+public str ppx(Type::percent(num perc)) = formatNumber(perc, "%");
+public str ppx(Type::\list(list[Type] pair)) = "<ppExpressions(pair)>";
+public str ppx(Type::number(num number)) = formatNumber(number, "");
+public str ppx(Type::resolution(num res, str unit)) = formatNumber(res, unit);
 public str ppx(Type::string(str string)) = "<string>";
-public str ppx(Type::time(num time, str unit)) = "<time><unit>";
+public str ppx(Type::time(num time, str unit)) = formatNumber(time, unit);
 public str ppx(Type::uri(str uri)) = "<uri>";
 public str ppx(Type::mediaQuery(str \type, list[Expression] expressions)) {
 	

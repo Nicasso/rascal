@@ -12,6 +12,8 @@ import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV;
+
 import cz.vutbr.web.css.CSSComment;
 import cz.vutbr.web.css.CSSNodeVisitor;
 import cz.vutbr.web.css.CodeLocation;
@@ -428,13 +430,18 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermAngle");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue angle = values.real(node.getValue().doubleValue());
+		IValue angle = values.real(node.getValue().doubleValue(), 2);
 	    IValue unit = values.string(node.getUnit().toString());
 	    
 	    IValue val = constructTypeNode("angle", angle, unit);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val; 
 	}
@@ -444,13 +451,18 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermAudio");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue angle = values.real(node.getValue().doubleValue());
+		IValue angle = values.real(node.getValue().doubleValue(), 2);
 	    IValue unit = values.string(node.getUnit().toString());
 	    
 	    IValue val = constructTypeNode("audio", angle, unit);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val; 
 	}
@@ -463,12 +475,22 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		IValue red = values.integer(node.getValue().getRed());
 		IValue green = values.integer(node.getValue().getGreen());
 		IValue blue = values.integer(node.getValue().getBlue());
-		IValue alpha = values.integer(node.getValue().getAlpha());
+		IValue alpha = values.real(Double.valueOf((double)((double)node.getValue().getAlpha()/(double)255.00)), 2);
+		
+		eval.getStdOut().println(alpha);
+		eval.getStdOut().println(node.getValue().getAlpha());
+		eval.getStdOut().println(Double.valueOf((double)((double)node.getValue().getAlpha()/(double)255.00)));
+		eval.getStdOut().println((node.getValue().getAlpha()/255));
 		
 		IValue val = constructTypeNode("color", red, green, blue, alpha);
 			
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val; 
 	}
@@ -484,6 +506,11 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 	}
@@ -503,13 +530,18 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermFrequency");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue freq = values.real(node.getValue());
+		IValue freq = values.real(node.getValue(), 2);
 		IValue unit = values.string(node.getUnit().toString());
 		
 		IValue val = constructTypeNode("frequency", freq, unit);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 	}
@@ -533,6 +565,11 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
 		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
+		
 		return val;
 	}
 
@@ -547,6 +584,11 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 	}
@@ -564,6 +606,11 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
 		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
+		
 		return val; 
 	}
 	
@@ -572,13 +619,18 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermLength");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue length = values.real(node.getValue());
+		IValue length = values.real(node.getValue().doubleValue(), 2);
 		IValue unit = values.string(node.getUnit().toString());
 		
 		IValue val = constructTypeNode("length", length, unit);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 		
@@ -598,12 +650,17 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermNumber");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue number = values.real(node.getValue());
+		IValue number = values.real(node.getValue(), 2);
 		
 		IValue val = constructTypeNode("number", number);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 		
@@ -614,12 +671,17 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermPercent");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue percent = values.real(node.getValue());
+		IValue percent = values.real(node.getValue(), 2);
 		
 		IValue val = constructTypeNode("percent", percent);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 	}
@@ -629,13 +691,18 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermResolution");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue resolution = values.real(node.getValue());
+		IValue resolution = values.real(node.getValue(), 2);
 		IValue unit = values.string(node.getUnit().toString());
 		
 		IValue val = constructTypeNode("resolution", resolution, unit);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 		
@@ -653,6 +720,12 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
 		
+		if (node.getOperator() != null) {
+			eval.getStdOut().println("OPERATOR: "+ node.getOperator());
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
+		
 		return val;
 	}
 
@@ -661,13 +734,18 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("TermTime");
 		eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue time = values.real(node.getValue());
+		IValue time = values.real(node.getValue(), 2);
 		IValue unit = values.string(node.getUnit().toString());
 		
 		IValue val = constructTypeNode("time", time, unit);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 	}
@@ -683,6 +761,11 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
 		
 		return val;
 	}
@@ -863,6 +946,11 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
 		
+		if (node.getOperator() != null) {
+			IValue op = values.string(node.getOperator().value());
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+		}
+		
 		return val;
 	}
 
@@ -921,7 +1009,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		eval.getStdOut().println("keyframesPercentage");
 		eval.getStdOut().println("\t" + node.getPercentage());
 		
-		IValue percent = values.real(node.getPercentage());
+		IValue percent = values.real(node.getPercentage(), 2);
 		
 		IValue val = constructTypeNode("percent", percent);
 		
