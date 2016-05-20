@@ -14,34 +14,36 @@ import List;
 public void lol() {
 	Statement stylesheet = createAstFromFile(|home:///workspace/testCSS/sandbox/style.css|);
 	
-	//iprintln(stylesheet);
+	prettyPrint(stylesheet);
 	
 	newAST = visit (stylesheet) {
-		case ruleSet(list[Type] selector, list[Declaration] declarations): {
-			//checkDeclarations(declarations);
-			iprintln("");
-		}
-		case declaration(str property, list[Type] values) => declaration("COOL", values)
+		case ruleSet(list[Type] selector, list[Declaration] declarations) => ruleSet(selector, checkDeclarations(declarations))
 	};
 	
-	iprintln(newAST);	
+	iprintln("-----------------------------------------------");
+	
+	prettyPrint(newAST);
 }
 
-public void checkDeclarations(list[Declaration] declarations) {
-	requiredDeclarations = ["margin-left","margin-right","margin-top","margin-bottom"];
+public list[Declaration] checkDeclarations(list[Declaration] declarations) {
+	requiredDeclarations = ["margin-left", "margin-right", "margin-top", "margin-bottom"];
 	
+	map[str, Type] declarationsValues = ();
+	list[Declaration] newDeclarations = [];
 	for (n <- declarations) {
 		visit (n) {
 			case declaration(str property, list[Type] values): {
-				iprintln("DECL: "+property);
 				if (property in requiredDeclarations) {
 					requiredDeclarations = requiredDeclarations - [property];
-					iprintln("REMOVE");
-				}
-				if (size(requiredDeclarations) == 0) {
-					iprintln("VET GOOD!");
+					declarationsValues += (property:values[0]);
+					if (size(requiredDeclarations) == 0) {
+						newDeclarations += declaration("margin", [declarationsValues["margin-top"],declarationsValues["margin-right"],declarationsValues["margin-bottom"],declarationsValues["margin-left"]]);
+					}
+				} else {
+					newDeclarations += n;
 				}
 			}
 		}
 	}
+	return newDeclarations;
 }
