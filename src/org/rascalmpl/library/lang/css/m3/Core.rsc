@@ -35,6 +35,7 @@ public M3 composeCSSM3(loc id, set[M3] models) {
 public M3 createM3FromFile(loc file) {
     result = createM3sFromFiles({file});
     if ({oneResult} := result) {
+    	registerProject(file, oneResult);
         return oneResult;
     }
     throw "Unexpected number of M3s returned for <file>";
