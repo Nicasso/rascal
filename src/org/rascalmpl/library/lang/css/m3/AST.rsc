@@ -229,6 +229,10 @@ public str pp(Statement stat) {
 	return ppx(stat);
 }
 
+public str pp(Type t) {
+	return ppx(t);
+}
+
 public str ppMediaQueryExpressions(list[Expression] selectors) {
 	str result = "";
 	for (Expression sel <- selectors) {

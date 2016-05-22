@@ -145,6 +145,61 @@ public void declarationAnalysis() {
 	
 	iprintln(sort(values));
 }
+
+public void declarationAnalysis2() {
+	Statement stylesheet = createAstFromFile(|home:///Documents/workspace/testCSS/sandbox/amazon.css|);
+	
+	lrel[str,list[Declaration]] values = [];
+	
+	visit (stylesheet) {
+		case declaration(str property, list[Type] declarationValues): {
+			//if (size(values[property]) == 0) {
+				values += <property,[declaration(property, declarationValues)]>;
+			//} else {
+			//	//list[Declaration] d = (values[property][1]);
+			//	iprintln(values[property]);
+			//	//values[property][1] += [declaration(property, declarationValues)];
+			//	//values = values - [<property,values[property][0]>];
+			//	//values += [<property,val>];
+			//}
+		}
+	};
+	
+	for(val <- sort(values)) {	
+		visit (val[1]) {
+			case \audio(num aud, str unit):  { iprintln("<val[0]>: <ppx(Type::audio(aud,unit))>"); }
+		    case \angle(num angle, str unit): { iprintln("<val[0]>: <ppx(Type::angle(angle,unit))>"); }
+		    case \color(int red, int green, int blue, num alpha): { iprintln("<val[0]>: <ppx(Type::color(red,green,blue,alpha))>"); }
+		    case \expression(str expression): { iprintln("<val[0]>: <ppx(Type::expression(expression))>"); }
+		    case \calc(str expression): { iprintln("<val[0]>: <ppx(Type::calc(expression))>"); }
+		    case \frequency(num freq, str unit): { iprintln("<val[0]>: <ppx(Type::frequency(freq,unit))>"); }
+		    case \function(str func, list[Type] exp): { iprintln("<val[0]>: <ppx(Type::function(func,exp))>"); }
+		    case \ident(str ident): { iprintln("<val[0]>: <ppx(Type::ident(ident))>"); }
+		    case \integer(int a): { iprintln("<val[0]>: <ppx(Type::integer(a))>"); }
+		    case \length(num \len, str unit): { iprintln("<val[0]>: <ppx(Type::length(\len,unit))>"); }
+		    case \percent(num \perc): { iprintln("<val[0]>: <ppx(Type::percent(\perc))>"); }
+		    case \list(list[Type] pair): { iprintln("<val[0]>: <ppx(Type::\list(pair))>"); }
+		    case \number(num number): { iprintln("<val[0]>: <ppx(Type::number(\number))>"); }
+		    case \resolution(num \res, str unit): { iprintln("<val[0]>: <ppx(Type::resolution(\res,unit))>"); }
+		    case \string(str \string): { iprintln("<val[0]>: <ppx(Type::string(\string))>"); }
+		    case \time(num \time, str unit): { iprintln("<val[0]>: <ppx(Type::time(\time,unit))>"); }
+		    case \uri(str \uri): { iprintln("<val[0]>: <ppx(Type::uri(\uri))>"); }
+		};
+	}
+}
+
+public void modifierAnalysis() {
+	Statement stylesheet = createAstFromFile(|home:///Documents/workspace/testCSS/sandbox/amazon.css|);
+	
+	visit (stylesheet) {
+		case declaration(str property, list[Type] declarationValues): {
+			iprintln(GetTraversalContextNodes());
+			iprintln("KAK");
+		}
+	};
+		
+}
+
 /**
  * From the paper: Complexity Metrics for Cascading Style Sheets
  */
@@ -262,4 +317,13 @@ public void type1Clone() {
 	};
 	
 	iprintln(clones);
+}
+
+// From the thesis: The A-B*-A Pattern of Undoing Style in Cascading Style Sheets
+
+public void filterUndoingStyles(Statement rules) {
+	list[Statement] possibleUndoingStyles;
+	list[Statement] undoingStyles;
+	
+	// Maybe too much work for now...
 }
