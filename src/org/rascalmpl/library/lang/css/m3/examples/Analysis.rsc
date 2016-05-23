@@ -17,32 +17,60 @@ M3 stylesheetM3 = createM3FromFile(|home:///workspace/testCSS/sandbox/amazon.css
 
 public void basicAnalysis() {
 	
-	loc style = getOneFrom(stylesheets(stylesheetM3));
+	styles = stylesheets(stylesheetM3);
 	
 	map[str,int] values = ("code":0, "comment":0, "blank":0, "total":0);
 	bool commentBlock = false;
-	
-	for (line <- readFileLines(style)) {	
-		values["total"] += 1;
-	
-		if (trim(line) == "") {
-			values["blank"] += 1;
-		} else if (startsWith(trim(line),"/*")) {
-			if (!endsWith(trim(line),"*/")) {
-				commentBlock = true;
+	for (style <- styles) {
+		for (line <- readFileLines(style)) {	
+			values["total"] += 1;
+		
+			if (trim(line) == "") {
+				values["blank"] += 1;
+			} else if (startsWith(trim(line),"/*")) {
+				if (!endsWith(trim(line),"*/")) {
+					commentBlock = true;
+				}
+				values["comment"] += 1;
+			} else if (startsWith(trim(line),"*/") || endsWith(trim(line),"*/")) {
+				commentBlock = false;
+				values["comment"] += 1;
+			} else if (commentBlock) {
+				values["comment"] += 1;
+			} else {
+				values["code"] += 1;
 			}
-			values["comment"] += 1;
-		} else if (startsWith(trim(line),"*/") || endsWith(trim(line),"*/")) {
-			commentBlock = false;
-			values["comment"] += 1;
-		} else if (commentBlock) {
-			values["comment"] += 1;
-		} else {
-			values["code"] += 1;
 		}
 	}
 	
 	iprintln(values);	
+}
+
+public void calculateVolume() {
+	int linesOfCode = 0;
+	for (style <- stylesheets(stylesheetM3)) {
+		iprintln(style);
+		iprintln("All lines: <calculateAllLines(style)>");
+		iprintln("Lines of code: <calculateLinesOfCode(style,stylesheetM3)>");
+		iprintln("Blank lines: <calculateBlankLines(style)>");
+		iprintln("Lines of comments: <calculateLinesOfComments(stylesheetM3)>");
+	}
+}
+
+public int calculateAllLines(loc style) {
+	return size(readFileLines(style));	
+}
+
+public int calculateLinesOfCode(loc style, M3 stylesheet) {
+	return (calculateAllLines(style)-calculateBlankLines(style)-calculateLinesOfComments(stylesheet));	
+}
+
+public int calculateLinesOfComments(M3 style) {
+	return sum([calculateAllLines(d[1]) | d <- style@documentation]);
+}
+
+public int calculateBlankLines(loc style) {
+	return size([line | line <- readFileLines(style), trim(line) == ""]); 
 }
 
 public void selectorAnalysis() {
