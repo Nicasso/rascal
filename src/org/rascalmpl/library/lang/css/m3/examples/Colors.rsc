@@ -18,18 +18,6 @@ Statement stylesheetAST = createAstFromFile(|home:///workspace/testCSS/sandbox/c
 M3 stylesheetM3 = createM3FromFile(|home:///workspace/testCSS/sandbox/colors.css|);
 
 public void colorsAnalysis() {
-
-	list[Color] colors = [];
-
-	visit (stylesheetAST) {
-		case c:color(int red, int green, int blue, num alpha): {
-			colors += rgb(red, green, blue, toReal(alpha));
-		}
-	};
-	
-	boxes = [];
-	for (c <- sort(colors)) {
-		boxes += box([size(50), fillColor(c), lineColor(c)]);
-	}
-	render(hcat(boxes));
+	list[Color] colors = [rgb(red, green, blue, toReal(alpha)) | /color(int red, int green, int blue, num alpha) := stylesheetAST];
+	render(hcat([box([size(50), fillColor(c), lineColor(c)]) | c <- sort(colors)]));
 }
