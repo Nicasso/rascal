@@ -21,19 +21,16 @@ public void type1Clone() {
 	rel[Statement,Statement] clones = {};
 	
 	visit (stylesheetAST) {
-		case ruleSet(list[Type] selector, list[Declaration] declarations): {
-				parents = getTraversalContext();
-		        parent = parents[1];
-	        iprintln(parents[0]);
+		case rs:ruleSet(list[Type] selector, list[Declaration] declarations): {
 			if (ruleSet(selector, declarations) notin rules) {
-				rules = rules + ruleSet(selector, declarations);
+				rules += ruleSet(selector, declarations);
 			} else {
 				clones += <ruleSet(selector, declarations),ruleSet(selector, declarations)>;
 			}
 		}
 	};
 	
-	//for (clone <- clones) {
-	//	prettyPrint(clone[0]);
-	//}
+	for (clone <- clones) {
+		prettyPrint(clone[0]);
+	}
 }

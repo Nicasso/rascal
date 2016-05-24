@@ -12,6 +12,8 @@ import List;
 import util::Math;
 
 anno str Type@op;
+anno str Statement@comment;
+anno str Declaration@comment;
 
 data Statement
 	// Rulesets
