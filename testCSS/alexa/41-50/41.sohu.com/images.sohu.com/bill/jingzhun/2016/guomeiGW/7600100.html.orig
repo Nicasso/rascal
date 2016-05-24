@@ -1,0 +1,14 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″ />
+    <title>搜狐四通Gome广告</title>    
+</head>
+<body>
+<!-- 将 fourSohuIframe.js 引用放到div下面   div id为dsp_gome_4sohu-->
+<div id="dsp_gome_4sohu"></div>
+<script src="http://dsp.gome.com.cn/static/common/4sohu/fourSohuIframe.js"></script>
+</body>
+</html>

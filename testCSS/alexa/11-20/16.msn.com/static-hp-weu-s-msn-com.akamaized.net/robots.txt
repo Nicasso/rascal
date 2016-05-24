@@ -1,0 +1,110 @@
+﻿User-agent: *
+Disallow: /
+
+User-agent: Googlebot
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: Googlebot-News
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: Googlebot-Image
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: Googlebot-Video
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: Googlebot-Mobile
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: Mediapartners-Google
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: Mediapartners
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: AdsBot-Google
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: Bingbot
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: Adidxbot
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: MSNBot
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
+
+User-agent: BingPreview
+Disallow: /
+Allow: */js
+Allow: */css
+Allow: */jquery
+Allow: */sc
+Allow: */externalscripts
+Allow: */webcore
