@@ -104,8 +104,8 @@ public void declarationAnalysis2() {
 	lrel[str,list[Declaration]] values = [];
 	
 	visit (stylesheetAST) {
-		case declaration(str property, list[Type] declarationValues): {
-			values += <property,[declaration(property, declarationValues)]>;
+		case d:declaration(str property, list[Type] declarationValues): {
+			values += <property,[d]>;
 		}
 	};
 	
@@ -134,12 +134,12 @@ public void declarationAnalysis2() {
 
 public void modifierAnalysis() {
 	visit (stylesheetAST) {
-		case declaration(str property, list[Type] declarationValues): {
-			iprintln(GetTraversalContextNodes());
-			iprintln("KAK");
+		case d:declaration(str property, list[Type] declarationValues): {
+			if (d@modifier?) {
+				print("<trim(ppx(d))> - <d@src>\n");
+			}
 		}
 	};
-		
 }
 
 /**

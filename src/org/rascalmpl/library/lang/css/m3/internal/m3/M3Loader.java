@@ -88,9 +88,6 @@ public class M3Loader extends FileHandler {
 	
 	public IValue createM3FromString(IString contents, ISourceLocation loc, IEvaluatorContext eval) {
 		this.eval = eval;
-		
-		eval.getStdOut().println("createM3FromString");
-		eval.getStdOut().flush();
 
 		StyleSheet style = null;
 		boolean go = true;
@@ -98,7 +95,6 @@ public class M3Loader extends FileHandler {
 		try {
 			style = CSSFactory.parseString(contents.getValue(), null);
 		} catch (CSSException | IOException e) {
-			eval.getStdErr().println("PARSING THE CSS HAS FAILED!");
 			eval.getStdErr().println(e.getMessage());
 			eval.getStdErr().flush();
 			go = false;

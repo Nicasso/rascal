@@ -25,9 +25,6 @@ public class ASTLoader extends FileHandler {
 	public IValue createAstsFromFiles(ISet files, IEvaluatorContext eval) {
 		this.eval = eval;
 
-		eval.getStdOut().println("createAstsFromFiles");
-		eval.getStdOut().flush();
-
 		ISetWriter result = valueFactory.setWriter();
 
 		boolean fastPath = true;
@@ -90,9 +87,6 @@ public class ASTLoader extends FileHandler {
 
 	public IValue createAstFromString(IString contents, ISourceLocation loc, IEvaluatorContext eval) {
 		this.eval = eval;
-		
-		eval.getStdOut().println("createAstFromString");
-		eval.getStdOut().flush();
 
 		StyleSheet style = null;
 		boolean go = true;

@@ -22,15 +22,18 @@ public void type1Clone() {
 	
 	visit (stylesheetAST) {
 		case rs:ruleSet(list[Type] selector, list[Declaration] declarations): {
-			if (ruleSet(selector, declarations) notin rules) {
-				rules += ruleSet(selector, declarations);
+			if (rs notin rules) {
+				rules += rs;
 			} else {
-				clones += <ruleSet(selector, declarations),ruleSet(selector, declarations)>;
+				clones += <rs,rules[indexOf(rules, rs)]>;
 			}
 		}
 	};
 	
 	for (clone <- clones) {
+		println(clone[0]@src);
 		prettyPrint(clone[0]);
+		println(clone[1]@src);
+		prettyPrint(clone[1]);
 	}
 }

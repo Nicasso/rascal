@@ -77,8 +77,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		super(store, new HashMap<>(), loc, eval);
 		this.eval = eval;
 		
-		//eval.getStdOut().println("COOL: "+loc);
-
 		ast = (IValue) rules.accept(this);
 	}
 	
@@ -90,7 +88,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		try {
 			return values.sourceLocation(scheme, authority, path);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

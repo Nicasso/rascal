@@ -14,6 +14,7 @@ import util::Math;
 anno str Type@op;
 anno str Statement@comment;
 anno str Declaration@comment;
+anno str Declaration@modifier;
 
 data Statement
 	// Rulesets
@@ -301,7 +302,13 @@ public str ppx(Statement::ruleViewport(list[Declaration] declarations)) = "<getT
 public str ppx(Statement::comment(str text)) = "<getTabs()><text>\n\n";
 public default str ppx(Statement smth) = "??<smth>??";
 
-public str ppx(Declaration::declaration(str property, list[Type] values)) = "<getTabs()>\t<property>: <ppValues(values)>;\n";
+public str ppx(d:Declaration::declaration(str property, list[Type] values)) {
+	if (d@modifier?) {
+ 		return "<getTabs()>\t<property>: <ppValues(values)> !<d@modifier>;\n";
+ 	} else {
+ 		return "<getTabs()>\t<property>: <ppValues(values)>;\n";
+ 	}
+}
 public default str ppx(Declaration smth) = "??<smth>??";
 
 public str ppx(Expression::selector(list[Type] simpleSelectors)) = "<ppSelectors(simpleSelectors)>";
