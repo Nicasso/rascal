@@ -15,39 +15,7 @@ import util::Math;
 Statement stylesheetAST = createAstFromFile(|home:///workspace/testCSS/sandbox/amazon.css|);
 M3 stylesheetM3 = createM3FromFile(|home:///workspace/testCSS/sandbox/amazon.css|);
 
-public void basicAnalysis() {
-	
-	styles = stylesheets(stylesheetM3);
-	
-	map[str,int] values = ("code":0, "comment":0, "blank":0, "total":0);
-	bool commentBlock = false;
-	for (style <- styles) {
-		for (line <- readFileLines(style)) {	
-			values["total"] += 1;
-		
-			if (trim(line) == "") {
-				values["blank"] += 1;
-			} else if (startsWith(trim(line),"/*")) {
-				if (!endsWith(trim(line),"*/")) {
-					commentBlock = true;
-				}
-				values["comment"] += 1;
-			} else if (startsWith(trim(line),"*/") || endsWith(trim(line),"*/")) {
-				commentBlock = false;
-				values["comment"] += 1;
-			} else if (commentBlock) {
-				values["comment"] += 1;
-			} else {
-				values["code"] += 1;
-			}
-		}
-	}
-	
-	iprintln(values);	
-}
-
 public void calculateVolume() {
-	int linesOfCode = 0;
 	for (style <- stylesheets(stylesheetM3)) {
 		iprintln(style);
 		iprintln("All lines: <calculateAllLines(style)>");
@@ -247,25 +215,6 @@ public void universality() {
 	real uni = toReal(values["all"]) / toReal(values["elements"]); 
 	
 	iprintln(uni);
-}
-
-// From the paper: Discovering Refactoring Opportunities in Cascading Style Sheets
-
-public void type1Clone() {	
-	list[Statement] rules = [];
-	rel[Statement,Statement] clones = {};
-	
-	visit (stylesheetM3) {
-		case ruleSet(list[Type] selector, list[Declaration] declarations): {
-			if (ruleSet(selector, declarations) notin rules) {
-				rules = rules + ruleSet(selector, declarations);
-			} else {
-				clones += <ruleSet(selector, declarations),ruleSet(selector, declarations)>;
-			}
-		}
-	};
-	
-	iprintln(clones);
 }
 
 // From the thesis: The A-B*-A Pattern of Undoing Style in Cascading Style Sheets
