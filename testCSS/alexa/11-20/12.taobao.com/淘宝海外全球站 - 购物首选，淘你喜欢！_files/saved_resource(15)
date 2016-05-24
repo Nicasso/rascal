@@ -1,0 +1,1638 @@
+/**
+ * Generate by node-kpc
+ */
+/**
+ * @fileOverview 基类模块
+ * @author 莫争 <gaoli.gl@taobao.com>
+ * @version 2.0
+ */
+KISSY.add('discover/c/base/module', [
+    'node',
+    'event'
+], function (S, require) {
+    var Node = require('node'), Event = require('event');
+    var $ = S.all;
+    /**
+     * Module
+     */
+    var Module = function () {
+        this.bindEvents();
+    };
+    /**
+     * 事件绑定
+     */
+    Module.prototype.bindEvents = function () {
+        var self = this;
+        if (!self.el || !self.events) {
+            return;
+        }
+        S.each(self.events, function (handler, key) {
+            if (!key || !handler || !~key.indexOf(' ')) {
+                return;
+            }
+            var arr = key.replace(' ', '^').split('^'), type = arr[0], selector = arr[1], handler = self[handler] || handler;
+            $(self.el).delegate(type, selector, handler, self);
+        });
+    };
+    /**
+     * 接口地址
+     * @param  {String} file
+     * @return {String}
+     */
+    Module.prototype.getAjaxUrl = function (file) {
+        var isDaily = new RegExp('daily.taobao.net').test(location.href.split('?')[0]);
+        var path = isDaily && '//www.daily.taobao.net/' || '//www.taobao.com/';
+        return path + '2014/ajax/' + file + '.php';
+    };
+    /**
+     * 获取勾子
+     * @param  {String} id
+     * @return {String}
+     */
+    Module.prototype.getTMSHook = function (id) {
+        var hook = id.split('_');
+        S.each(hook, function (item, i) {
+            hook[i] = item.substring(0, 1).toUpperCase() + item.substring(1);
+        });
+        return '#J_' + hook.join('');
+    };
+    /**
+     * 初始化判断
+     * @param  {String} id
+     * @return {Boolean}
+     */
+    Module.prototype.isInit = function (id) {
+        var modules = FP.modules;
+        if (modules[id] && modules[id].init === true) {
+            return true;
+        } else {
+            modules[id] = {};
+            modules[id]['init'] = true;
+            return false;
+        }
+    };
+    /**
+     * 数据打点
+     * @param {String} src
+     */
+    Module.prototype.trackPoint = function (src) {
+        var load = FP['load'], trackQueue = FP['trackQueue'];
+        /**
+         * new Image() 打点
+         * @param {String} src
+         */
+        var loadImage = function (src) {
+            var img = new Image(), id = '_img_' + Math.random();
+            // 添加全局引用
+            window[id] = img;
+            // 删除全局引用
+            img.onload = img.onerror = function () {
+                window[id] = null;
+            };
+            // 赋值图片地址
+            img.src = src;
+        };
+        src && trackQueue.push(src);
+        if (load) {
+            // 发送打点数据
+            S.each(trackQueue, function (src) {
+                loadImage(src);
+            });
+            // 清空打点列队
+            trackQueue.length = 0;
+        }
+    };
+    /**
+     * 加载广告
+     * @param {String} pid
+     */
+    Module.prototype.loadTanxAd = function (pid) {
+        tanx_ssp_lazy = window.tanx_ssp_lazy || [];
+        tanx_ssp_lazy.push(pid);
+    };
+    /**
+     * 读取tanx广告
+     * //wiki.ux.alibaba-inc.com/doku.php/team:bj:product:ad-engine:ad-tanxssp:taobaoindexreqopz
+     * @author 剑平
+     * @param pid 资源位id
+     * @param isToruk 是否使用toruk.tanx.com域名
+     *
+     */
+    Module.prototype.loadTanx = function (pid, isToruk) {
+        var win = window;
+        var o = {
+                i: pid,
+                sd: 'ecpm.tanx.com'
+            };
+        //有些资源位（比如首焦右侧第一张图）比较特殊需要配置域名
+        if (isToruk) {
+            o.sd = 'toruk.tanx.com';
+        }
+        if (win.tanxssp_show) {
+            win.tanxssp_show(o);
+            return;
+        }
+        win.tanx_ssp_onload = win.tanx_ssp_onload || [];
+        win.tanx_ssp_onload.push(o);
+        S.getScript('//cdn.tanx.com/t/tanxssp.js', function () {
+        }, 'gbk');
+    };
+    /**
+     * 黄金令箭埋点
+     * @param id
+     * @param params 属性串
+     */
+    Module.prototype.goldlog = function (id, params, token) {
+        if (!window.goldlog)
+            return false;
+        if (goldlog.record) {
+            if (params) {
+                params = S.param(params);
+            }
+            goldlog.record('/tbindex.2014.' + id, '', params || '', token || '');
+        }
+    };
+    //新的黄金令箭方法
+    Module.prototype.trace = function (id, key) {
+        if (!window.goldlog)
+            return false;
+        if (!key)
+            key = 'H46896569';
+        goldlog.trace && goldlog.trace('/tbindex.2014.' + id, '', '', key);
+    };
+    return Module;
+});/**
+ * Generate by node-kpc
+ */
+/** Compiled By KISSY-XTemplate kg-4.2.1 */
+/*jshint quotmark:false, loopfunc:true, indent:false, asi:true, unused:false, boss:true, sub:true*/
+KISSY.add('discover/c/discover/tpl/goods.xtpl', function (S, require, exports, module) {
+    var goods = function anonymous(undefined) {
+        var t;
+        var t0;
+        var t1;
+        var t2;
+        var t3;
+        var t4;
+        var t5;
+        var t6;
+        var t7;
+        var t8;
+        var t9;
+        var tpl = this;
+        var root = tpl.root;
+        var buffer = tpl.buffer;
+        var scope = tpl.scope;
+        var runtime = tpl.runtime;
+        var name = tpl.name;
+        var pos = tpl.pos;
+        var data = scope.data;
+        var affix = scope.affix;
+        var nativeCommands = root.nativeCommands;
+        var utils = root.utils;
+        var callFnUtil = utils['callFn'];
+        var callDataFnUtil = utils['callDataFn'];
+        var callCommandUtil = utils['callCommand'];
+        var rangeCommand = nativeCommands['range'];
+        var foreachCommand = nativeCommands['foreach'];
+        var forinCommand = nativeCommands['forin'];
+        var eachCommand = nativeCommands['each'];
+        var withCommand = nativeCommands['with'];
+        var ifCommand = nativeCommands['if'];
+        var setCommand = nativeCommands['set'];
+        var includeCommand = nativeCommands['include'];
+        var parseCommand = nativeCommands['parse'];
+        var extendCommand = nativeCommands['extend'];
+        var blockCommand = nativeCommands['block'];
+        var macroCommand = nativeCommands['macro'];
+        var debuggerCommand = nativeCommands['debugger'];
+        function func1(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n  <div class="two11"></div>\n  ';
+            return buffer;
+        }
+        function func9(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\u8d2d\u7269\u5238\u53ef\u62b5<em class="bold">';
+            var id10 = (t = affix.hongbao) !== undefined ? t : (t = data.hongbao) !== undefined ? t : scope.resolveLooseUp(['hongbao']);
+            buffer = buffer.writeEscaped(id10);
+            buffer.data += '\u5143</em>';
+            return buffer;
+        }
+        function func11(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '<em>\u53ef\u4f7f\u75281212\u8d2d\u7269\u5238</em>';
+            return buffer;
+        }
+        function func8(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n            <div class="item-comment">\u53c2\u52a01212\u5927\u4fc3,';
+            pos.line = 15;
+            var id12 = (t = affix.hongbao) !== undefined ? t : (t = data.hongbao) !== undefined ? t : scope.resolveLooseUp(['hongbao']);
+            var exp13 = id12;
+            exp13 = id12 > 5;
+            buffer = ifCommand.call(tpl, scope, {
+                params: [exp13],
+                fn: func9,
+                inverse: func11
+            }, buffer);
+            buffer.data += '</div>\n            ';
+            return buffer;
+        }
+        function func14(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n            <div class="item-comment">';
+            pos.line = 17;
+            var id15 = (t = affix.reason) !== undefined ? t : (t = data.reason) !== undefined ? t : scope.resolveLooseUp(['reason']);
+            buffer = buffer.writeEscaped(id15);
+            buffer.data += '</div>\n            ';
+            return buffer;
+        }
+        function func7(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n            ';
+            pos.line = 14;
+            pos.line = 14;
+            var id16 = (t = affix.hongbao) !== undefined ? t : (t = data.hongbao) !== undefined ? t : scope.resolveLooseUp(['hongbao']);
+            buffer = ifCommand.call(tpl, scope, {
+                params: [id16],
+                fn: func8,
+                inverse: func14
+            }, buffer);
+            buffer.data += '\n          <div class="item-sell-count">\u5df2\u552e';
+            pos.line = 19;
+            var id17 = (t = affix.monthSellCount) !== undefined ? t : (t = data.monthSellCount) !== undefined ? t : scope.resolveLooseUp(['monthSellCount']);
+            buffer = buffer.writeEscaped(id17);
+            buffer.data += '\u4ef6</div>\n          ';
+            return buffer;
+        }
+        function func18(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n            <div class="item-comment">';
+            pos.line = 21;
+            var id19 = (t = affix.reason) !== undefined ? t : (t = data.reason) !== undefined ? t : scope.resolveLooseUp(['reason']);
+            buffer = buffer.writeEscaped(id19);
+            buffer.data += '</div>\n            <p class="item-count">';
+            pos.line = 22;
+            var callRet21;
+            callRet21 = callFnUtil(tpl, scope, { params: ['COLLECT'] }, buffer, ['lang']);
+            var id20 = callRet21;
+            buffer = buffer.writeEscaped(id20);
+            buffer.data += ' <em>';
+            var id22 = (t = affix.ordercost) !== undefined ? t : (t = data.ordercost) !== undefined ? t : scope.resolveLooseUp(['ordercost']);
+            buffer = buffer.writeEscaped(id22);
+            buffer.data += '</em></p>\n          ';
+            return buffer;
+        }
+        function func0(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n<div class="discover-item J_DiscoverItem J_DItem">\n  ';
+            pos.line = 3;
+            var id2 = (t = affix.promotional) !== undefined ? t : (t = data.promotional) !== undefined ? t : scope.resolveLooseUp(['promotional']);
+            buffer = ifCommand.call(tpl, scope, {
+                params: [id2],
+                fn: func1
+            }, buffer);
+            buffer.data += '\n    <a href="';
+            pos.line = 6;
+            var id3 = (t = affix.url) !== undefined ? t : (t = data.url) !== undefined ? t : scope.resolveLooseUp(['url']);
+            buffer = buffer.writeEscaped(id3);
+            buffer.data += '" title="';
+            var id4 = (t = affix.title) !== undefined ? t : (t = data.title) !== undefined ? t : scope.resolveLooseUp(['title']);
+            buffer = buffer.writeEscaped(id4);
+            buffer.data += '">\n        <div class="discover-img-wrapper">\n            <img src="';
+            pos.line = 8;
+            var id5 = (t = affix.pictUrl) !== undefined ? t : (t = data.pictUrl) !== undefined ? t : scope.resolveLooseUp(['pictUrl']);
+            buffer = buffer.writeEscaped(id5);
+            buffer.data += '" />\n        </div>\n\n        <div class="item-desc">\n            <h4>';
+            pos.line = 12;
+            var id6 = (t = affix.title) !== undefined ? t : (t = data.title) !== undefined ? t : scope.resolveLooseUp(['title']);
+            buffer = buffer.writeEscaped(id6);
+            buffer.data += '</h4>\n          ';
+            pos.line = 13;
+            pos.line = 13;
+            var id23 = (t = affix.monthSellCount) !== undefined ? t : (t = data.monthSellCount) !== undefined ? t : scope.resolveLooseUp(['monthSellCount']);
+            buffer = ifCommand.call(tpl, scope, {
+                params: [id23],
+                fn: func7,
+                inverse: func18
+            }, buffer);
+            buffer.data += '\n        </div>\n    </a>\n    <div class="preference-trigger-wrapper">\n        <ul>\n            <li>\n                <a data-spm-click="gostr=/tbindex;locaid=d13"  data-id="';
+            pos.line = 29;
+            var id24 = (t = affix.id) !== undefined ? t : (t = data.id) !== undefined ? t : scope.resolveLooseUp(['id']);
+            buffer = buffer.writeEscaped(id24);
+            buffer.data += '" data-category="';
+            var id25 = (t = affix.category_id) !== undefined ? t : (t = data.category_id) !== undefined ? t : scope.resolveLooseUp(['category_id']);
+            buffer = buffer.writeEscaped(id25);
+            buffer.data += '" href="//favorite.taobao.com/popup/add_collection.htm?id=';
+            var id26 = (t = affix.id) !== undefined ? t : (t = data.id) !== undefined ? t : scope.resolveLooseUp(['id']);
+            buffer = buffer.writeEscaped(id26);
+            buffer.data += '&_tb_token_=';
+            var id27 = (t = affix._tb_token_) !== undefined ? t : (t = data._tb_token_) !== undefined ? t : scope.resolveLooseUp(['_tb_token_']);
+            buffer = buffer.writeEscaped(id27);
+            buffer.data += '&itemtype=1" class="J_TDialogTrigger">\u6536\u85cf</a>\n            </li>\n            <li>\n                <a data-spm-click="gostr=/tbindex;locaid=d14" href="" data-id="';
+            pos.line = 32;
+            var id28 = (t = affix.id) !== undefined ? t : (t = data.id) !== undefined ? t : scope.resolveLooseUp(['id']);
+            buffer = buffer.writeEscaped(id28);
+            buffer.data += '" data-category="';
+            var id29 = (t = affix.category_id) !== undefined ? t : (t = data.category_id) !== undefined ? t : scope.resolveLooseUp(['category_id']);
+            buffer = buffer.writeEscaped(id29);
+            buffer.data += '" class="J_DelDiscoverItem">';
+            var callRet31;
+            callRet31 = callFnUtil(tpl, scope, { params: ['NOT_LIKE'] }, buffer, ['lang']);
+            var id30 = callRet31;
+            buffer = buffer.writeEscaped(id30);
+            buffer.data += '}</a>\n            </li>\n            <li>\n                <a data-spm-click="gostr=/tbindex;locaid=d15" href="" class="J_ShowPreference show-preference">';
+            pos.line = 35;
+            var callRet33;
+            callRet33 = callFnUtil(tpl, scope, { params: ['SELF_CONFIG'] }, buffer, ['lang']);
+            var id32 = callRet33;
+            buffer = buffer.writeEscaped(id32);
+            buffer.data += '</a>\n            </li>\n        </ul>\n        <div class="bottom-border"></div>\n    </div>\n</div>\n';
+            return buffer;
+        }
+        function func39(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n      <div class="two11-mini"></div>\n      ';
+            return buffer;
+        }
+        function func36(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n    <a href="';
+            pos.line = 45;
+            var id37 = (t = affix.url) !== undefined ? t : (t = data.url) !== undefined ? t : scope.resolveLooseUp(['url']);
+            buffer = buffer.writeEscaped(id37);
+            buffer.data += '" class="mod wall-item">\n        <img src="';
+            pos.line = 46;
+            var id38 = (t = affix.pictUrl) !== undefined ? t : (t = data.pictUrl) !== undefined ? t : scope.resolveLooseUp(['pictUrl']);
+            buffer = buffer.writeEscaped(id38);
+            buffer.data += '" alt="" />\n      ';
+            pos.line = 47;
+            var id40 = (t = affix.promotional) !== undefined ? t : (t = data.promotional) !== undefined ? t : scope.resolveLooseUp(['promotional']);
+            buffer = ifCommand.call(tpl, scope, {
+                params: [id40],
+                fn: func39
+            }, buffer);
+            buffer.data += '\n        <div class="wall-item-desc">\n            <p>';
+            pos.line = 51;
+            var id41 = (t = affix.title) !== undefined ? t : (t = data.title) !== undefined ? t : scope.resolveLooseUp(['title']);
+            buffer = buffer.writeEscaped(id41);
+            buffer.data += '</p>\n            <div class="item-count">\u2605';
+            pos.line = 52;
+            var id42 = (t = affix.ordercost) !== undefined ? t : (t = data.ordercost) !== undefined ? t : scope.resolveLooseUp(['ordercost']);
+            buffer = buffer.writeEscaped(id42);
+            buffer.data += '</div>\n        </div>\n    </a>\n    ';
+            return buffer;
+        }
+        function func35(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n<div class="wall J_Wall clearfix">\n    ';
+            pos.line = 44;
+            pos.line = 44;
+            var id43 = (t = affix.gridData) !== undefined ? t : (t = data.gridData) !== undefined ? t : scope.resolveLooseUp(['gridData']);
+            buffer = eachCommand.call(tpl, scope, {
+                params: [id43],
+                fn: func36
+            }, buffer);
+            buffer.data += '\n</div>\n';
+            return buffer;
+        }
+        function func45(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '';
+            return buffer;
+        }
+        function func46(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n<a class="preference-btn J_ShowPreference J_TopShowPreference" href="" data-spm-click="gostr=/tbindex;locaid=d16">';
+            pos.line = 59;
+            var callRet48;
+            callRet48 = callFnUtil(tpl, scope, { params: ['BOOK_HOBBY'] }, buffer, ['lang']);
+            var id47 = callRet48;
+            buffer = buffer.writeEscaped(id47);
+            buffer.data += '</a>\n';
+            return buffer;
+        }
+        buffer.data += '';
+        pos.line = 1;
+        var id34 = (t = affix.auctions) !== undefined ? t : (t = data.auctions) !== undefined ? t : scope.resolveLooseUp(['auctions']);
+        buffer = eachCommand.call(tpl, scope, {
+            params: [id34],
+            fn: func0
+        }, buffer);
+        buffer.data += '\n';
+        pos.line = 42;
+        pos.line = 42;
+        var id44 = (t = affix.gridData) !== undefined ? t != null ? t0 = t.length : t : (t = data.gridData) !== undefined ? t != null ? t0 = t.length : t : scope.resolveLooseUp([
+                'gridData',
+                'length'
+            ]);
+        buffer = ifCommand.call(tpl, scope, {
+            params: [id44],
+            fn: func35
+        }, buffer);
+        buffer.data += '\n';
+        pos.line = 58;
+        pos.line = 58;
+        var id49 = (t = affix.noBtn) !== undefined ? t : (t = data.noBtn) !== undefined ? t : scope.resolveLooseUp(['noBtn']);
+        buffer = ifCommand.call(tpl, scope, {
+            params: [id49],
+            fn: func45,
+            inverse: func46
+        }, buffer);
+        return buffer;
+    };
+    goods.TPL_NAME = module.name;
+    goods.version = 'kg';
+    return goods;
+});
+/**
+ * Generate by node-kpc
+ */
+/** Compiled By KISSY-XTemplate kg-4.2.1 */
+/*jshint quotmark:false, loopfunc:true, indent:false, asi:true, unused:false, boss:true, sub:true*/
+KISSY.add('discover/c/discover/tpl/shop.xtpl', function (S, require, exports, module) {
+    var shop = function anonymous(undefined) {
+        var t;
+        var t0;
+        var t1;
+        var t2;
+        var t3;
+        var t4;
+        var t5;
+        var t6;
+        var t7;
+        var t8;
+        var t9;
+        var tpl = this;
+        var root = tpl.root;
+        var buffer = tpl.buffer;
+        var scope = tpl.scope;
+        var runtime = tpl.runtime;
+        var name = tpl.name;
+        var pos = tpl.pos;
+        var data = scope.data;
+        var affix = scope.affix;
+        var nativeCommands = root.nativeCommands;
+        var utils = root.utils;
+        var callFnUtil = utils['callFn'];
+        var callDataFnUtil = utils['callDataFn'];
+        var callCommandUtil = utils['callCommand'];
+        var rangeCommand = nativeCommands['range'];
+        var foreachCommand = nativeCommands['foreach'];
+        var forinCommand = nativeCommands['forin'];
+        var eachCommand = nativeCommands['each'];
+        var withCommand = nativeCommands['with'];
+        var ifCommand = nativeCommands['if'];
+        var setCommand = nativeCommands['set'];
+        var includeCommand = nativeCommands['include'];
+        var parseCommand = nativeCommands['parse'];
+        var extendCommand = nativeCommands['extend'];
+        var blockCommand = nativeCommands['block'];
+        var macroCommand = nativeCommands['macro'];
+        var debuggerCommand = nativeCommands['debugger'];
+        function func2(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n                    <img src="//g.alicdn.com/s.gif" style="background-image:url(';
+            pos.line = 7;
+            var id3 = (t = affix.pictUrl) !== undefined ? t : (t = data.pictUrl) !== undefined ? t : scope.resolveLooseUp(['pictUrl']);
+            buffer = buffer.writeEscaped(id3);
+            buffer.data += ')" />\n                ';
+            return buffer;
+        }
+        function func10(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n                <li class="mod wall-item">\n                    <a href="';
+            pos.line = 19;
+            var id11 = (t = affix.url) !== undefined ? t : (t = data.url) !== undefined ? t : scope.resolveLooseUp(['url']);
+            buffer = buffer.writeEscaped(id11);
+            buffer.data += '">\n                        <img src="';
+            pos.line = 20;
+            var id12 = (t = affix.pictUrl) !== undefined ? t : (t = data.pictUrl) !== undefined ? t : scope.resolveLooseUp(['pictUrl']);
+            buffer = buffer.writeEscaped(id12);
+            buffer.data += '" alt="';
+            var id13 = (t = affix.title) !== undefined ? t : (t = data.title) !== undefined ? t : scope.resolveLooseUp(['title']);
+            buffer = buffer.writeEscaped(id13);
+            buffer.data += '" />\n                        <div class="wall-item-desc">\n                            <p>';
+            pos.line = 22;
+            var id14 = (t = affix.title) !== undefined ? t : (t = data.title) !== undefined ? t : scope.resolveLooseUp(['title']);
+            buffer = buffer.writeEscaped(id14);
+            buffer.data += '</p>\n                            <div class="item-count">\u2605 ';
+            pos.line = 23;
+            var id15 = (t = affix.collectCount) !== undefined ? t : (t = data.collectCount) !== undefined ? t : scope.resolveLooseUp(['collectCount']);
+            buffer = buffer.writeEscaped(id15);
+            buffer.data += '</div>\n                        </div>\n                    </a>\n                </li>\n            ';
+            return buffer;
+        }
+        function func9(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n        <ul class="wall J_Wall clearfix">\n            ';
+            pos.line = 17;
+            pos.line = 17;
+            var id16 = (t = affix.subItems) !== undefined ? t : (t = data.subItems) !== undefined ? t : scope.resolveLooseUp(['subItems']);
+            buffer = eachCommand.call(tpl, scope, {
+                params: [id16],
+                fn: func10
+            }, buffer);
+            buffer.data += '\n        </ul>\n        ';
+            return buffer;
+        }
+        function func0(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n    <div class="shop">\n        <a href="';
+            pos.line = 4;
+            var id1 = (t = affix.url) !== undefined ? t : (t = data.url) !== undefined ? t : scope.resolveLooseUp(['url']);
+            buffer = buffer.writeEscaped(id1);
+            buffer.data += '" class="shop-title">\n            <div class="fpicon shop-logo s-discover-logo">\n                ';
+            pos.line = 6;
+            pos.line = 6;
+            var id4 = (t = affix.pictUrl) !== undefined ? t : (t = data.pictUrl) !== undefined ? t : scope.resolveLooseUp(['pictUrl']);
+            buffer = ifCommand.call(tpl, scope, {
+                params: [id4],
+                fn: func2
+            }, buffer);
+            buffer.data += '\n            </div>\n            <div class="shop-desc">\n                <h4>';
+            pos.line = 11;
+            var id5 = (t = affix.shopTitle) !== undefined ? t : (t = data.shopTitle) !== undefined ? t : scope.resolveLooseUp(['shopTitle']);
+            buffer = buffer.writeEscaped(id5);
+            buffer.data += '</h4>\n                <p>';
+            pos.line = 12;
+            var callRet7;
+            callRet7 = callFnUtil(tpl, scope, { params: ['MAIN_MANAGER'] }, buffer, ['lang']);
+            var id6 = callRet7;
+            buffer = buffer.writeEscaped(id6);
+            buffer.data += '\uff1a';
+            var id8 = (t = affix.industry) !== undefined ? t : (t = data.industry) !== undefined ? t : scope.resolveLooseUp(['industry']);
+            buffer = buffer.writeEscaped(id8);
+            buffer.data += '</p>\n            </div>\n        </a>\n        ';
+            pos.line = 15;
+            pos.line = 15;
+            var id17 = (t = affix.xindex) !== undefined ? t : (t = data.xindex) !== undefined ? t : scope.resolveLooseUp(['xindex']);
+            var exp18 = id17;
+            exp18 = id17 < 3;
+            buffer = ifCommand.call(tpl, scope, {
+                params: [exp18],
+                fn: func9
+            }, buffer);
+            buffer.data += '\n    </div>\n    ';
+            return buffer;
+        }
+        buffer.data += '<div class="hidden J_ItemHover">\n    ';
+        pos.line = 2;
+        pos.line = 2;
+        var id19 = (t = affix.shops) !== undefined ? t : (t = data.shops) !== undefined ? t : scope.resolveLooseUp(['shops']);
+        buffer = eachCommand.call(tpl, scope, {
+            params: [id19],
+            fn: func0
+        }, buffer);
+        buffer.data += '\n</div>';
+        return buffer;
+    };
+    shop.TPL_NAME = module.name;
+    shop.version = 'kg';
+    return shop;
+});
+/**
+ * Generate by node-kpc
+ */
+/**
+ * @fileOverview 发现接口调用
+ * @author 剑平
+ */
+KISSY.add('discover/c/discover/index', [
+    'node',
+    'event',
+    'io',
+    'json',
+    'kg/xtemplate/4.3.0/runtime',
+    '../base/i18n',
+    './tpl/goods.xtpl',
+    './tpl/shop.xtpl',
+    'gallery/offline/1.1/',
+    '../loadtms/index'
+], function (S, require) {
+    var Node = require('node');
+    var Event = require('event');
+    var IO = require('io');
+    var JSON = require('json');
+    var XTemplate = require('kg/xtemplate/4.3.0/runtime');
+    var i18n = require('../base/i18n');
+    var goodsTpl = require('./tpl/goods.xtpl');
+    var shopTpl = require('./tpl/shop.xtpl');
+    var Offline = require('gallery/offline/1.1/');
+    loadTms = require('../loadtms/index');
+    var $ = Node.all;
+    var DISCOVER_SHOP_DATA = 'discover-shop-data';
+    var DISCOVER_GOODS_DATA = 'discover-goods-data';
+    var DISCOVER_SHOP_REF = 'discover-shop-ref';
+    var DISCOVER_GOODS_REF = 'discover-goods-ref';
+    //1天过期
+    var OVERDUE = 86400000;
+    /**
+     * 用于图片拼接cdn路径
+     * @param str
+     * @param size
+     * @returns {string}
+     */
+    function randomImgUrl(str, size) {
+        if (!str)
+            return '';
+        if (!size)
+            size = '160x160';
+        //var random = parseInt(Math.random() * 4 + 1);
+        return '//img.alicdn.com/tps/' + str + '_' + size + '.jpg';
+    }
+    ;
+    var Discover = function (config) {
+        var self = this;
+        var target = config.target;
+        if (!config || !config.target)
+            return false;
+        config.target = $(target);
+        self.changeTarget = config.target.next('.J_ChangeDiscover');
+        S.mix(config, config.type == 'goods' && Discover.goods_config || Discover.shop_config);
+        S.mix(self, config);
+        self.init();
+    };
+    S.mix(Discover, {
+        goods_config: {
+            api: '//tui.taobao.com/recommend?appid=406&type=new',
+            tpl: goodsTpl
+        },
+        shop_config: {
+            api: '//tui.taobao.com/recommend?appid=1671',
+            tpl: shopTpl
+        }
+    });
+    S.augment(Discover, Event.Target);
+    S.augment(Discover, {
+        init: function () {
+            var self = this;
+            //用于本地缓存数据
+            self.offline = new Offline();
+            self.load(1);
+            var $changeTarget = self.changeTarget;
+            if ($changeTarget.length) {
+                $changeTarget.on('click', function () {
+                    var offline = self.offline;
+                    //刷新次数
+                    var nReflesh = offline.getItem(DISCOVER_GOODS_REF);
+                    if (self.type == 'shop') {
+                        nReflesh = offline.getItem(DISCOVER_SHOP_REF);
+                    }
+                    if (!nReflesh)
+                        nReflesh = 0;
+                    nReflesh++;
+                    if (self.type == 'goods') {
+                        offline.setItem(DISCOVER_GOODS_REF, nReflesh.toString(), OVERDUE);
+                    } else {
+                        offline.setItem(DISCOVER_SHOP_REF, nReflesh.toString(), OVERDUE);
+                    }
+                    self.nReflesh = nReflesh;
+                    self.load(nReflesh);
+                    self.fire('change');
+                });
+                $changeTarget.on('mouseenter', function () {
+                    $changeTarget.children('s').addClass('s-change');
+                }).on('mouseleave', function () {
+                    $changeTarget.children('s').removeClass('s-change');
+                });
+            }
+        },
+        load: function (nReflesh) {
+            var self = this;
+            var api = self.api;
+            var params = {
+                    nReflesh: nReflesh,
+                    count: this.len,
+                    t: S.now()
+                };
+            if (i18n.localLang == 'zh-tw') {
+                params['_lang'] = 'zh_CN:TB-GBK';
+            }
+            new IO({
+                type: 'get',
+                url: api,
+                data: params,
+                timeout: 10,
+                dataType: 'jsonp'
+            }).then(function (ev) {
+                var result = ev[0];
+                if (!result)
+                    return false;
+                //系统挂了，进入容错逻辑
+                if (result.status === 'fail') {
+                    self._afterFail();    // self._goldlog(1);
+                } else {
+                    result = self._mapData(result);
+                    self.render(result);
+                }
+            }).fail(function (ev) {
+                self._afterFail();    // self._goldlog(1);
+            });
+        },
+        _mapData: function (result) {
+            var self = this;
+            var type = self.type;
+            var offline = self.offline;
+            if (type == 'goods') {
+                result = self._goodsMap(result);
+                offline.setItem(DISCOVER_GOODS_DATA, JSON.stringify(result));
+            } else {
+                result = self._shopMap(result);
+                offline.setItem(DISCOVER_SHOP_DATA, JSON.stringify(result));
+            }
+            return result;
+        },
+        _afterFail: function () {
+            var self = this;
+            var result = self._loadCache();
+            var type = self.type;
+            //如果是商品
+            if (type == 'goods') {
+                if (!result || !result.auctions.length) {
+                    self._loadTms();
+                } else {
+                    self.render(result);
+                }
+            } else {
+                if (!result) {
+                    self._loadTms();
+                } else {
+                    self.render(result);
+                }
+            }
+        },
+        _loadCache: function () {
+            var self = this;
+            var type = self.type;
+            var result = {};
+            var offline = self.offline;
+            if (type == 'goods') {
+                result = offline.getItem(DISCOVER_GOODS_DATA);
+            } else {
+                result = offline.getItem(DISCOVER_SHOP_DATA);
+            }
+            if (S.isString(result)) {
+                result = JSON.parse(result);
+            }
+            return result;
+        },
+        _loadTms: function () {
+            var self = this;
+            var type = self.type;
+            loadTms([type]).then(function (ev) {
+                var result = ev.result[0];
+                S.log('\u53d1\u73b0\u63a5\u53e3\u6302\u4e86\uff0c\u8bfb\u53d6TMS\u7684\u515c\u5e95\u5185\u5bb9\uff01');
+                result = result.cont;
+                if (!result)
+                    return false;
+                if (type == 'shop') {
+                    S.each(result.shops, function (shop, i) {
+                        var subItems = shop.subItems;
+                        result.shops[i] = shop['0'];
+                        result.shops[i].subItems = subItems;
+                    });
+                }
+                if (type == 'goods') {
+                    S.each(result.auctions, function (goods, i) {
+                        var url = goods.url;
+                        result.auctions[i].url = '//item.taobao.com/item.htm?id=' + url;
+                    });
+                    result.result = result.auctions;
+                }
+                result = self._mapData(result);
+                self.render(result);
+            });
+        },
+        _goodsMap: function (result) {
+            var self = this;
+            var auctions = result.result;
+            var newAuctions = [];
+            var gridData = [];
+            var listLen = self.listLength || 9;
+            //console.log(listLen);
+            var token = $('#J_Tb_Token').val();
+            S.each(auctions, function (item, i) {
+                var pictUrl = item.pict_url;
+                //列表展示数据
+                if (i < listLen) {
+                    item.pictUrl = randomImgUrl(pictUrl);
+                    newAuctions.push(item);
+                } else {
+                    item.pictUrl = randomImgUrl(pictUrl);
+                    //格子展示数据
+                    gridData.push(item);
+                }
+                item._tb_token_ = token;
+            });
+            return {
+                auctions: newAuctions,
+                gridData: gridData
+            };
+        },
+        _shopMap: function (result) {
+            if (!result)
+                return result;
+            var auctions = result.shops;
+            S.each(auctions, function (item) {
+                item.url = '//shop' + item.shopId + '.taobao.com/shop/view_shop.htm' + '?scm=' + item.scm || '';
+                var pictUrl = item.pictUrl;
+                if (pictUrl)
+                    item.pictUrl = randomImgUrl(pictUrl, '60x60');
+                //店铺的商品推荐
+                S.each(item.subItems, function (goods) {
+                    goods.pictUrl = randomImgUrl(goods.pictUrl);
+                    goods.url = '//item.taobao.com/item.htm?id=' + goods.itemId + '&scm=' + goods.scm || '';
+                });
+                if (item.impression) {
+                    item.comments = item.impression.split(':');
+                    item.comments = S.filter(item.comments, function (item, i) {
+                        return i < 3;
+                    });
+                }
+            });
+            return result;
+        },
+        render: function (data) {
+            if (!data)
+                return false;
+            var self = this;
+            //隐藏loading
+            self.displayLoading(false);
+            var tpl = self.tpl;
+            var $target = self.target;
+            var html = new XTemplate(tpl, { commands: { lang: i18n.lang } }).render(data);
+            //已经存在内容，先予以隐藏
+            var $content = $target.children();
+            $content.length && $content.fadeOut(0.3);
+            var type = self.type;
+            if (type == 'goods') {
+                //发现好货与我的足迹高度存在联动
+                //处理overflow防止出现重新渲染，因为高度改变，高度会溢出下的问题
+                $target.css('overflow', 'hidden');
+            }
+            //渲染内容到页面
+            $target.html(html).children().fadeIn(0.3);
+            self.fire('render');
+            return self;
+        },
+        displayLoading: function (isShow) {
+            var self = this;
+            var $target = self.target;
+            $target[isShow && 'addClass' || 'removeClass']('loading');
+            return self;
+        },
+        _goldlog: function (errType) {
+        },
+        addItem: function (data) {
+            var self = this;
+            var $target = self.target;
+            //九宫格图片展示容器
+            var $wall = $target.all('.J_Wall');
+            data = self._goodsMap(data);
+            //noBtn 不显示偏好按钮
+            S.mix(data, { noBtn: true });
+            var html = new XTemplate(goodsTpl, { commands: { lang: i18n.lang } }).render(data);
+            data.$item = $(html).insertBefore($wall);
+            self.fire('addItem', data);
+            return self;
+        }
+    });
+    return Discover;
+});/**
+ * Generate by node-kpc
+ */
+/** Compiled By KISSY-XTemplate kg-4.2.1 */
+/*jshint quotmark:false, loopfunc:true, indent:false, asi:true, unused:false, boss:true, sub:true*/
+KISSY.add('discover/c/preference/tpl/preference.xtpl', function (S, require, exports, module) {
+    var preference = function anonymous(undefined) {
+        var t;
+        var t0;
+        var t1;
+        var t2;
+        var t3;
+        var t4;
+        var t5;
+        var t6;
+        var t7;
+        var t8;
+        var t9;
+        var tpl = this;
+        var root = tpl.root;
+        var buffer = tpl.buffer;
+        var scope = tpl.scope;
+        var runtime = tpl.runtime;
+        var name = tpl.name;
+        var pos = tpl.pos;
+        var data = scope.data;
+        var affix = scope.affix;
+        var nativeCommands = root.nativeCommands;
+        var utils = root.utils;
+        var callFnUtil = utils['callFn'];
+        var callDataFnUtil = utils['callDataFn'];
+        var callCommandUtil = utils['callCommand'];
+        var rangeCommand = nativeCommands['range'];
+        var foreachCommand = nativeCommands['foreach'];
+        var forinCommand = nativeCommands['forin'];
+        var eachCommand = nativeCommands['each'];
+        var withCommand = nativeCommands['with'];
+        var ifCommand = nativeCommands['if'];
+        var setCommand = nativeCommands['set'];
+        var includeCommand = nativeCommands['include'];
+        var parseCommand = nativeCommands['parse'];
+        var extendCommand = nativeCommands['extend'];
+        var blockCommand = nativeCommands['block'];
+        var macroCommand = nativeCommands['macro'];
+        var debuggerCommand = nativeCommands['debugger'];
+        function func7(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += 'status-remove';
+            return buffer;
+        }
+        function func6(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n            <li class="tag ';
+            pos.line = 8;
+            var id8 = (t = affix.flag) !== undefined ? t : (t = data.flag) !== undefined ? t : scope.resolveLooseUp(['flag']);
+            var exp9 = id8;
+            exp9 = id8 < 0;
+            buffer = ifCommand.call(tpl, scope, {
+                params: [exp9],
+                fn: func7
+            }, buffer);
+            buffer.data += '" data-name="';
+            var id10 = (t = affix.name) !== undefined ? t : (t = data.name) !== undefined ? t : scope.resolveLooseUp(['name']);
+            buffer = buffer.writeEscaped(id10);
+            buffer.data += '" data-id="';
+            var id11 = (t = affix.hashcode) !== undefined ? t : (t = data.hashcode) !== undefined ? t : scope.resolveLooseUp(['hashcode']);
+            buffer = buffer.writeEscaped(id11);
+            buffer.data += '" data-position="';
+            var id12 = (t = affix.position) !== undefined ? t : (t = data.position) !== undefined ? t : scope.resolveLooseUp(['position']);
+            buffer = buffer.writeEscaped(id12);
+            buffer.data += '" >';
+            var id13 = (t = affix.name) !== undefined ? t : (t = data.name) !== undefined ? t : scope.resolveLooseUp(['name']);
+            buffer = buffer.writeEscaped(id13);
+            buffer.data += '<span class="tag-action">x</span></li>\n            ';
+            return buffer;
+        }
+        function func22(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += 'data-name="';
+            var id23 = (t = affix.name) !== undefined ? t : (t = data.name) !== undefined ? t : scope.resolveLooseUp(['name']);
+            buffer = buffer.writeEscaped(id23);
+            buffer.data += '"';
+            return buffer;
+        }
+        function func24(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += ' class="add"';
+            return buffer;
+        }
+        function func26(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n                    ';
+            pos.line = 19;
+            var id27 = (t = affix.name) !== undefined ? t : (t = data.name) !== undefined ? t : scope.resolveLooseUp(['name']);
+            buffer = buffer.writeEscaped(id27);
+            buffer.data += '<span class="tag-action">x</span>\n                    ';
+            return buffer;
+        }
+        function func28(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n                    +\n                    ';
+            return buffer;
+        }
+        function func18(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n                <li data-index="';
+            pos.line = 17;
+            var id19 = (t = affix.xindex) !== undefined ? t : (t = data.xindex) !== undefined ? t : scope.resolveLooseUp(['xindex']);
+            buffer = buffer.writeEscaped(id19);
+            buffer.data += '"  data-id="';
+            var id20 = (t = affix.hashcode) !== undefined ? t : (t = data.hashcode) !== undefined ? t : scope.resolveLooseUp(['hashcode']);
+            buffer = buffer.writeEscaped(id20);
+            buffer.data += '"  data-position="';
+            var id21 = (t = affix.position) !== undefined ? t : (t = data.position) !== undefined ? t : scope.resolveLooseUp(['position']);
+            buffer = buffer.writeEscaped(id21);
+            buffer.data += '" ';
+            var id25 = (t = affix.name) !== undefined ? t : (t = data.name) !== undefined ? t : scope.resolveLooseUp(['name']);
+            buffer = ifCommand.call(tpl, scope, {
+                params: [id25],
+                fn: func22,
+                inverse: func24
+            }, buffer);
+            buffer.data += '>\n                    ';
+            pos.line = 18;
+            pos.line = 18;
+            var id29 = (t = affix.name) !== undefined ? t : (t = data.name) !== undefined ? t : scope.resolveLooseUp(['name']);
+            buffer = ifCommand.call(tpl, scope, {
+                params: [id29],
+                fn: func26,
+                inverse: func28
+            }, buffer);
+            buffer.data += '\n                </li>\n                ';
+            return buffer;
+        }
+        function func34(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += 'status-remove';
+            return buffer;
+        }
+        function func33(scope, buffer, undefined) {
+            var data = scope.data;
+            var affix = scope.affix;
+            buffer.data += '\n                <li class="tag ';
+            pos.line = 31;
+            var id35 = (t = affix.remove) !== undefined ? t : (t = data.remove) !== undefined ? t : scope.resolveLooseUp(['remove']);
+            buffer = ifCommand.call(tpl, scope, {
+                params: [id35],
+                fn: func34
+            }, buffer);
+            buffer.data += '" data-name="';
+            var id36 = (t = affix.name) !== undefined ? t : (t = data.name) !== undefined ? t : scope.resolveLooseUp(['name']);
+            buffer = buffer.writeEscaped(id36);
+            buffer.data += '" data-id="';
+            var id37 = (t = affix.hashcode) !== undefined ? t : (t = data.hashcode) !== undefined ? t : scope.resolveLooseUp(['hashcode']);
+            buffer = buffer.writeEscaped(id37);
+            buffer.data += '" data-position="';
+            var id38 = (t = affix.position) !== undefined ? t : (t = data.position) !== undefined ? t : scope.resolveLooseUp(['position']);
+            buffer = buffer.writeEscaped(id38);
+            buffer.data += '" >';
+            var id39 = (t = affix.name) !== undefined ? t : (t = data.name) !== undefined ? t : scope.resolveLooseUp(['name']);
+            buffer = buffer.writeEscaped(id39);
+            buffer.data += '<span class="tag-action">+</span></li>\n                ';
+            return buffer;
+        }
+        buffer.data += '<div class="preference-box J_PreferenceBox">\n    <div class="padding-box">\n        <h2>';
+        pos.line = 3;
+        var callRet1;
+        callRet1 = callFnUtil(tpl, scope, { params: ['HOBBY_SETTING'] }, buffer, ['lang']);
+        var id0 = callRet1;
+        buffer = buffer.writeEscaped(id0);
+        buffer.data += '</h2>\n        <a class="preference-btn J_BackPage" href="" data-spm-click="">';
+        pos.line = 4;
+        var callRet3;
+        callRet3 = callFnUtil(tpl, scope, { params: ['RETURN_FINDGOODS'] }, buffer, ['lang']);
+        var id2 = callRet3;
+        buffer = buffer.writeEscaped(id2);
+        buffer.data += '</a>\n        <h4>';
+        pos.line = 5;
+        var callRet5;
+        callRet5 = callFnUtil(tpl, scope, { params: ['TAG_SUGGEST'] }, buffer, ['lang']);
+        var id4 = callRet5;
+        buffer = buffer.writeEscaped(id4);
+        buffer.data += '\uff1a</h4>\n        <ul class="preference-list history-list J_HistoryList">\n            ';
+        pos.line = 7;
+        pos.line = 7;
+        var id14 = (t = affix.historyTags) !== undefined ? t : (t = data.historyTags) !== undefined ? t : scope.resolveLooseUp(['historyTags']);
+        buffer = eachCommand.call(tpl, scope, {
+            params: [id14],
+            fn: func6
+        }, buffer);
+        buffer.data += '\n        </ul>\n    </div>\n    <div class="padding-box">\n        <div class="J_TagListWrapper">\n            <h4 class="tag-header">';
+        pos.line = 14;
+        var callRet16;
+        callRet16 = callFnUtil(tpl, scope, { params: ['SELF_CHOOSE_TAG'] }, buffer, ['lang']);
+        var id15 = callRet16;
+        buffer = buffer.writeEscaped(id15);
+        buffer.data += ' <em class="J_TagCount">';
+        var id17 = (t = affix.customTagsCount) !== undefined ? t : (t = data.customTagsCount) !== undefined ? t : scope.resolveLooseUp(['customTagsCount']);
+        buffer = buffer.writeEscaped(id17);
+        buffer.data += '</em>/8</h4>\n            <ul class="preference-list tag-list J_TagList">\n                ';
+        pos.line = 16;
+        pos.line = 16;
+        var id30 = (t = affix.customTags) !== undefined ? t : (t = data.customTags) !== undefined ? t : scope.resolveLooseUp(['customTags']);
+        buffer = eachCommand.call(tpl, scope, {
+            params: [id30],
+            fn: func18
+        }, buffer);
+        buffer.data += '\n            </ul>\n        </div>\n        <div class="preference-tab J_PreferenceTab">\n            <h4 class="tag-header">';
+        pos.line = 28;
+        var callRet32;
+        callRet32 = callFnUtil(tpl, scope, { params: ['TAG_LIB'] }, buffer, ['lang']);
+        var id31 = callRet32;
+        buffer = buffer.writeEscaped(id31);
+        buffer.data += '</h4>\n            <ul class="tab-pannel preference-list J_TabContent">\n                ';
+        pos.line = 30;
+        pos.line = 30;
+        var id40 = (t = affix.newTags) !== undefined ? t : (t = data.newTags) !== undefined ? t : scope.resolveLooseUp(['newTags']);
+        buffer = eachCommand.call(tpl, scope, {
+            params: [id40],
+            fn: func33
+        }, buffer);
+        buffer.data += '\n            </ul>\n        </div>\n    </div>\n\n</div>';
+        return buffer;
+    };
+    preference.TPL_NAME = module.name;
+    preference.version = 'kg';
+    return preference;
+});
+/**
+ * Generate by node-kpc
+ */
+/**
+ * 最新、最热、奇特 标签列表
+ * by 剑平
+ */
+KISSY.add('discover/c/preference/mods/tag-tab', [
+    'discover/c/base/base',
+    'io'
+], function (S, require) {
+    var Base = require('discover/c/base/base'), io = require('io');
+    var $ = Base.$;
+    return Base.extend({
+        initializer: function () {
+            var self = this;
+            var $target = self.get('$target');
+            var host = self.get('host');
+            $target.all('.J_TabContent').on('click', function (ev) {
+                if (!host.isLogin(true))
+                    return false;
+                var $tag = $(ev.target);
+                if ($tag.hasClass('status-remove')) {
+                    return false;
+                }
+                if ($tag.hasClass('tag-action')) {
+                    $tag = $tag.parent();
+                }
+                if (!$tag.hasClass('tag'))
+                    return false;
+                var id = $tag.attr('data-id');
+                var name = $tag.attr('data-name');
+                var tagList = self.get('tagList');
+                tagList.add({
+                    tag: id,
+                    name: name
+                });
+                $target.all('.tag').removeClass('primary');
+                //防止重复添加相同标签
+                $tag.addClass('status-remove');
+            });
+        },
+        show: function () {
+            var self = this;
+            var $target = self.get('$target');
+            $target.fadeIn(0.3);
+        },
+        primary: function ($tag) {
+            var self = this;
+            var slide = self.get('slide');
+            var $target = self.get('$target');
+            var $tags = $target.all('.tag');
+            $tags.removeClass('primary');
+            var $t = $tags.item(0);
+            $tag.text($t.attr('data-name'));
+            $t.addClass('primary');
+            return self;
+        },
+        statusRemove: function (name) {
+            var self = this;
+            var $target = self.get('$target');
+            var $tags = $target.all('.tag');
+            $tags.each(function ($tag) {
+                if ($tag.attr('data-name') === name) {
+                    $tag.removeClass('status-remove');
+                }
+            });
+        }
+    }, {
+        ATTRS: {
+            host: { value: '' },
+            $target: {
+                value: '.J_PreferenceTab',
+                getter: function (v) {
+                    return $(v);
+                }
+            },
+            slide: { value: {} },
+            tagList: { value: {} }
+        }
+    });
+});
+/**
+ * Generate by node-kpc
+ */
+/**
+ * 添加自定义标签
+ * by 剑平
+ */
+KISSY.add('discover/c/preference/mods/tag-list', [
+    'discover/c/base/base',
+    'io'
+], function (S, require) {
+    var Base = require('discover/c/base/base'), io = require('io');
+    var $ = Base.$;
+    return Base.extend({
+        initializer: function () {
+            var self = this;
+            var $target = self.get('$target');
+            var tagTab = self.get('tagTab');
+            tagTab.set('tagList', self);
+            var $list = $target.children('.J_TagList');
+            var host = self.get('host');
+            $list.on('click', function (ev) {
+                if (!host.isLogin(true))
+                    return false;
+                var $tag = $(ev.target);
+                //添加标签
+                if ($tag.hasClass('add')) {
+                    self.set('$current', $tag);
+                    tagTab.show();
+                    $list.all('li').removeClass('selected');
+                    $tag.addClass('selected');    //tagTab.primary($tag);
+                                                  // Base.goldlog('30',{action:'5.添加自定义标签'},'H46896546');
+                } else {
+                    if ($tag.hasClass('tag-action')) {
+                        $tag = $tag.parent();
+                    }
+                    //已经存在删除标签
+                    self.remove($tag);    // Base.goldlog('30',{action:'6.删除自定义标签'},'H46896546');
+                }    // Base.goldlog('/tbindexfind.2.6');
+            });
+        },
+        add: function (data) {
+            var self = this;
+            var url = self.get('addUrl');
+            var $current = self.get('$current');
+            //替换标签
+            if (!$current.hasClass('add')) {
+                self.remove($current).then(function () {
+                    self.add(data);
+                });
+            } else {
+                //标签位置
+                data.pos = Number($current.attr('data-position'));
+                io.jsonp(url, data).then(function (res) {
+                    var index = Number($current.attr('data-index'));
+                    $current.html(data.name + '<span class="tag-action">x</span>');
+                    $current.attr('data-name', data.name);
+                    $current.attr('data-id', data.tag);
+                    var result = self.get('data');
+                    result[index] = data;
+                    self.update($current);
+                });
+            }
+            return self;
+        },
+        remove: function ($tag) {
+            var self = this;
+            var url = self.get('delUrl');
+            var tag = $tag.attr('data-id');
+            var index = Number($tag.attr('data-index'));
+            var name = $tag.attr('data-name');
+            return io.jsonp(url, { tag: tag }).then(function (res) {
+                var result = res[0];
+                if (result.status === 'success') {
+                    result = self.get('data');
+                    result[index] = {};
+                    self.update($tag, true);
+                    //修改标签库的标签状态
+                    var tagTab = self.get('tagTab');
+                    tagTab.statusRemove(name);
+                    return result;
+                }
+            });
+        },
+        update: function ($tag, remove) {
+            var self = this;
+            if (remove) {
+                $tag.addClass('add');
+                $tag.html('+');
+            } else {
+                $tag.removeClass('add');
+            }
+            var $target = self.get('$target');
+            //更新统计
+            var count = self.get('count');
+            var $count = $target.all('.J_TagCount');
+            $count.text(count);
+            return self;
+        }
+    }, {
+        ATTRS: {
+            host: { value: '' },
+            $target: {
+                value: '.J_TagListWrapper',
+                getter: function (v) {
+                    return $(v);
+                }
+            },
+            tagTab: { value: '' },
+            data: { value: [] },
+            $current: { value: '' },
+            count: {
+                value: 0,
+                getter: function (v) {
+                    var self = this;
+                    var data = self.get('data');
+                    var newData = S.filter(data, function (item) {
+                            return S.isString(item.name);
+                        });
+                    return newData.length;
+                }
+            },
+            addUrl: { value: '//tui.taobao.com/recommend?appid=406&type=addtag' },
+            delUrl: { value: '//tui.taobao.com/recommend?appid=406&type=removetag' }
+        }
+    });
+});
+/**
+ * Generate by node-kpc
+ */
+/**
+ * 浏览记录
+ */
+KISSY.add('discover/c/preference/mods/history-list', [
+    'discover/c/base/base',
+    'io'
+], function (S, require) {
+    var Base = require('discover/c/base/base'), io = require('io');
+    var $ = Base.$;
+    return Base.extend({
+        initializer: function () {
+            var self = this;
+            var $target = self.get('$target');
+            var host = self.get('host');
+            $target.on('click', function (ev) {
+                if (!host.isLogin(true))
+                    return false;
+                var $el = $(ev.target);
+                if ($el.hasClass('tag-action')) {
+                    $el = $el.parent();
+                }
+                if (!$el.hasClass('tag'))
+                    return false;
+                if ($el.hasClass('status-remove')) {
+                    self.back($el);    // Base.goldlog('30',{action:'7.恢复偏好标签'},'H46896546');
+                } else {
+                    self.del($el);    // Base.goldlog('30',{action:'8.删除偏好标签'},'H46896546');
+                }    // Base.goldlog('/tbindexfind.2.5');
+            });
+        },
+        del: function ($tag) {
+            var self = this;
+            var url = self.get('delUrl');
+            var id = $tag.attr('data-id');
+            io.jsonp(url, { tag: id }).then(function (res) {
+                var result = res[0];
+                if (result.status === 'success') {
+                    $tag.addClass('status-remove');
+                }
+            });
+        },
+        back: function ($tag) {
+            var self = this;
+            var url = self.get('backUrl');
+            var id = $tag.attr('data-id');
+            io.jsonp(url, { tag: id }).then(function (res) {
+                $tag.removeClass('status-remove');
+            });
+        }
+    }, {
+        ATTRS: {
+            host: { value: '' },
+            $target: {
+                value: '.J_PreferenceBox .J_HistoryList',
+                getter: function (v) {
+                    return $(v);
+                }
+            },
+            delUrl: { value: '//tui.taobao.com/recommend?appid=406&type=disliketag' },
+            backUrl: { value: '//tui.taobao.com/recommend?appid=406&type=liketag' }
+        }
+    });
+});
+/**
+ * Generate by node-kpc
+ */
+/**
+ * 偏好设置
+ * by 剑平
+ */
+KISSY.add('discover/c/preference/index', [
+    'discover/c/base/base',
+    'io',
+    './tpl/preference.xtpl',
+    './mods/tag-tab',
+    './mods/tag-list',
+    './mods/history-list',
+    '../base/i18n',
+    'anim'
+], function (S, require) {
+    var Base = require('discover/c/base/base'), io = require('io'), tpl = require('./tpl/preference.xtpl'), TagTab = require('./mods/tag-tab'), List = require('./mods/tag-list'), HistoryList = require('./mods/history-list'), i18n = require('../base/i18n'), Anim = require('anim');
+    var $ = Base.$;
+    return Base.extend({
+        initializer: function () {
+            var self = this;
+            var target = self.get('target');
+            target.on('render', function () {
+                $('.J_ShowPreference').on('click', function (ev) {
+                    ev.halt();
+                    // Base.goldlog('30',{action:'1.点击偏好'},'H46896546');
+                    if (!self.isLogin(true))
+                        return false;
+                    self.render().then(function () {
+                        self.show();
+                    });
+                    var top = $('#J_BdSide').offset().top - 100;
+                    var anim = new Anim($(window), { 'scrollTop': top }, 0.4, 'easeOutStrong');
+                    anim.run();
+                });
+                //收藏和登陆组件
+                // S.use('tbc/favorite/1.0.16/,tbc/mini-login/1.4.3/',function(S, M,ML){
+                //     self.set('M',new M({
+                //         callback:function(){}
+                //     }));
+                //     self.set('ML',ML);
+                // });
+                S.use('kg/mini-login/6.3.12/', function (S, miniLogin) {
+                    self.set('ML', miniLogin);
+                });    // $('.J_DItem').all('.J_ShowPreference').on('click',function(){
+                       //     Base.goldlog('/tbindexfind.2.3');
+                       // });
+                       // $('.J_TopShowPreference').on('click',function(){
+                       //     Base.goldlog('/tbindexfind.2.4');
+                       // })
+            });
+            var nReflesh = 1;
+            target.on('change', function () {
+                nReflesh = target.nReflesh;
+            });
+            var $goods = target.target;
+            $goods.on('click', function (ev) {
+                var $el = $(ev.target);
+                var id = $el.attr('data-id') || '';
+                var category = $el.attr('data-category') || '';
+                var url = '';
+                //点击不喜欢
+                if ($el.hasClass('J_DelDiscoverItem')) {
+                    ev.halt();
+                    if (!self.isLogin(true))
+                        return false;
+                    url = self.get('delUrl');
+                    io.jsonp(url, {
+                        itemid: id,
+                        category: category,
+                        nReflesh: nReflesh
+                    }).then(function (res) {
+                        var data = res[0];
+                        target.addItem(data);
+                        var index = $el.index('.J_DelDiscoverItem');
+                        $('.J_DiscoverItem').item(index).slideUp(0.2);
+                    });    // Base.goldlog('30',{action:'2.点击不喜欢'},'H46896546');
+                           // Base.goldlog('/tbindexfind.2.2');
+                }    //点击收藏
+                else if ($el.hasClass('J_TDialogTrigger')) {
+                    ev.preventDefault();
+                    if (!self.isLogin(true))
+                        return false;
+                    url = self.get('favoriteUrl');
+                    io.jsonp(url, {
+                        itemid: id,
+                        category: category
+                    });    // Base.goldlog('30',{action:'3.点击收藏'},'H46896546');
+                           // Base.goldlog('/tbindexfind.2.1');
+                }
+            });
+        },
+        render: function () {
+            var self = this;
+            var target = self.get('target');
+            var url = self.get('url');
+            return io.jsonp(url).then(function (res) {
+                var data = res[0];
+                var result = data.result;
+                if (!result || !result.length)
+                    return false;
+                data = {
+                    historyTags: [],
+                    customTags: [
+                        { position: 1 },
+                        { position: 2 },
+                        { position: 3 },
+                        { position: 4 },
+                        { position: 5 },
+                        { position: 6 },
+                        { position: 7 },
+                        { position: 8 }
+                    ],
+                    customTagsCount: 0,
+                    newTags: []
+                };
+                //标签归类
+                S.each(result, function (tag) {
+                    switch (Number(tag.type)) {
+                    case 1:
+                        data.historyTags.push(tag);
+                        break;
+                    case 2:
+                        //自定义标签需要处理位置信息
+                        var position = tag.position;
+                        data.customTags[position - 1] = tag;
+                        break;
+                    case 3:
+                        data.newTags.push(tag);
+                    }
+                });
+                S.each(data.customTags, function (tag) {
+                    if (tag.name) {
+                        data.customTagsCount++;
+                    }
+                    S.each(data.newTags, function (newTag, index) {
+                        if (tag.name === newTag.name) {
+                            data.newTags[index].remove = true;
+                        }
+                    });
+                });
+                var html = Base.renderTpl(tpl, data, { commands: { lang: i18n.lang } });
+                var $box = $(html).appendTo(target.target);
+                self.set('$box', $box);
+                var tagTab = new TagTab({ host: self });
+                new List({
+                    tagTab: tagTab,
+                    data: data.customTags,
+                    host: self
+                });
+                new HistoryList({ host: self });
+                //返回发现
+                $('.J_BackPage').on('click', function (ev) {
+                    ev.halt();
+                    self.hide();    // Base.goldlog('30',{action:'4.点击返回发现'},'H46896546');
+                });
+                return $box;
+            });
+        },
+        show: function () {
+            var self = this;
+            var $box = self.get('$box');
+            $box.slideDown(0.3);
+        },
+        hide: function () {
+            var self = this;
+            var $box = self.get('$box');
+            $box.slideUp(0.3);
+            var target = self.get('target');
+            target.load(1);
+        },
+        isLogin: function (show, callback) {
+            var self = this;
+            var ML = self.get('ML');
+            var isL = ML.check();
+            if (!isL && show) {
+                self.showLogin(callback);
+            }
+            return isL;
+        },
+        showLogin: function (callback) {
+            var self = this;
+            var ML = self.get('ML');
+            if (callback) {
+                ML.show({}, callback);
+            } else {
+                ML.show();
+            }
+            return ML;
+        }
+    }, {
+        ATTRS: {
+            isRender: { value: false },
+            $box: { value: '' },
+            $topShowBtn: {
+                value: '.J_TopShowPreference',
+                getter: function (v) {
+                    return $(v);
+                }
+            },
+            url: { value: '//tui.taobao.com/recommend?appid=406&type=usertag' + (i18n.localLang == 'zh-tw' ? '&_lang=zh_CN%3ATB-GBK' : '') },
+            delUrl: { value: '//tui.taobao.com/recommend?appid=406&type=delete' },
+            favoriteUrl: { value: '//tui.taobao.com/recommend?appid=406&type=collect&nReflesh=1' },
+            ML: { value: '' }
+        }
+    });
+});

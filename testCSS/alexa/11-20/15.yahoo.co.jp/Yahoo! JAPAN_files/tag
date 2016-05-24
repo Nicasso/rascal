@@ -1,0 +1,5 @@
+BrightTag.instance.errors({enabled:false});
+BrightTag.instance.store([{name:'btpdb.2wzBV9u.dGZjLjM2MzAxMTA', value:'REFZUw', expires:1464705221494},{name:'btpdb.2wzBV9u.dGZjLjE0NDcxNDU', value:'UkVRVUVTVFMuMA', expires:1495636421494}]);
+BrightTag.instance.appendContent('\x3cimg src\x3d\x22http://ib.adnxs.com/seg?add\x3d4511230\x26t\x3d2\x26redir\x3dhttp://ib.adnxs.com/getuid?http%3A%2F%2Fs.thebrighttag.com%2Fcs%3Fbtt%3D0%26tp%3DvGtt1zQG%26uid%3D$UID\x22 width\x3d\x221\x22 height\x3d\x221\x22 /\x3e',{tagId:616214});
+BrightTag.instance.appendContent('\x3cimg src\x3d\x22https://b95.yahoo.co.jp/s?s\x3dbt\x26csurl\x3dhttps%3A%2F%2Fs.thebrighttag.com%2Fcs\x26tp\x3d8FzrfRY\x26btt\x3d0\x22 style\x3d\x22display:none\x22 /\x3e',{tagId:1447145});
+BrightTag.instance.appendContent('\x3cimg src\x3d\x22//aw.dw.impact-ad.jp/c/u/?oid\x3d207d81ffda0cc019\x26rdr\x3dhttp%3A%2F%2Fs.thebrighttag.com%2Fcs%3Fbtt%3D0%26tp%3DkhADDtf%26uid%3D{AONEID}\x22 style\x3d\x22display:none\x22 /\x3e',{tagId:3630110});

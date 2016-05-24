@@ -1,0 +1,58 @@
+/**
+ * Generate by node-kpc
+ */
+/**
+ * @fileOverview 类目/发现逻辑
+ */
+KISSY.add('discover/p/discover/index', [
+    'node',
+    'discover/c/base/module',
+    'discover/c/discover/index',
+    'kg/datalazyload/6.0.5/',
+    'discover/c/preference/index'
+], function (S, require) {
+    var Node = require('node'), Module = require('discover/c/base/module'), Discover = require('discover/c/discover/index'), DataLazyload = require('kg/datalazyload/6.0.5/'), Preference = require('discover/c/preference/index');
+    var $ = Node.all;
+    //定义FP全局变量
+    window.FP = {
+        lazyQueue: [],
+        tickQueue: [],
+        trackQueue: [],
+        is_tanx_ssp_lazy: true,
+        loaded: false,
+        modules: {}
+    };
+    var ScreenBd = function (obj) {
+        this.init(obj);
+    };
+    S.extend(ScreenBd, Module);
+    /**
+     * 程序初始化
+     */
+    ScreenBd.prototype.init = function (obj) {
+        var self = this;
+        // var dataLazyload = DataLazyload({
+        //     container  : '.screen-bd',
+        //     diff       : 50
+        // });
+        //发现商品
+        // dataLazyload.addCallback('#J_DiscoverGoods',function(){
+        var goods = new Discover(S.merge({
+                target: '#J_DiscoverGoods',
+                type: 'goods',
+                len: 10,
+                listLength: 7
+            }, obj.goodsCfg));
+        // new Lu({discover:goods});
+        new Preference({ target: goods });    // });
+                                              //发现店铺
+                                              // dataLazyload.addCallback('#J_DiscoverShop',function(){
+                                              /*new Discover(S.merge({
+                target : '#J_DiscoverShop',
+                type: 'shop',
+                len: 4
+            },obj.shopsCfg));*/
+                                              // });
+    };
+    return ScreenBd;
+});

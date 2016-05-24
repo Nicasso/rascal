@@ -1,0 +1,1 @@
+(function(n,t){if(t){var i=!1,r=function(){i||(i=!0,typeof wlc!="undefined"&&wlc(sj_evt,sj_cook.set,wlc_t))};n.bind("onP1",function(){var i=setTimeout(r,t);n.bind("fb:connecting",function(){clearTimeout(i);n.bind("fb:connected",r,1)},1)},1)}})(sj_evt,wlc_d)

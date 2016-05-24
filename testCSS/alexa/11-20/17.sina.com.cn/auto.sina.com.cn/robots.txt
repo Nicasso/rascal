@@ -1,6 +1,0 @@
-User-Agent: *
-
-Disallow:/*.js
-Disallow:/*.css
-Disallow:/*.php*
-Disallow:/head/

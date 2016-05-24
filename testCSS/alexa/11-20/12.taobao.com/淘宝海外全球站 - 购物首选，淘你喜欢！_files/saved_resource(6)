@@ -1,0 +1,165 @@
+/**
+ * Generate by node-kpc
+ */
+KISSY.add('discover/c/base/i18n', function (S, Node, Cookie) {
+    var i18n = {
+            'zh-cn': {
+                'MAIN_MANAGER': '\u4e3b\u8425',
+                'BOOK_HOBBY': '\u5b9a\u5236\u6211\u7684\u504f\u597d',
+                'COLLECT': '\u6536\u85cf\u4eba\u6c14',
+                'NOT_LIKE': '\u4e0d\u559c\u6b22',
+                'SELF_CONFIG': '\u6211\u8981\u81ea\u5b9a\u4e49',
+                'HOBBY_SETTING': '\u6211\u7684\u504f\u597d\u8bbe\u7f6e',
+                'RETURN_FINDGOODS': '\u8fd4\u56de\u53d1\u73b0\u597d\u8d27',
+                'TAG_SUGGEST': '\u4e3a\u60a8\u63a8\u8350\u7684\u6807\u7b7e',
+                'SELF_CHOOSE_TAG': '\u81ea\u9009\u589e\u6dfb\u6807\u7b7e',
+                'TAG_LIB': '\u6807\u7b7e\u5e93'
+            },
+            'zh-tw': {
+                'MAIN_MANAGER': '\u4e3b\u71df',
+                'BOOK_HOBBY': '\u5b9a\u88fd\u6211\u7684\u504f\u597d',
+                'COLLECT': '\u6536\u85cf\u4eba\u6c23',
+                'NOT_LIKE': '\u4e0d\u559c\u6b61',
+                'SELF_CONFIG': '\u6211\u8981\u81ea\u5b9a\u7fa9',
+                'HOBBY_SETTING': '\u6211\u7684\u504f\u597d\u8a2d\u7f6e',
+                'RETURN_FINDGOODS': '\u8fd4\u56de\u767c\u73fe\u597d\u8ca8',
+                'TAG_SUGGEST': '\u70ba\u60a8\u63a8\u85a6\u7684\u6a19\u7c64',
+                'SELF_CHOOSE_TAG': '\u81ea\u9078\u65b0\u6dfb\u6a19\u7c64',
+                'TAG_LIB': '\u6a19\u7c64\u5eab'
+            }
+        };
+    function getLangFromCookie() {
+        var hng = Cookie.get('hng');
+        var lang = hng ? hng.split('|')[1] : '';
+        if (lang) {
+            return lang;
+        }
+        return null;
+    }
+    function getLang() {
+        var lang = getLangFromCookie() || 'zh-cn';
+        if (S.isObject(i18n[lang])) {
+            return lang;
+        }
+        return 'zh-cn';
+    }
+    var locale = getLang();
+    var lang = i18n[locale];
+    return {
+        lang: function (scopes, option) {
+            var key = option.params[0];
+            var value = lang[key];
+            return value;
+        },
+        localLang: locale
+    };
+}, {
+    requires: [
+        'node',
+        'cookie'
+    ]
+});/**
+ * Generate by node-kpc
+ */
+/**
+ * 读取tms内容
+ */
+KISSY.add('discover/c/loadtms/index', [
+    '../base/module',
+    'node',
+    'kg/xtemplate/4.3.0/',
+    'io'
+], function (S, require) {
+    var Module = require('../base/module'), Node = require('node'), XTemplate = require('kg/xtemplate/4.3.0/'), io = require('io');
+    var $ = Node.all;
+    var isDaily = new RegExp('daily.taobao.net').test(location.href.split('?')[0]);
+    var path = isDaily && '//www.daily.taobao.net/' || '//www.taobao.com/';
+    var url = path + '2014/ajax/json-tms.php';
+    function loadTms(target, ids, tpl) {
+        var $target;
+        if (S.isArray(target)) {
+            ids = target;
+        } else {
+            $target = $(target);
+        }
+        if (!S.isArray(ids))
+            return false;
+        var now = S.now();
+        var timeStamp = Math.floor(now / 300000);
+        return io.getJSON(url, {
+            ids: ids,
+            t: timeStamp
+        }).then(function (ev) {
+            var data = ev[0];
+            data = { result: data };
+            if (tpl) {
+                var html = new XTemplate(tpl).render(data);
+                $target.append($(html)).removeClass('loading');
+            }
+            return data;
+        });
+    }
+    ;
+    return loadTms;
+});/**
+ * Generate by node-kpc
+ */
+/**
+ * 模块基类，替代上一版本的module.js
+ * by 剑平
+ */
+KISSY.add('discover/c/base/base', function (S, Node, Base, XTemplate, Promise, Offline, JSON) {
+    var $ = Node.all;
+    S.mix(Base, {
+        $: $,
+        Promise: Promise,
+        offline: new Offline(),
+        renderTpl: function (tpl, data, opt) {
+            if (!tpl || !S.isObject(data))
+                return '';
+            opt = opt || {};
+            return new XTemplate(tpl, opt).render(data);
+        },
+        goldlog: function (id, params, token) {
+            if (!window.goldlog)
+                return false;
+            var key = '/tbindex.2014.' + id;
+            //demo /tbindexfind.1
+            if (/\//.test(id)) {
+                key = id;
+            }
+            if (params) {
+                params = S.param(params);
+            }
+            goldlog.trace && goldlog.trace(key, '', params || '', token || '');
+        },
+        cache: function (key, value) {
+            var offline = Base.offline;
+            if (!offline)
+                return false;
+            if (!S.isString(key))
+                return false;
+            if (!value) {
+                return offline.getItem(key);
+            }
+            if (S.isObject(value)) {
+                value = JSON.stringify(value);
+            }
+            offline.setItem(key, value);
+            return value;
+        },
+        toJson: function (str) {
+            return JSON.parse(str);
+        }
+    });
+    return Base;
+}, {
+    requires: [
+        'node',
+        'base',
+        'kg/xtemplate/4.3.0/runtime',
+        'promise',
+        'gallery/offline/1.1/',
+        'json'
+    ]
+});
