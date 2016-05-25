@@ -13,8 +13,8 @@ import List;
 import Traversal;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///workspace/testCSS/sandbox/amazon.css|);
-M3 stylesheetM3 = createM3FromFile(|home:///workspace/testCSS/sandbox/amazon.css|);
+Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/clones.css|);
+M3 stylesheetM3 = createM3FromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/clones.css|);
 
 public void type1Clone() {	
 	list[Statement] rules = [];

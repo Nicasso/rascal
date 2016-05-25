@@ -15,7 +15,7 @@ rel[list[str],loc,int] duplications = {};
 
 rel[list[str],loc,int] allPossibleLineBlocks = {};
 
-M3 stylesheetM3 = createM3FromFile(|home:///workspace/testCSS/sandbox/amazon.css|);
+M3 stylesheetM3 = createM3FromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
 
 public int detectDuplication() {
 

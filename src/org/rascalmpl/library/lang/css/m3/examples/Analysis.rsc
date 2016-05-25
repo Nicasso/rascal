@@ -12,75 +12,8 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///workspace/testCSS/sandbox/amazon.css|);
-M3 stylesheetM3 = createM3FromFile(|home:///workspace/testCSS/sandbox/amazon.css|);
-
-public void calculateVolume() {
-	for (style <- stylesheets(stylesheetM3)) {
-		iprintln(style);
-		iprintln("All lines: <calculateAllLines(style)>");
-		iprintln("Lines of code: <calculateLinesOfCode(style,stylesheetM3)>");
-		iprintln("Blank lines: <calculateBlankLines(style)>");
-		iprintln("Lines of comments: <calculateLinesOfComments(stylesheetM3)>");
-	}
-}
-
-public int calculateAllLines(loc style) {
-	return size(readFileLines(style));	
-}
-
-public int calculateLinesOfCode(loc style, M3 stylesheet) {
-	return (calculateAllLines(style)-calculateBlankLines(style)-calculateLinesOfComments(stylesheet));	
-}
-
-public int calculateLinesOfComments(M3 style) {
-	return sum([calculateAllLines(d[1]) | d <- style@documentation]);
-}
-
-public int calculateBlankLines(loc style) {
-	return size([line | line <- readFileLines(style), trim(line) == ""]); 
-}
-
-public void selectorAnalysis() {
-	map[str,int] values = ("classes":0, "ids":0, "elements":0);
-	
-	visit (stylesheetAST) {
-		case class(str name): {
-			values["classes"] += 1;
-		}
-		case id(str name): {
-			values["ids"] += 1;
-		}
-    	case domElement(str name): {
-    		values["elements"] += 1;
-    	}
-	};
-	
-	iprintln(values);
-	
-}
-
-public void selectorAnalysis2() {
-	map[str,int] values = ("selectors":0, "total":0, "min":1, "max":0, "average":0);
-	
-	visit (stylesheetAST) {
-		case combinedSelector(list[Expression] selectors): {
-			values["total"] += size(selectors);
-			values["selectors"] += 1;
-			if (size(selectors) > values["max"]) {
-				values["max"] = size(selectors);
-			}
-			if (size(selectors) < values["min"]) {
-				values["min"] = size(selectors);
-			}
-		}
-	};
-	
-	values["average"] = values["total"]/values["selectors"];
-	
-	iprintln(values);
-	
-}
+Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
+M3 stylesheetM3 = createM3FromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
 
 public void declarationAnalysis() {	
 	lrel[str,int] values = [];

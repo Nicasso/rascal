@@ -12,7 +12,7 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///workspace/testCSS/sandbox/style.css|);
+Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/refactor.css|);
 
 map[str,list[str]] requiredDeclarations;
 map[str,int] remainingDeclarations;
