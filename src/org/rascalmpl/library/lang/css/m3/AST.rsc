@@ -299,7 +299,7 @@ public str ppx(Statement::ruleKeyframes(str name, list[Statement] ruleSets)) {
 public str ppx(Statement::ruleMargin(Expression atRule, Statement stat)) = "<getTabs()>@margin <pp(atRule)>{\n<pp(stat)>}\n\n";
 public str ppx(Statement::rulePage(str pseudo, list[Declaration] declarations)) = "<getTabs()>@page <pseudo> {\n<pp(declarations)>}\n\n";
 public str ppx(Statement::ruleViewport(list[Declaration] declarations)) = "<getTabs()>@viewport {\n<pp(declarations)>}\n\n";
-public str ppx(Statement::comment(str text)) = "<getTabs()><text>\n\n";
+public str ppx(Statement::comment(str text)) = "<getTabs()>/* <text> */\n\n";
 public default str ppx(Statement smth) = "??<smth>??";
 
 public str ppx(d:Declaration::declaration(str property, list[Type] values)) {
