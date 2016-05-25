@@ -49,7 +49,7 @@ public class FileHandler {
 		return result;
 	}
 
-	private String guessEncoding(ISourceLocation loc) {
+	protected String guessEncoding(ISourceLocation loc) {
 		try {
 			Charset result = URIResolverRegistry.getInstance().getCharset(loc);
 			if (result != null) {
