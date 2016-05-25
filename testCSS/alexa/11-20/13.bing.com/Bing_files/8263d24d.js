@@ -1,1 +1,0 @@
-(function(){var t=_ge("id_h"),n=_ge("langChange"),i=_ge("me_header"),r=_ge("langDId"),u=_ge("explorer_details"),f=_ge("mapContainer");t!=null&&n!=null&&i==null&&(r===null||u===null&&f===null)&&(t.insertBefore(n,t.firstChild),n.className=n.className+" langdisp")})()
