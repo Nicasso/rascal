@@ -1,0 +1,26 @@
+div {
+    background-color: #000;
+    background-image: url(images/bg.gif);
+    float: left;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: top right;
+}
+
+span {
+    font-style: italic;
+    font-weight: bold;
+    font-size: .8em;
+    display: block;
+    line-height: 1.2;
+    font-family: Arial, sans-serif; 
+}
+
+input {
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    color: red;
+}
+
