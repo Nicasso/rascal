@@ -12,8 +12,8 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
-M3 stylesheetM3 = createM3FromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
+Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
+M3 stylesheetM3 = createM3FromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
 
 public void selectorAnalysis() {
 	map[str,int] values = ("classes":0, "ids":0, "elements":0);

@@ -12,9 +12,9 @@ import Node;
 import List;
 import util::Math;
 
-//Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/conventions.css|);
-//M3 stylesheetM3 = createM3FromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/conventions.css|);
-//
-//public void semiColon() {
-//	//iprintln(stylesheetM3);
-//}
+Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/conventions.css|);
+M3 stylesheetM3 = createM3FromFile(|home:///workspace/Rascal/rascal/testCSS/examples/conventions.css|);
+
+public void semiColon() {
+	//iprintln(stylesheetM3);
+}

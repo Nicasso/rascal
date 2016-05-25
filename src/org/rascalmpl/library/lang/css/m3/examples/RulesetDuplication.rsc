@@ -11,7 +11,7 @@ import Prelude;
 import util::Math;
 import demo::common::Crawl;
 
-Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/ruleclones.css|);
+Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/ruleclones.css|);
 
 list[Type] currentSelectors = [];
 list[Declaration] currentDeclarations = [];

@@ -32,7 +32,7 @@ public class ASTLoader extends FileHandler {
 			fastPath &= safeResolve((ISourceLocation) f).getScheme().equals("file");
 		}
 		
-		if (fastPath) {
+		if (!fastPath) {
 			for (IValue f : files) {
 				StyleSheet style = null;
 
