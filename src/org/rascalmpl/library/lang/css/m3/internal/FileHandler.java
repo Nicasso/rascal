@@ -10,9 +10,11 @@ import java.util.Map;
 
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.interpreter.utils.RuntimeExceptionFactory;
+import org.rascalmpl.library.experiments.Compiler.RVM.Interpreter.RascalRuntimeException;
 import org.rascalmpl.parser.gtd.io.InputConverter;
 import org.rascalmpl.unicode.UnicodeDetector;
 import org.rascalmpl.uri.URIResolverRegistry;
+import org.rascalmpl.value.IList;
 import org.rascalmpl.value.ISet;
 import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.IValue;
@@ -31,6 +33,20 @@ public class FileHandler {
 		try (Reader textStream = URIResolverRegistry.getInstance().getCharacterReader(loc)) {
 			return InputConverter.toChar(textStream);
 		}
+	}
+	
+	protected String[] translatePaths(IList paths) {
+		String[] result = new String[paths.length()];
+		int i = 0;
+		for (IValue p : paths) {
+			ISourceLocation loc = safeResolve((ISourceLocation) p);
+			if (!loc.getScheme().equals("file")) {
+				throw RascalRuntimeException
+						.io(valueFactory.string("all path entries must have (or resolve to) the file:/// scheme: " + loc), null);
+			}
+			result[i++] = new File(loc.getPath()).getAbsolutePath();
+		}
+		return result;
 	}
 
 	private String guessEncoding(ISourceLocation loc) {

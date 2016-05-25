@@ -11,10 +11,14 @@ import Prelude;
 import util::Math;
 import demo::common::Crawl;
 
-M3 stylesheetM3 = createM3FromFile(|home:///workspace/testCSS/sandbox/ruleclones.css|);
-Statement stylesheetAST = createAstFromFile(|home:///workspace/testCSS/sandbox/ruleclones.css|);
+
 
 public void detectRulesetDuplication() {
+
+	iprintln(|project://rascal/testCSS/examples/ruleclones.css|);
+
+	//M3 stylesheetM3 = createM3FromFile(|project://rascal/testCSS/examples/ruleclones.css|);
+	Statement stylesheetAST = createAstFromFile(|project://rascal/testCSS/examples/ruleclones.css|);
 
 	list[Type] currentSelectors = [];
 	list[Declaration] currentDeclarations = [];
