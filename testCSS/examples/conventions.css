@@ -1,3 +1,97 @@
 div {
-    border: none
+  border: none;
+}
+
+span {
+  background-image: url(test.jpg);
+}
+
+div {
+  color: #FFF;
+}
+
+div {
+  width: 0;
+  font-size: 0;
+  height: 0;
+}
+
+div {
+  width: 0.5em;
+}
+
+span .cool .nice,
+.test {
+  border: none;
+}
+
+div .nice {
+  border: none;
+}
+
+div {
+  font-size: 10em;
+  font: arial 10em;
+  width: 10px;
+}
+
+div {
+  /*z-index: 10;*/
+  border: none;
+}
+
+.lawl {
+  border: none;
+}
+
+.ok {
+  font: arial;
+}
+/*
+@charset "UTF-8";
+@charset 'iso-8859-15';
+@charset "UTF-8";
+*/
+/*
+div[target="_blank"] {
+  border: none;
+}
+
+div[target=_blank] {
+  border: none;
+}
+*/
+div[target='_blank'] {
+  border: none;
+}
+
+div {
+  border: none;
+}
+
+div,
+div {
+  border: none;
+}
+
+div {
+  color: red;
+}
+
+div {
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+}
+
+div {
+  margin-left: 10px;
+  margin-right:  20px;
+  margin-top: 10px;
+  /*margin-bottom: 15px;*/
+}
+
+div {
+  /*animation: cool;*/
+  border: none;
 }

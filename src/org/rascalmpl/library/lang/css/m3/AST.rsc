@@ -12,6 +12,7 @@ import List;
 import util::Math;
 
 anno str Type@op;
+anno loc Type@src;
 anno str Statement@comment;
 anno str Declaration@comment;
 anno str Declaration@modifier;
