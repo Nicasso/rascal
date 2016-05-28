@@ -18,5 +18,5 @@ Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/tes
 
 public void colorsAnalysis() {
 	list[Color] colors = [rgb(red, green, blue, toReal(alpha)) | /color(int red, int green, int blue, num alpha) := stylesheetAST];
-	render(hcat([box([size(50), fillColor(c), lineColor(c)]) | c <- sort(colors)]));
+	render(hcat([box([size(20), fillColor(c), lineColor(c)]) | c <- sort(colors)]));
 }

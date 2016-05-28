@@ -1,0 +1,57 @@
+{
+  "name": "penthouse",
+  "description": "Generate critical path CSS for web pages",
+  "version": "0.9.7",
+  "homepage": "https://github.com/pocketjoso/penthouse",
+  "author": {
+    "name": "Jonas Ohlsson",
+    "email": "jonas.sebastian.ohlsson@gmail.com",
+    "url": "http://jonassebastianohlsson.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pocketjoso/penthouse.git#master"
+  },
+  "bugs": {
+    "url": "https://github.com/pocketjoso/penthouse/issues"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "github.com/pocketjoso/penthouse/blob/master/LICENSE-MIT"
+  },
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register test/core-tests.js",
+    "test-all": "mocha --compilers js:babel-core/register"
+  },
+  "dependencies": {
+    "apartment": "^1.1.1",
+    "css": "2.0.0",
+    "css-mediaquery": "^0.1.2",
+    "jsesc": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.8.0",
+    "babel-preset-es2015": "^6.6.0",
+    "chai": "^1.9.1",
+    "css-compare-screenshots": "0.0.7",
+    "express": "^4.4.2",
+    "global-mocha": "^1.0.1",
+    "gm": "^1.21.1",
+    "grunt": "~0.4.2",
+    "mocha": "^1.20.1",
+    "morgan": "^1.1.1",
+    "portfinder": "^0.2.1",
+    "rimraf": "^2.4.3",
+    "shelljs": "^0.3.0"
+  },
+  "keywords": [
+    "CSS Critical Path Generator",
+    "phantomjs",
+    "css",
+    "performance",
+    "build",
+    "tool"
+  ]
+}

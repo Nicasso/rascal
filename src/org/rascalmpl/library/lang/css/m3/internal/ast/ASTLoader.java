@@ -61,11 +61,12 @@ public class ASTLoader extends FileHandler {
 			store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
 
 			for (IValue f : files) {
+				
 				boolean go = true;
 				StyleSheet style = null;
 				
 				ISourceLocation loc = (ISourceLocation) f;
-				
+
 				String converted = convertPath(f);
 				
 				try {

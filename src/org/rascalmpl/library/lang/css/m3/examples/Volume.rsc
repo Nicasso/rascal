@@ -25,18 +25,7 @@ public void calculateVolume() {
 	}
 }
 
-public int calculateAllLines(loc style) {
-	return size(readFileLines(style));	
-}
-
-public int calculateLinesOfCode(loc style, M3 stylesheet) {
-	return (calculateAllLines(style)-calculateBlankLines(style)-calculateLinesOfComments(stylesheet));	
-}
-
-public int calculateLinesOfComments(M3 style) {
-	return sum([0]+[calculateAllLines(d[1]) | d <- style@documentation]);
-}
-
-public int calculateBlankLines(loc style) {
-	return size([line | line <- readFileLines(style), trim(line) == ""]); 
-}
+int calculateAllLines(loc style) = size(readFileLines(style));	
+int calculateLinesOfCode(loc style, M3 stylesheet) = (calculateAllLines(style)-calculateBlankLines(style)-calculateLinesOfComments(stylesheet));	
+int calculateLinesOfComments(M3 style) = sum([0]+[calculateAllLines(d[1]) | d <- style@documentation]);
+int calculateBlankLines(loc style) = size([line | line <- readFileLines(style), trim(line) == ""]); 

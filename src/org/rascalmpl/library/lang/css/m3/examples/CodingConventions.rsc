@@ -12,8 +12,8 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/conventions.css|);
-M3 stylesheetM3 = createM3FromFile(|home:///workspace/Rascal/rascal/testCSS/examples/conventions.css|);
+Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bootstrapconventions.css|);
+M3 stylesheetM3 = createM3FromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bootstrapconventions.css|);
 
 public void checkConventions() {
 	semiColon();
@@ -40,6 +40,7 @@ public void checkConventions() {
 }
 
 public void semiColon() {
+	int total = 0;
 	for (d <- declarations(stylesheetM3)) {
 		for(r <- stylesheetM3@declarations, r[0] == d) {
 			loc a = r[1];
@@ -47,22 +48,30 @@ public void semiColon() {
 			str line = trim(readFileLines(a)[size(readFileLines(a))-1]);
 			if (stringChar(charAt(line, size(line)-1)) != ";") {
 				println("No semicolon used at: <d>");
+				total += 1;
 			}
 		}
 	}
+	println("SemiColon total: <total>");
 }
 
+//list[loc] urlQuotes() = [u@src | /u:uri(str uri) := stylesheetAST, contains(uri, "\"") || contains(uri, "\'")];
+
 public void urlQuotes() {
+	int total = 0;
 	visit (stylesheetAST) {
 		case u:uri(str uri): {
 			if (contains(uri, "\"") == true) {
-				println("Quotes used in URL declaration: <d>");
+				println("Quotes used in URL declaration: <u@src>");
+				total += 1;
 			}
 		}
 	}
+	println("SemiColon total: <total>");
 }
 
 public void shortHexValues() {
+	int total = 0;
 	visit (stylesheetAST) {
 		case lal:color(int red, int green, int blue, num alpha): {
 			str color = trim(readFileLines(lal@src)[0]);
@@ -76,10 +85,12 @@ public void shortHexValues() {
 				}
 				if (same && size(color) == 7) {
 					println("Long hex value used at: <lal@src>");
+					total += 1;
 				}
 			}
 		}
 	}
+	println("SemiColon total: <total>");
 }
 
 public void marginShorthand() {
@@ -92,24 +103,24 @@ public void marginShorthand() {
 }
 
 public void shorthandMargin() {
-	list[str] margin;
-	
+	int total = 0;
 	visit (stylesheetAST) {
 		case rs:ruleSet(list[Type] selector, list[Declaration] declarations): {
-			margin = ["margin-top", "margin-right", "margin-bottom", "margin-left"];
-			for (d <- declarations) {
-				if (d[0] in margin) {
-					margin -= d[0];
-					if (size(margin) == 0) {
-						print("Margin shorthand should be used at: <rs@src>");
-					}
+			list[str] margin = ["margin-top", "margin-right", "margin-bottom", "margin-left"];
+			for (d <- declarations, d[0] in margin) {
+				margin -= d[0];
+				if (size(margin) == 0) {
+					print("Margin shorthand should be used at: <rs@src>");
+					total += 1;
 				}
 			}
 		}
 	};
+	println("SemiColon total: <total>");
 }
 
 public void zeroUnits() {	
+	int total = 0;
 	visit (stylesheetAST) {
 		case \n:audio(num aud, str unit):  { 
 			if (aud == 0) {
@@ -147,6 +158,7 @@ public void zeroUnits() {
 			} 
 	    }
 	};
+	println("SemiColon total: <total>");
 }
 
 public void leadingZeros() {	
@@ -154,43 +166,43 @@ public void leadingZeros() {
 		case \n:audio(num aud, str unit):  { 
 			str val = trim(readFileLines(n@src)[0]);
 	    	if (stringChar(charAt(val, 0)) == ".") {
-				println("No leading zero usedat: <n@src>");
+				println("No leading zero used at: <n@src>");
 			}
 		}
 	    case \n:angle(num angle, str unit): {
     		str val = trim(readFileLines(n@src)[0]);
 	    	if (stringChar(charAt(val, 0)) == ".") {
-				println("No leading zero usedat: <n@src>");
+				println("No leading zero used at: <n@src>");
 			}
 	    }
 	    case \n:frequency(num freq, str unit): {
 	    	str val = trim(readFileLines(n@src)[0]);
 	    	if (stringChar(charAt(val, 0)) == ".") {
-				println("No leading zero usedat: <n@src>");
+				println("No leading zero used at: <n@src>");
 			}
 	    }
 	    case \n:length(num \len, str unit): {
 	    	str val = trim(readFileLines(n@src)[0]);
 	    	if (stringChar(charAt(val, 0)) == ".") {
-				println("No leading zero usedat: <n@src>");
+				println("No leading zero used at: <n@src>");
 			}
 	    }
 	    case \n:percent(num \perc): {
 	    	str val = trim(readFileLines(n@src)[0]);
 	    	if (stringChar(charAt(val, 0)) == ".") {
-				println("No leading zero usedat: <n@src>");
+				println("No leading zero used at: <n@src>");
 			}
 	    }
 	    case \n:resolution(num \res, str unit): {
 	    	str val = trim(readFileLines(n@src)[0]);
 	    	if (stringChar(charAt(val, 0)) == ".") {
-				println("No leading zero usedat: <n@src>");
+				println("No leading zero used at: <n@src>");
 			}
 	    }
 	    case \n:time(num \time, str unit): {
 	    	str val = trim(readFileLines(n@src)[0]);
 	    	if (stringChar(charAt(val, 0)) == ".") {
-				println("No leading zero usedat: <n@src>");
+				println("No leading zero used at: <n@src>");
 			}
 	    }
 	};
@@ -341,11 +353,6 @@ public void singleQuotesInCharset() {
 public void singleQuotesInAttributeSelector() {
 	visit (stylesheetAST) {
 		case as:attributeSelector(str attribute, str op, str \value): {
-			if (contains(\value, "\'") == false) {
-				println("No single quotes used  for the attribute selector at: <as@src>");
-			}
-		}
-		case as:attributeSelector(str attribute): {
 			if (contains(\value, "\'") == false) {
 				println("No single quotes used  for the attribute selector at: <as@src>");
 			}

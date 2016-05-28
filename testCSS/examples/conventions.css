@@ -1,9 +1,10 @@
 div {
-  border: none;
+  border: none
 }
 
 span {
-  background-image: url(test.jpg);
+  background-image: url('test.jpg');
+  background-image: url("test.jpg");
 }
 
 div {
