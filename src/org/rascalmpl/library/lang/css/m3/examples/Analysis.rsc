@@ -2,6 +2,7 @@ module lang::css::m3::examples::Analysis
 
 import lang::css::m3::AST;
 import lang::css::m3::Core;
+import lang::css::m3::PrettyPrinter;
 
 import IO;
 import String;
@@ -12,8 +13,8 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
-M3 stylesheetM3 = createM3FromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
+Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/fb.css|);
+M3 stylesheetM3 = createM3FromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/fb.css|);
 
 public void declarationAnalysis() {	
 	lrel[str,int] values = [];
@@ -75,56 +76,69 @@ public void modifierAnalysis() {
 	};
 }
 
+public int importantCounter() {
+	return size([d | /d:declaration(str property, list[Type] declarationValues) := stylesheetAST, d@modifier?]);
+}
+
+public void modifierAnalysis2() {
+	visit (stylesheetAST) {
+		case d:declaration(str property, list[Type] declarationValues): {
+			if (d@modifier?) {
+				print("<trim(ppx(d))> - <d@src>\n");
+			}
+		}
+	};
+}
+
 /**
  * From the paper: Complexity Metrics for Cascading Style Sheets
  */
-public void ruleLength() {	
-	set[loc] rules = ruleSets(stylesheetM3);
-	
+ 
+public void metrics1() {
+	iprintln("RL: <ruleLength()>");
+	iprintln("NORB: <numberOfRuleBlocks()>");
+	iprintln("EM: <entropyMetrics()>");
+	iprintln("NOERB: <numberOfExtendedRuleBlocks()>");
+	iprintln("NOADPRB: <numberOfAttributesDefinedPerRuleBlock()>");
+	iprintln("NOCRB: <numberOfCohesiveRuleBlocks()>"); 
+}
+ 
+public int ruleLength() {	
 	int ruleLength = 0;
 	bool commentBlock = false;
-	for (rule <- rules) {
+	for (rule <- ruleSets(stylesheetM3)) {
 		for (line <- readFileLines(rule)) {	
-			if (trim(line) == "") {
-				int a;
-			} else if (startsWith(trim(line),"/*")) {
-				if (!endsWith(trim(line),"*/")) {
-					commentBlock = true;
-				}
-				int a;
-			} else if (startsWith(trim(line),"*/") || endsWith(trim(line),"*/")) {
+			if (contains(line,"/*") && !contains(line,"*/")) {
+				commentBlock = true;
+			} else if (commentBlock && contains(line,"*/")) {
 				commentBlock = false;
-				int a;
-			} else if (commentBlock) {
-				int a;
-			} else {
+			} else if (!(trim(line) == "")) {
 				ruleLength += 1;
 			}
 		}
 	}
-	
-	iprintln(ruleLength);	
+	return ruleLength;
 }
 
-public void numberOfRuleBlocks() {	
-	iprintln(size(ruleSets(stylesheetM3)));
+public int  numberOfRuleBlocks() {	
+	return size(ruleSets(stylesheetM3));
 }
 
 // @TODO / IS THIS EVEN POSSIBLE? CREATING EQUIVALENCE CLASSES IS NOT DEFINE...
-public void entropyMetrics() {
-	
+public int entropyMetrics() {
+	return 1;
 }
 
-public void numberOfExtendedRuleBlocks() {	
-	iprintln(size(ruleSets(stylesheetM3)));
+public int numberOfExtendedRuleBlocks() {	
+	return size(ruleSets(stylesheetM3));
 }
 
-public void numberOfAttributesDefinedPerRuleBlock() {	
-	iprintln(toReal(size(declarations(stylesheetM3)))/toReal(size(ruleSets(stylesheetM3))));
+public real numberOfAttributesDefinedPerRuleBlock() {	
+	return toReal(size(declarations(stylesheetM3)))/toReal(size(ruleSets(stylesheetM3)));
 }
 
-public void numberOfCohesiveRuleBlocks() {	
-	iprintln(size([rule | rule <- ruleSets(stylesheetM3), size({a | <e,a> <- stylesheetM3@containment, e == rule, isDeclaration(a)}) == 1]));
+public int numberOfCohesiveRuleBlocks() {	
+	return size([rule | rule <- ruleSets(stylesheetM3), size({a | <e,a> <- stylesheetM3@containment, e == rule, isDeclaration(a)}) == 1]);
 }
 
 // From the paper: CSS Code Quality: A Metric for Abstractness
