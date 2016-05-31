@@ -17,6 +17,6 @@ import vis::Render;
 Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
 
 public void colorsAnalysis() {
-	list[Color] colors = [rgb(red, green, blue, toReal(alpha)) | /color(int red, int green, int blue, num alpha) := stylesheetAST];
-	render(hcat([box([size(20), fillColor(c), lineColor(c)]) | c <- sort(colors)]));
+	set[Color] colors = {rgb(red, green, blue, toReal(alpha)) | /color(int red, int green, int blue, num alpha) := stylesheetAST};
+	render(hvcat([box([size(50), fillColor(c)]) | c <- sort(colors)]));
 }

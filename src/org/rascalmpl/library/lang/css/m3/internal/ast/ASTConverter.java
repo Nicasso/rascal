@@ -3,16 +3,16 @@ package org.rascalmpl.library.lang.css.m3.internal.ast;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.library.lang.css.m3.internal.CSSToRascalConverter;
 import org.rascalmpl.library.lang.css.m3.internal.IValueList;
 import org.rascalmpl.value.IConstructor;
+import org.rascalmpl.value.IList;
 import org.rascalmpl.value.ISourceLocation;
 import org.rascalmpl.value.IValue;
 import org.rascalmpl.value.type.TypeStore;
-
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV;
 
 import cz.vutbr.web.css.CSSComment;
 import cz.vutbr.web.css.CSSNodeVisitor;
@@ -65,6 +65,7 @@ import cz.vutbr.web.css.TermResolution;
 import cz.vutbr.web.css.TermString;
 import cz.vutbr.web.css.TermTime;
 import cz.vutbr.web.css.TermURI;
+import cz.vutbr.web.csskit.CSSError;
 import cz.vutbr.web.csskit.RuleArrayList;
 
 public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor {
@@ -78,6 +79,27 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		this.eval = eval;
 		
 		ast = (IValue) rules.accept(this);
+		ast = ((IConstructor) ast).asAnnotatable().setAnnotation("messages", getCompilationUnitMessages(rules, true));
+	}
+	
+	protected IValue getCompilationUnitMessages(StyleSheet stylesheet, boolean insertErrors) {
+		org.rascalmpl.value.type.Type args = TF.tupleType(TF.stringType(), TF.sourceLocationType());
+
+		IValueList result = new IValueList(values);
+
+		if (insertErrors) {
+			int i;
+			List<CSSError> problems = stylesheet.getCSSErrors();
+			for (i = 0; i < problems.size(); i++) {
+				ISourceLocation pos = createLocation(loc, problems.get(i).getLocation());
+				
+				org.rascalmpl.value.type.Type constr;
+				constr = typeStore.lookupConstructor(this.typeStore.lookupAbstractDataType("Message"), "error", args);
+				result.add(values.constructor(constr, values.string(problems.get(i).getMessage()), pos));
+			}
+		}
+		
+		return result.asList();
 	}
 	
 	public IValue getAST() {
@@ -414,7 +436,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		if (node.getComment() != null) {
 			stylesheet = ((IConstructor) stylesheet).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
 		}
-		
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		stylesheet = ((IConstructor) stylesheet).asAnnotatable().setAnnotation("src", nodeLocation);

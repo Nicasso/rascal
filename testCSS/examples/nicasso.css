@@ -1,0 +1,512 @@
+/* Move background to the left */
+
+@keyframes backgroundMoveLeft {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+@-webkit-keyframes backgroundMoveLeft {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+@-ms-keyframes backgroundMoveLeft {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+@-moz-keyframes backgroundMoveLeft {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+/* Move background to the right */
+
+@keyframes backgroundMoveRight {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+@-webkit-keyframes backgroundMoveRight {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+@-ms-keyframes backgroundMoveRight {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+@-moz-keyframes backgroundMoveRight {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+.background1 {
+  background-position: 0 0;
+  background-repeat: repeat;
+  position: fixed;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  background: url('images/background_logo.png');
+  animation: backgroundMoveLeft 60s linear infinite;
+  -webkit-animation: backgroundMoveLeft 60s linear infinite;
+  -moz-animation: backgroundMoveLeft 60s linear infinite;
+  -o-animation: backgroundMoveLeft 60s linear infinite;
+}
+
+.background2 {
+  background-position: 0 0;
+  background-repeat: repeat;
+  position: fixed;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  background: url('images/background_logo2.png');
+  animation: backgroundMoveRight 60s linear infinite;
+  -webkit-animation: backgroundMoveRight 60s linear infinite;
+  -moz-animation: backgroundMoveRight 60s linear infinite;
+  -o-animation: backgroundMoveRight 60s linear infinite;
+}
+
+.paused {
+  animation-play-state: paused;
+  -ms-animation-play-state:paused;
+  -o-animation-play-state:paused;
+  -moz-animation-play-state:paused;
+  -webkit-animation-play-state:paused;
+}
+
+#confettilayer {
+  position: fixed;
+  top: 0px;
+  left: 0;
+}
+
+body {
+  background: #CDCCCC;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "sans-serif";
+  font-weight: normal;
+  font-size: 0.95em;
+}
+
+header {
+  padding: 30px;
+  
+}
+
+header h1 {
+  margin: 0;
+}
+
+header h2 {
+  text-align: center;
+  font-family: "Lobster Two";
+  font-weight: 400;
+  font-style: italic;
+  font-size: 28px;
+  margin: 0.1em 0 0 0;
+  width: 333px;
+}
+
+#logo {
+  background: url('images/logo.png') no-repeat;
+  background-size: 100%;
+  display: block;
+  width: 333px;
+  height: 118px;
+}
+
+article {
+  padding: 0 30px;
+  width: 89%;
+}
+
+article p {
+  width: 95%;
+  margin: 0.5em 0;
+  line-height: 1.25em;
+}
+
+#left-column {
+  width: 50%;
+  float: left;
+}
+
+#right-column {
+  width: 50%;
+  float: right;
+}
+
+#error-message {
+  text-align: center;
+}
+
+#error-message a {
+  text-decoration: underline;
+}
+
+.sub-text {
+  margin-left: 20px;
+}
+
+a {
+  color: #E32526;
+  text-decoration: none;
+}
+
+a:active {
+  color: #A41516;
+}
+
+h1, h2, h3 {
+  font-family: "Roboto", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "sans-serif";
+  color: #E32526;
+}
+
+h1 {
+  font-size: 1.75em;
+  margin: 0.35em 0;
+}
+
+h2 {
+  font-size: 1.3em;
+  margin: 0.35em 0;
+}
+
+h3 {
+  font-size: 1.1em;
+  margin: 0.2em 0;
+}
+
+#toggle-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  margin: 3px 0 0 10px;
+  color: #000000;
+  display: none;
+}
+
+#toggle-greyscale {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  z-index: 1;
+  margin: 3px 0 0 10px;
+  color: #000000;
+}
+
+#toggle-blur {
+  position: fixed;
+  top: 32px;
+  left: 0;
+  z-index: 1;
+  margin: 3px 0 0 10px;
+  color: #000000;
+}
+
+#toggle-sepia {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  z-index: 1;
+  margin: 3px 0 0 10px;
+  color: #000000;
+}
+
+#toggle-invert {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  z-index: 1;
+  margin: 3px 0 0 10px;
+  color: #000000;
+}
+
+.portfolio-thumbnail {
+  max-width: 1140px;
+  width: 100%;
+}
+
+.portfolio-button {
+  position: relative;
+  max-width: 1140px;
+  width: 97%;
+  margin-bottom: 20px;
+}
+
+.portfolio-link {
+  display: none;
+  height: 100%;
+  width: 100%;
+  background: #000000;
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 3;
+  text-align: center;
+  font-size: 28px;
+  color: red;
+  opacity: 0.6;
+  filter: alpha(opacity=60); /* For IE8 and earlier */
+}
+
+#contact {
+  clear:both;
+}
+
+#contact-form label, #submit {
+  display: block;
+}
+
+#submit {
+  background: #E32526;
+  color: #FFFFFF;
+  padding: 5px;
+  border: 0;
+}
+
+#submit:active {
+  background: #A41516;
+}
+
+input, textarea {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue","sans-serif";
+  font-weight: normal;
+  font-size: 0.95em;
+}
+
+#contact-form input {
+  width: 400px;
+}
+
+#contact-form textarea {
+  width: 600px;
+  max-width: 800px;
+  max-height: 500px;
+}
+
+#contact-form input, #contact-form textarea {
+  margin-bottom: 10px;
+}
+
+#contact-form input#submit {
+  width: 250px;
+}
+
+.message-notice {
+  margin-left: 10px;
+  color: #007500;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.message-warning {
+  margin-left: 10px;
+  color: #E32526;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.message-error {
+  margin-left: 10px;
+  color: #E32526;
+}
+
+footer {
+  clear: both;
+  padding: 30px;
+  width: 86%;
+  text-align: right;
+}
+
+#container {
+  background: #FBFBFB;
+  max-width: 1020px;
+  width: 90%;
+  margin: 20px auto;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 4px 10px -1px #040404;
+    position: relative;
+}
+
+a {
+  text-decoration: none;
+}
+
+@media only screen and (min-width : 1200px) {
+
+  #toggle-background {
+    display: block;
+  }
+
+}
+
+
+@media only screen and (max-width : 768px) {
+  #contact-form textarea {
+    width: 450px;
+    max-width: 600px;
+  }
+
+  #left-column {
+    width: 100%;
+  }
+
+  #right-column {
+    width: 100%;
+  }
+
+}
+
+@media only screen and (max-width : 700px) {
+  #contact-form textarea {
+    width: 450px;
+    max-width: 600px;
+  }
+}
+
+@media only screen and (max-width : 630px) {
+  #logo {
+    width: 300px;
+    height: 118px;
+  }
+
+  article {
+    padding: 0 15px 0 15px;
+  }
+
+  header h2 {
+    width: 300px;
+  }
+
+  #contact-form input {
+    width: 350px;
+  }
+
+  .portfolio-link {
+    font-size: 26px;
+  }
+
+  #contact-form textarea {
+    width: 380px;
+    max-width: 380px;
+  }
+
+  footer {
+    clear: both;
+    padding: 15px;
+  }
+}
+
+@media only screen and (max-width : 480px) {
+  #container {
+    width: 100%;
+    margin: 0;
+  }
+
+  header {
+    padding: 30px;
+  }
+
+  #logo {
+    width: 250px;
+    height: 100px;
+    margin: 0 auto;
+  }
+
+  header h2 {
+    width: 250px;
+    font-size: 20px;
+    margin: 0 auto;
+  }
+
+  article {
+    padding: 0 15px 0 15px;
+  }
+
+  .portfolio-link {
+    font-size: 24px;
+  }
+
+  #contact-form input {
+    width: 97%;
+  }
+
+
+  #contact-form textarea {
+    width: 96%;
+    max-width: 96%;
+  }
+
+  footer {
+    clear: both;
+    padding: 15px;
+  }
+}
+
+@media only screen and (max-width : 410px) {
+  #container {
+    width: 100%;
+    margin: 0;
+  }
+
+  header {
+    padding: 30px;
+  }
+
+  header h2 {
+    font-size: 18px;
+    width: 200px;
+    margin: 0 auto;
+  }
+
+  #logo {
+    width: 200px;
+    height: 70px;
+    margin: 0 auto;
+  }
+
+  article {
+    padding: 0 10px 0 10px;
+  }
+
+  .portfolio-link {
+    font-size: 22px;
+  }
+
+  #contact-form input {
+    width: 90%;
+  }
+
+
+  #contact-form textarea {
+    width: 89%;
+    max-width: 89%;
+  }
+
+  footer {
+    clear: both;
+    padding: 10px;
+  }
+}
+
+#red-line {
+  width: 8%;
+  height: 100%;
+  display: block;
+  background: url('images/line.png') repeat scroll #FFFFFF;
+  position: absolute;
+  right: 0;
+}

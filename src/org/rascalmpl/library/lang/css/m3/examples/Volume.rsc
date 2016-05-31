@@ -12,17 +12,25 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
-M3 stylesheetM3 = createM3FromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
+//set[Statement] stylesheetAST = createAstsFromDirectory(|home:///workspace/Rascal/rascal/testCSS/examples/|);
+M3 stylesheetM3 = createM3FromDirectory(|home:///workspace/Rascal/rascal/testCSS/examples/a/|);
 
 public void calculateVolume() {
+	int \all = 0;
+	int code = 0;
+	int blank = 0;
+	int comment = 0;
 	for (style <- stylesheets(stylesheetM3)) {
-		iprintln(style);
-		iprintln("All lines: <calculateAllLines(style)>");
-		iprintln("Lines of code: <calculateLinesOfCode(style,stylesheetM3)>");
-		iprintln("Blank lines: <calculateBlankLines(style)>");
-		iprintln("Lines of comments: <calculateLinesOfComments(stylesheetM3)>");
+		\all += calculateAllLines(style);
+		code += calculateLinesOfCode(style,stylesheetM3);
+		blank += calculateBlankLines(style);
+		comment += calculateLinesOfComments(stylesheetM3);
 	}
+	
+	iprintln("All lines: <\all>");
+	iprintln("Lines of code: <code>");
+	iprintln("Blank lines: <blank>");
+	iprintln("Lines of comments: <comment>");
 }
 
 int calculateAllLines(loc style) = size(readFileLines(style));	

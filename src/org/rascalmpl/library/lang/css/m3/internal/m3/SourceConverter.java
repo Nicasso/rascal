@@ -445,9 +445,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		insert(declarations, bindedLocation, nodeLocation);
-		
-		insert(messages, values.constructor(DATATYPE_RASCAL_MESSAGE_ERROR_NODE_TYPE, values.string("HOMOOO"), nodeLocation));
-		
+				
 		scopeManager.pop();
 
 		return null;
