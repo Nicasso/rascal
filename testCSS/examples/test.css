@@ -1,4 +1,7 @@
 span {
   width: 0px;
   width: 0;
+  angle: 0deg;
+  sound: 0hz;
+  time: 0s;
 }
