@@ -35,7 +35,7 @@ data Statement
     | ruleMargin(Expression atRule, Statement stat) // (@TODO, never heard of this!)
     | rulePage(str pseudo, list[Declaration] declarations) // @page :left { "delcarations here" }
     | ruleViewport(list[Declaration] declarations) // @viewport { "delcarations here" }
-    | comment(str text) // /* comment text here */
+    //| comment(str text) // /* comment text here */
     ;
 
 data Declaration

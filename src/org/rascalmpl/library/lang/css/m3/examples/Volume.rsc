@@ -13,9 +13,9 @@ import List;
 import util::Math;
 
 //set[Statement] stylesheetAST = createAstsFromDirectory(|home:///workspace/Rascal/rascal/testCSS/examples/|);
-M3 stylesheetM3 = createM3FromDirectory(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/a/|);
+//M3 stylesheetM3 = createM3FromDirectory(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/a/|);
 
-public void calculateVolume() {
+public void calculateVolume(M3 stylesheetM3) {
 	int \all = 0;
 	int code = 0;
 	int blank = 0;

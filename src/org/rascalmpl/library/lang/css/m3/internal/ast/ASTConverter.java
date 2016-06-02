@@ -138,12 +138,15 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 			IValue temp = (IValue) t.accept(this);
 			declarationValues.add(temp);
 		}
+		
+		//IValue important = constructModifierNode("important", values.bool(node.isImportant()));
 
 		IValue decl =  constructDeclarationNode("declaration", property, declarationValues.asList());
 		
 		if (node.isImportant()) {
 			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("modifier", values.string("important"));
 		}
+
 		
 		if (node.getComment() != null) {
 			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
@@ -422,7 +425,9 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 
 	@Override
 	public IValue visit(StyleSheet node) {
-		//eval.getStdOut().println("StyleSheet");
+		ISourceLocation kak = createLocation(loc, node.getLocation());
+		eval.getStdOut().println("StyleSheet");
+		eval.getStdOut().println(kak);
 
 		IValueList statements = new IValueList(values);
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
@@ -899,7 +904,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("\t" + node.getURI());
 		
 		IValue uri = values.string(node.getURI());
-		
+				
 		IValue rule;
 		if (node.getMediaQueries().size() == 0) {
 			rule = constructStatementNode("ruleImport", uri);

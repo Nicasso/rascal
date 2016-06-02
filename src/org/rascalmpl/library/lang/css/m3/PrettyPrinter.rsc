@@ -164,48 +164,142 @@ public str ppCombinatedSelectors(list[Type] selectors) {
 	return trim(result);
 }
 
-public str ppx(Statement::stylesheet(str name, list[Statement] rules)) = pp(rules);
-public str ppx(Statement::ruleSet(list[Type] selector, list[Declaration] declarations)) = "<getTabs()><ppCombinatedSelectors(selector)> {\n<pp(declarations)><getTabs()>}\n\n";
-public str ppx(Statement::ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets)) {
-	
+public str ppx(ss:Statement::stylesheet(str name, list[Statement] rules)) {
 	str result = "";
+	if (ss@comment?) {
+		result += formatComment(ss@comment);
+	}
+	result += pp(rules);
+	return result;
+}
+public str ppx(rs:Statement::ruleSet(list[Type] selector, list[Declaration] declarations)) {
+	str result = "";
+	if (rs@comment?) {
+		result += formatComment(rs@comment);	
+	}
+	result += "<getTabs()><ppCombinatedSelectors(selector)> {\n<pp(declarations)><getTabs()>}\n\n";
+	return result;
+}
+public str ppx(rm:Statement::ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets)) {
+	str result = "";
+	if(rm@comment?) {
+		result += formatComment(rm@comment);	
+	}
 	result += "<getTabs()>@media <ppMediaQueries(mediaQueries)> {\n";
 	increaseTabs();
 	result += "<pp(ruleSets)>}\n\n";
 	decreaseTabs();
-	
 	return result;
 }
-public str ppx(Statement::ruleFontFace(list[Declaration] decs)) = "<getTabs()>@font-face {\n<pp(decs)>}\n\n";
-public str ppx(Statement::ruleImport(str uri)) = "<getTabs()>@import <uri>;\n\n";
-public str ppx(Statement::ruleImport(str uri, list[Type] mediaQueries)) = "<getTabs()>@import <uri> <ppMediaQueries(mediaQueries)>;\n\n";
-public str ppx(Statement::ruleCounterStyle(str name, list[Declaration] decs)) = "<getTabs()>@counter-style <name> {\n<pp(decs)>}\n\n";
-public str ppx(Statement::ruleNameSpace(str prefix, str uri)) = "<getTabs()>@namespace <prefix> <uri>;\n\n";
-public str ppx(Statement::ruleNameSpace(str uri)) = "<getTabs()>@namespace <uri>;\n\n";
-public str ppx(Statement::ruleCharset(str name)) = "<getTabs()>@charset <name>;\n\n";
-public str ppx(Statement::ruleKeyframes(str name, list[Statement] ruleSets)) {
-	
+public str ppx(rf:Statement::ruleFontFace(list[Declaration] decs)) {
 	str result = "";
+	if (rf@comment?) {
+		result += formatComment(rf@comment);
+	 }
+	result += "<getTabs()>@font-face {\n<pp(decs)>}\n\n";
+	return result;
+}
+public str ppx(ri:Statement::ruleImport(str uri)) {
+ str result = "";
+ 
+ if (ri@comment?) {
+	result += formatComment(ri@comment);
+ }
+ result += "<getTabs()>@import <uri>;\n\n";
+ 
+ return result;
+}
+public str ppx(ri:Statement::ruleImport(str uri, list[Type] mediaQueries)) {
+	str result = "";
+	if (ri@comment?) {
+		result += formatComment(ri@comment);
+	 }
+	result += "<getTabs()>@import <uri> <ppMediaQueries(mediaQueries)>;\n\n";
+	return result;
+}
+public str ppx(rc:Statement::ruleCounterStyle(str name, list[Declaration] decs)) {
+	str result = "";
+	if (rc@comment?) {
+		result += formatComment(rc@comment);
+	 }
+	result += "<getTabs()>@counter-style <name> {\n<pp(decs)>}\n\n";
+	return result;
+}
+public str ppx(rn:Statement::ruleNameSpace(str prefix, str uri)) {
+	str result = "";
+	if (rn@comment?) {
+		result += formatComment(rn@comment);
+	 }
+	result += "<getTabs()>@namespace <prefix> <uri>;\n\n";
+	return result;
+}
+public str ppx(rn:Statement::ruleNameSpace(str uri)) {
+	str result = "";
+	if (rn@comment?) {
+		result += formatComment(rn@comment);
+	 }
+	result += "<getTabs()>@namespace <uri>;\n\n";
+	return result;
+}
+public str ppx(rc:Statement::ruleCharset(str name)) {
+	str result = "";
+	if (rc@comment?) {
+		result += formatComment(rc@comment);
+	 }
+	result += "<getTabs()>@charset <name>;\n\n";
+	return result;
+}
+public str ppx(rk:Statement::ruleKeyframes(str name, list[Statement] ruleSets)) {
+	str result = "";
+	if (rk@comment?) {
+		result += formatComment(rk@comment);
+	}
 	result += "<getTabs()>@keyframes <name> {\n";
 	increaseTabs();
 	result += "<pp(ruleSets)>}\n\n";
 	decreaseTabs();
-	
 	return result;
 }
-
-public str ppx(Statement::ruleMargin(Expression atRule, Statement stat)) = "<getTabs()>@margin <pp(atRule)>{\n<pp(stat)>}\n\n";
-public str ppx(Statement::rulePage(str pseudo, list[Declaration] declarations)) = "<getTabs()>@page <pseudo> {\n<pp(declarations)>}\n\n";
-public str ppx(Statement::ruleViewport(list[Declaration] declarations)) = "<getTabs()>@viewport {\n<pp(declarations)>}\n\n";
-public str ppx(Statement::comment(str text)) = "<getTabs()>/* <text> */\n\n";
+public str ppx(rm:Statement::ruleMargin(Expression atRule, Statement stat)) {
+	str result = "";
+	if (rm@comment?) {
+		result += formatComment(rm@comment);
+	 }
+	result += "<getTabs()>@margin <pp(atRule)>{\n<pp(stat)>}\n\n";
+	return result;
+}
+public str ppx(rp:Statement::rulePage(str pseudo, list[Declaration] declarations)) {
+	str result = "";
+	if (rp@comment?) {
+		result += formatComment(rp@comment);
+	 }
+	result += "<getTabs()>@page <pseudo> {\n<pp(declarations)>}\n\n";
+	return result;
+}
+public str ppx(rv:Statement::ruleViewport(list[Declaration] declarations)) {
+	str result = "";
+	if (rv@comment?) {
+		result += formatComment(rv@comment);
+	 }
+	result += "<getTabs()>@viewport {\n<pp(declarations)>}\n\n";
+	return result;
+}
+//public str ppx(Statement::comment(str text)) = "<getTabs()>/* <text> */\n\n";
 public default str ppx(Statement smth) = "??<smth>??";
 
 public str ppx(d:Declaration::declaration(str property, list[Type] values)) {
+	str result = "";
+	increaseTabs();
+	if (d@comment?) {
+		result += formatComment(d@comment);
+	}
 	if (d@modifier?) {
- 		return "<getTabs()>\t<toLowerCase(property)>: <ppValues(values)> !<d@modifier>;\n";
+ 		result += "<getTabs()><toLowerCase(property)>: <ppValues(values)> !<d@modifier>;\n";
  	} else {
- 		return "<getTabs()>\t<toLowerCase(property)>: <ppValues(values)>;\n";
+ 		result +=  "<getTabs()><toLowerCase(property)>: <ppValues(values)>;\n";
  	}
+ 	decreaseTabs();
+ 	return result;
 }
 public default str ppx(Declaration smth) = "??<smth>??";
 
@@ -229,6 +323,13 @@ public str ppx(Type::color(int red, int green, int blue, num alpha)) {
  	} else {
  		return "#<decimal2hex(red)><decimal2hex(green)><decimal2hex(blue)>";
  	}
+}
+
+public str formatComment(str comment) {
+	comment = replaceAll(comment,"  ","");
+	comment = replaceAll(comment,"\t","");
+	comment = replaceAll(comment,"\n","\n<getTabs()>");
+	return "<getTabs()><comment>\n";
 }
 
 public str decimal2hex(int d) {
@@ -263,19 +364,15 @@ public str ppx(Type::string(str string)) {
 }
 public str ppx(Type::time(num time, str unit)) = formatNumber(time, unit);
 public str ppx(Type::uri(str uri)) {
-
 	return replaceAll(uri, "\"", "");
-
 }
 public str ppx(Type::mediaQuery(str \type, list[Expression] expressions)) {
-	
 	str result = "";
 	result += "<\type>";
 	str exp = trim(ppMediaQueryExpressions(expressions));
 	if (exp != "") {
 		result += " and <trim(ppMediaQueryExpressions(expressions))>";
 	}
-	
 	return result;
 }
 // = "<\type> <trim(ppMediaQueryExpressions(expressions))>";

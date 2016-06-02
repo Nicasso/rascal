@@ -339,7 +339,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			selectors += cs.toString()+",";
 		}
 		
-		selectors = selectors.substring(0, selectors.length()-1);
+		//selectors = selectors.substring(0, selectors.length()-1);
 		
 		//makeBinding("css+ruleset", null, selectors);
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
