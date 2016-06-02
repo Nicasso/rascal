@@ -13,19 +13,23 @@ import List;
 import util::Math;
 
 //set[Statement] stylesheetAST = createAstsFromDirectory(|home:///workspace/Rascal/rascal/testCSS/examples/|);
-//M3 stylesheetM3 = createM3FromDirectory(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/a/|);
+//M3 stylesheetM3 = createM3FromDirectory(|home:///Documents/workspace/Rascal/rascal/testCSS/github|);
 
 public void calculateVolume(M3 stylesheetM3) {
 	int \all = 0;
 	int code = 0;
 	int blank = 0;
 	int comment = 0;
+	
 	for (style <- stylesheets(stylesheetM3)) {
 		\all += calculateAllLines(style);
-		code += calculateLinesOfCode(style,stylesheetM3);
+		
 		blank += calculateBlankLines(style);
-		comment += calculateLinesOfComments(stylesheetM3);
 	}
+	
+	comment += calculateLinesOfComments(stylesheetM3);
+	
+	code = (\all - blank) - comment;
 	
 	
 	iprintln("All lines: <\all>");

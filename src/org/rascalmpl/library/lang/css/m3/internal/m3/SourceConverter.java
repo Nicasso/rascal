@@ -339,7 +339,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			selectors += cs.toString()+",";
 		}
 		
-		//selectors = selectors.substring(0, selectors.length()-1);
+		selectors = selectors.substring(0, selectors.length()-1);
 		
 		//makeBinding("css+ruleset", null, selectors);
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
@@ -380,7 +380,7 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 			declarationsKey += d.toString();
 		}
 		
-		declarationsKey = declarationsKey.substring(0, -1);
+		declarationsKey = declarationsKey.substring(0, declarationsKey.length()-1);
 		
 		//makeBinding("css+viewportrule", null, declarations);
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
