@@ -1,1969 +1,101 @@
-    @charset "utf-8";
-
-body {
-    margin: 0px;
-    padding: 0px;
-    color: #161616;
-    font-family: "Times New Roman", Times, serif;
-}
-
-ul,li {
-    list-style-type: none;
-    padding: 0px;
-    margin: 0px;
-}
-
-a:link {
-    font-family: "Times New Roman", Times, serif;
-    color: #161616;
-    text-decoration: none;
-}
-
-ul,li,img {
-    margin: 0px;
-    padding: 0px;
-    border-top-width: 0px;
-    border-right-width: 0px;
-    border-bottom-width: 0px;
-    border-left-width: 0px;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-a:visited {
-    color: #161616;
-    text-decoration: none;
-}
-
-h1,h2,h3,h4,h5,h6 {
-    margin: 0px;
-    padding: 0px;
-}
-
-p {
-    padding: 0px;
-    margin: 0px;
-}
-
-.topBar {
-    overflow: hidden;
-    width: 1200px;
-    margin: 0 auto;
-    padding-top: 27px;
-    padding-bottom: 10px;
-}
-
-.logo {
-    float: left;
-    margin-right: 120px;
-    padding: 7px 0px 0px;
-}
-
-.logo img {
-    width: 342px;
-    height: 37px;
-}
-
-.search {
-    padding-top: 8px;
-    float: left;
-    padding-right: 13px;
-}
-
-.search input {
-    float: left;
-    height: 32px;
-    width: 304px;
-    border: 1px solid #ccc;
-    margin-right: 7px;
-}
-
-.channel {
-    float: left;
-    font-size: 12px;
-    font-family: Arial;
-    width: 129px;
-    padding-right: 18px;
-    border-right: 1px solid #ccc;
-}
-
-.channel a {
-    color: #9e9e9f;
-    text-decoration: none;
-    margin-right: 5px;
-    margin-bottom: 0px;
-    display: block;
-    float: left;
-    padding: 1px 3px;
-    font-family: Arial;
-}
-
-.channel a:hover {
-    background: #004679;
-    color: #FFF;
-}
-
-.channel span {
-    float: left;
-    width: 100%;
-}
-
-.topInfo {
-    float: left;
-    padding-left: 20px;
-}
-
-.topInfo a {
-    padding-right: 14px;
-    display: block;
-    float: left;
-}
-
-/*导航菜单*/
-.topNav {
-    width: 1200px;
-    background: #004679;
-    margin: 0 auto 15px auto;
-}
-
-.dropdown {
-    position: relative;
-    background-color: #014073;
-    height: 35px;
-    font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 35px;
-    color: #FFF;
-}
-
-.topNav .dropdown li a {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #FFF;
-    padding-right: 18px;
-    padding-left: 18px;
-}
-
-.dropdown li {
-    float: left;
-    zoom: 1;
-    height: 35px;
-    text-align: left;
-}
-
-.dropdown li span a {
-    display: block;
-    color: #FFF;
-    height: 25px;
-    font-size: 14px;
-    float: left;
-    text-decoration: none;
-    font-weight: bold;
-    line-height: 25px;
-    padding-right: 8px;
-    padding-left: 7px;
-}
-
-.dropdown li span a:hover {
-    ;color: #FFF;
-}
-
-.dropdown a:active {
-    color: #ffa500;
-}
-
-.dropdown li:last-child a {
-    border-right: none;
-}
-
-.dropdown li:hover {
-    color: #FFF;
-    position: relative;
-    background-color: #006599;
-}
-
-.dropdown ul {
-    visibility: hidden;
-    position: absolute;
-    top: 100%;
-    left: -39px;
-    width: 150px;
-}
-
-.dropdown ul li {
-    font-weight: normal;
-    float: left;
-    background-color: #014073;
-    height: 25px;
-    color: #FFF;
-    border-width: 0px;
-    filter: Alpha(Opacity=85, Style=0);
-    opacity: 0.85;
-}
-
-.dropdown ul li a {
-    display: block;
-    height: 25px;
-    text-decoration: none;
-    color: #FFF;
-    line-height: 25px;
-    width: 115px;
-}
-
-.dropdown ul li a:hover {
-    background-color: #006599;
-}
-
-.dropdown ul ul {
-    left: 100%;
-    top: 0;
-}
-
-.dropdown li:hover > ul {
-    visibility: visible;
-}
-
-.dropdown li .sub_menu {
-    background-color: #014073;
-    filter: Alpha(Opacity=85, Style=0);
-    opacity: 0.85;
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    z-index: 3;
-}
-
-.sub_menu li a:hover {
-    background-color: #0C0;
-}
-
-.newspaper {
-    width: 115px;
-    background: url(http://www.chinadaily.com.cn/image_e/2013/arr_bot.gif) no-repeat 102px center;
-}
-/*导航菜单-end*/
-
-
-.tMain {
-    width: 1200px;
-    overflow: hidden;
-    margin-top: 0;
-    margin-right: auto;
-    margin-bottom: 30px;
-    margin-left: auto;
-}
-
-.tmL {
-    width: 642px;
-    float: left;
-}
-
-.tmL .twBox {
-    overflow: hidden;
-}
-
-.tmL .twBox a {
-    width: 153px;
-    float: left;
-    margin-right: 10px;
-    background: #f0f0f0;
-    display: block;
-    text-decoration: none;
-    font-size: 20px;
-    line-height: 23px;
-    height: 208px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.tmL .twBox a .txt1 {
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-    display: block;
-    font-weight: normal;
-}
-
-.tmL .twBox a .txt1:hover {
-    text-decoration: none;
-}
-
-.tmR {
-    width: 543px;
-    float: right;
-}
-
-.tmR .twBox {
-    margin-bottom: 10px;
-    overflow: hidden;
-}
-
-.tmR .txtBox {
-    overflow: hidden;
-    font-family: "Times New Roman", Times, serif;
-    margin-bottom: 10px;
-}
-
-.tmR .txtBox div {
-    padding: 8px;
-    float: left;
-    background: #f0f0f0;
-}
-
-.tmR .txtBox a {
-    font-size: 20px;
-}
-
-.tmR .txtBox a:hover {
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.tmR .txtBox div span,.tmR .txtBox div span a {
-    color: #0261A7;
-    font-size: 20px;
-    text-decoration: none;
-    line-height: 23px;
-}
-
-.tmR .txtBox div:hover {
-    background: #e6e6e6;
-}
-
-.tmR .txtBox .txt2 {
-    width: 304px;
-    margin-right: 10px;
-    height: 92px;
-    padding: 8px;
-}
-
-.tmR .txtBox .txt2 b {
-    color: #b8b8b8;
-    font-size: 20px;
-}
-
-.tmR .txtBox .txt3 {
-    width: 196px;
-    height: 92px;
-}
-
-.tmR .txtBox .txt3 b {
-    color: #b8b8b8;
-    font-size: 20px;
-}
-
-.tmR .Txt h2 a {
-    font-size: 28px;
-    font-weight: normal;
-    line-height: 31px;
-    font-family: "Times New Roman", Times, serif;
-}
-
-.tmR .Txt {
-    width: 235px;
-    float: left;
-}
-
-.tmR .Txt p {
-    font-family: Arial;
-    font-size: 12px;
-    color: #7f7f7f;
-    padding-top: 10px;
-    line-height: 15px;
-}
-
-.tmR .Pic {
-    width: 297px;
-    float: right;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.tmR .ad1 {
-    margin-top: 15px;
-}
-
-.cMain {
-    width: 1200px;
-    overflow: hidden;
-    margin-top: 0;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.cmL {
-    width: 1014px;
-    float: left;
-}
-
-.cmR {
-    width: 168px;
-    float: right;
-}
-
-.cmL h2 {
-    width: 100%;
-    background: url(http://www.chinadaily.com.cn/image_e/2016/btBg.png) repeat-x center;
-    margin-bottom: 9px;
-}
-
-.cmL h2 b {
-    background-color: #FFF;
-    padding-right: 8px;
-    color: #004679;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 24px;
-}
-
-.cmL h2 b a {
-    color: #004679;
-}
-
-.cmL h2.rose b a {
-    color: #7c2671;
-}
-
-.cmL .rose {
-    width: 100%;
-    background: url(http://www.chinadaily.com.cn/image_e/2016/btBg2.png) repeat-x center;
-}
-
-.cmL .rose b {
-    background-color: #FFF;
-    padding-right: 8px;
-    color: #7c2671;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 24px;
-}
-
-.cmL .cmLBox {
-    overflow: hidden;
-    margin-bottom: 30px;
-}
-
-.cmL .cmLBox.mb15 {
-    margin-bottom: 15px;
-}
-
-.cmL .cmLBox .cmLBoxL {
-    width: 480px;
-    overflow: hidden;
-    float: left;
-}
-
-.cmL .cmLBox .cmLBoxL .Txt {
-    overflow: hidden;
-    margin-top: 10px;
-}
-
-.cmL .cmLBox .cmLBoxL .Txt a {
-    background: #f0f0f0;
-    display: block;
-    margin-right: 10px;
-    float: left;
-    padding: 1px 6px;
-    height: 34px;
-    width: 100px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.cmL .cmLBox .cmLBoxL .twBox {
-    overflow: hidden;
-}
-
-.cmL .cmLBox .cmLBoxL .twBox span {
-    float: left;
-    width: 290px;
-    cursor: pointer;
-    overflow: hidden;
-}
-
-.cmL .cmLBox .cmLBoxL .twBox p {
-    float: left;
-    width: 174px;
-    background: #004679;
-    padding: 8px;
-    height: 171px;
-}
-
-.cmL .cmLBox .cmLBoxL .twBox p a {
-    color: #fff;
-    font-size: 22px;
-    line-height: 25px;
-}
-
-.cmL .cmLBox .cmLBoxR {
-    width: 524px;
-    float: right;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox {
-    overflow: hidden;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox span {
-    float: left;
-    width: 168px;
-    top: 200px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox p {
-    float: left;
-    width: 340px;
-    background: #f0f0f0;
-    padding: 8px;
-    height: 93px;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox p:hover {
-    background: #e6e6e6;
-    cursor: pointer;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox p a {
-    color: #161616;
-    font-size: 22px;
-    line-height: 25px;
-    text-decoration: none;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox p.blu {
-    float: left;
-    width: 340px;
-    background: #00457e;
-    padding: 8px;
-    height: 93px;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox p.blu:hover {
-    background: #003c68;
-    cursor: pointer;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox p.blu a {
-    color: #fff;
-    font-size: 22px;
-    line-height: 25px;
-    text-decoration: none;
-}
-
-.cmL .cmLBox .cmLBoxR .Txt a {
-    background: #f0f0f0;
-    display: block;
-    margin-right: 10px;
-    float: left;
-    padding: 8px;
-    height: 99px;
-    width: 241px;
-    font-size: 14px;
-    font-size: 20px;
-    line-height: 23px;
-}
-
-.cmL .cmLBox .cmLBoxR .Txt a:hover {
-    background: #e6e6e6;
-    text-decoration: none;
-}
-
-.liBox {
-    padding-top: 20px;
-}
-
-.liBox li {
-    border-top: #e0e0e0 1px solid;
-    padding: 6px 0px 7px 0px;
-}
-
-.liBox li a {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.liBox2 {
-    padding-top: 10px;
-}
-
-.liBox2 li {
-    border-bottom: #e0e0e0 1px solid;
-    padding: 6px 0px 7px 0px;
-}
-
-.liBox2 li a {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.cmLBoxR .twBox li {
-    width: 168px;
-    float: left;
-    margin-right: 10px;
-    background: #f0f0f0;
-    height: 187px;
-}
-
-.cmLBoxR .twBox li a {
-    display: block;
-    text-decoration: none;
-    font-size: 14px;
-    line-height: 17px;
-    font-weight: bold;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.cmLBoxR .twBox li .txt1 {
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-.cmLBoxR .twBox li .txt1:hover {
-    text-decoration: none;
-}
-
-.cmL .cmLBox .cmLBoxL .twBox .bgR {
-    background: #7c2671;
-}
-
-.cmL .cmLBox .cmLBoxL .twBox .bgR a {
-    color: #FFF;
-}
-
-.cmLBox2 {
-    margin-bottom: 30px;
-    overflow: hidden;
-}
-
-.ad2 {
-    width: 479px;
-    float: left;
-}
-
-/*
-.bd{width: 524px;float: right;height: 95px;background: #f0f0f0;}
-.bd .bdL{width:340px; float:left; padding:10px;font-size: 16px;font-weight: bold;}
-.bd .bdL p{margin-bottom: 8px;font-size: 14px;font-weight: bold;}
-.bd .bdR{width: 140px;float: right;}
-.bd .bdR input{ float:right;width: 115px;height: 26px;background: #FFF;border: 1px solid #ccc;margin-bottom: 3px; color:#003155; margin-right:10px;}
-.bd .bdR span{float:right; margin-bottom:9px; width:90px; height:16px; background:#004679; font-size:14px; color:#fff; text-align:center;}
-*/
-.bd {
-    width: 504px;
-    float: right;
-    height: 75px;
-    background: #f0f0f0;
-    padding: 10px;
-}
-
-.bd .bk {
-    width: 340px;
-    float: left;
-    font-size: 14px;
-    font-weight: bold;
-    display: block;
-    overflow: auto;
-}
-
-.bd .wsBtn {
-    width: 140px;
-    float: right;
-}
-
-.bd .wsBt input.but1 {
-    float: right;
-    width: 115px;
-    height: 26px;
-    background: #FFF;
-    border: 1px solid #ccc;
-    margin-bottom: 3px;
-    color: #003155;
-    margin-right: 10px;
-}
-
-.cmL .cmLBox .cmLBoxL .twBox .bgW {
-    background: #FFF;
-}
-
-.cmL .cmLBox .cmLBoxL .twBox .bgW a {
-    color: #161616;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox .Txt {
-    background: #FFF;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox .Txt a {
-    height: 72px;
-    padding: 8px;
-    margin-bottom: 10px;
-    background: #f0f0f0;
-}
-
-.cmLBoxR .twBox .bgB,.cmL .cmLBox .cmLBoxL .twBox .bgB {
-    background: #000;
-}
-
-.cmLBoxR .twBox .bgB a,.cmL .cmLBox .cmLBoxL .twBox .bgB a {
-    color: #FFF;
-}
-
-.cmR h2 {
-    width: 100%;
-    background: url(http://www.chinadaily.com.cn/image_e/2016/btBg.png) repeat-x center;
-}
-
-.cmR h2 b {
-    background-color: #004679;
-    padding-right: 8px;
-    color: #fff;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 14px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 8px;
-}
-
-.cmR h2 b a {
-    color: #fff;
-}
-
-.cmR .twBox {
-    overflow: hidden;
-}
-
-.cmR .twBox div {
-    margin-bottom: 11px;
-    margin-top: 19px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.cmR .twBox p a {
-    font-size: 16px;
-    line-height: 19px;
-    font-weight: bold;
-}
-
-.cmR .Cont {
-    margin-bottom: 30px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.cmR .twBox span {
-    font-size: 13px;
-    padding-top: 3px;
-    padding-right: 7px;
-    padding-bottom: 3px;
-    padding-left: 7px;
-    background-color: #999999;
-    font-family: Arial;
-    color: #FFF;
-    float: right;
-    margin-top: 15px;
-}
-
-.cmLBoxL .twBox .v-ico {
-    position: absolute;
-    width: 290px;
-    height: 187px;
-    float: left;
-}
-
-.cmLBoxL .twBox .v-ico b {
-    position: relative;
-    top: -80px;
-    left: 208px;
-}
-
-.cmLBoxL .twBox p.v-txt {
-    position: relative;
-    left: 290px;
-    *left: 0px;
-}
-
-.v-ico2 {
-    display: block;
-    width: 168px;
-    height: 109px;
-    position: absolute;
-}
-
-.v-ico2 b {
-    position: relative;
-    top: -47px;
-    left: 118px;
-}
-
-.v-txt2 {
-    background-color: #000;
-    position: relative;
-    top: 110px;
-}
-
-/*tab-begin*/
-#topNav {
-    width: 168px;
-}
-
-#topNav .bt {
-    margin: 0px;
-    list-style-type: none;
-    padding: 0px;
-    border-bottom: 1px solid #e0e0e0;
-    overflow: hidden;
-}
-
-#topNav .bt li {
-    float: left;
-    width: 84px;
-}
-
-#topNav .bt a {
-    font-size: 14px;
-    text-decoration: none;
-    margin-right: 2px;
-    margin-left: 2px;
-    float: left;
-    text-align: center;
-}
-
-#topNav .bt a span {
-    display: block;
-    width: 73px;
-    text-align: left;
-    padding-top: 3px;
-    padding-right: 3px;
-    padding-bottom: 3px;
-    padding-left: 6px;
-    background-color: #F6F6F6;
-}
-
-#topNav .bt a:hover {
-    color: #FFCC00;
-}
-
-#topNav .bt a.current:hover {
-    color: #666666;
-}
-
-#topNav .bt a.current {
-    display: block;
-    text-decoration: none;
-    color: #666666;
-}
-
-#topNav .bt a.current span {
-    background-position: left top;
-    display: block;
-    background-repeat: no-repeat;
-    background-color: #004679;
-    color: #FFF;
-}
-
-a,area {
-    blr: expression(this.onFocus=this.blur())
-}
-
-:focus {
-    outline-style: none;
-}
-
-#topNav  .show {
-    clear: both;
-    width: 168px;
-    display: block;
-}
-
-#topNav div {
-    display: none;
-}
-
-#topNav h2 {
-    font-size: 14px;
-    color: #003399;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    line-height: 30px;
-    margin: 0px;
-}
-
-#topNav p {
-    margin: 0px;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    line-height: 18px;
-}
-
-#topNav .liBox li {
-    padding: 14px 0px;
-    font-size: 14px;
-    line-height: 17px;
-    border-bottom: 1px solid #e0e0e0;
-    border-top-width: 0px;
-} 
-/*tab-end*/
-
-/*scroll-begin*/
-.scrBox .bt3 {
-    background-repeat: no-repeat;
-    line-height: 35px;
-    height: 35px;
-    padding-left: 10px;
-}
-
-.scrBox .bt3 h2 {
-    font-size: 26px;
-    color: #077da5;
-}
-
-.pic_show_l {
-    PADDING-BOTTOM: 0px;
-    BACKGROUND-COLOR: #ffffff;
-    MARGIN-TOP: 0px;
-    ZOOM: 1;
-    BACKGROUND-REPEAT: repeat-x;
-    HEIGHT: 235px;
-    MARGIN-LEFT: 0px;
-    FONT-SIZE: 12px
-}
-
-.pic_show_l .pcont {
-    PADDING-BOTTOM: 5px;
-    PADDING-LEFT: 5px;
-    WIDTH: 1000px;
-    FLOAT: left;
-    HEIGHT: 238px;
-    MARGIN-LEFT: 0px;
-    OVERFLOW: hidden;
-    MARGIN-RIGHT: 0px;
-    PADDING-TOP: 10px
-}
-
-.pic_show_l .ScrCont {
-    WIDTH: 8758px;
-    ZOOM: 1;
-    MARGIN-LEFT: -5px
-}
-
-.pic_show_l .leftbotton {
-    PADDING-BOTTOM: 0px;
-    PADDING-LEFT: 0px;
-    PADDING-RIGHT: 0px;
-    DISPLAY: block;
-    FLOAT: left;
-    MARGIN-LEFT: 0px
-}
-
-.pic_show_l .rightbotton {
-    PADDING-BOTTOM: 0px;
-    PADDING-LEFT: 0px;
-    PADDING-RIGHT: 0px;
-    FLOAT: left;
-}
-
-.pic_show_l .leftbotton IMG {
-    BORDER-BOTTOM-STYLE: none;
-    BORDER-RIGHT-STYLE: none;
-    BORDER-TOP-STYLE: none;
-    BORDER-LEFT-STYLE: none
-}
-
-.pic_show_l .rightbotton IMG {
-    BORDER-BOTTOM-STYLE: none;
-    BORDER-RIGHT-STYLE: none;
-    BORDER-TOP-STYLE: none;
-    BORDER-LEFT-STYLE: none
-}
-
-.pic_show_l DIV#list1_1 UL {
-    TEXT-ALIGN: center;
-    LINE-HEIGHT: 24px;
-    MARGIN: 0px;
-    WIDTH: 154px;
-    FLOAT: left;
-}
-
-#ISL_Cont_1 #list1_1 UL LI {
-    LINE-HEIGHT: 14px;
-    DISPLAY: block;
-    MARGIN-BOTTOM: 5px;
-    HEIGHT: 95px;
-}
-
-#ISL_Cont_1 #list2_1 UL LI {
-    LINE-HEIGHT: 14px;
-    DISPLAY: block;
-    MARGIN-BOTTOM: 5px;
-    HEIGHT: 95px;
-}
-
-.pic_show_l DIV#list2_1 UL {
-    TEXT-ALIGN: center;
-    LINE-HEIGHT: 24px;
-    MARGIN: 0px;
-    WIDTH: 154px;
-    FLOAT: left;
-    HEIGHT: 248px;
-}
-
-.pic_show_l DIV#list1_1 IMG {
-    MARGIN-TOP: 2px;
-    DISPLAY: block;
-    MARGIN-BOTTOM: 1px;
-    CURSOR: pointer;
-}
-
-.pic_show_l DIV#list2_1 IMG {
-    MARGIN: 2px auto 1px;
-    DISPLAY: block;
-    CURSOR: pointer;
-}
-
-.pic_show_l #list1_1 {
-    FLOAT: left;
-}
-
-.pic_show_l #list2_1 {
-    FLOAT: left;
-}
-
-.pic_show_l .rightbotton IMG {
-    MARGIN-LEFT: 2px;
-}
-
-.picshow {
-    POSITION: relative;
-    MARGIN: 0px;
-    WIDTH: 480px
-}
-
-#picarea {
-    MARGIN: 0px;
-    BACKGROUND: #fff
-}
-
-#bigpicarea {
-    POSITION: relative;
-    HEIGHT: 310px;
-    OVERFLOW: hidden
-}
-
-.image {
-    TEXT-ALIGN: center
-}
-
-.image IMG {
-    BORDER-LEFT: #ececec 1px solid;
-    MARGIN: 0px auto;
-    BORDER-TOP: #ececec 1px solid;
-    BORDER-RIGHT: #ececec 1px solid
-}
-
-.pic_show_l .bt2 {
-    overflow: hidden;
-}
-
-.pic_show_l .bt2 h2 {
-    width: 935px;
-    float: left;
-}
-
-.pic_show_l .bt2 .arr {
-    float: right;
-    width: 70px;
-}
-/*scroll-end*/
-
-/*focus-begin*/
-.cont-roll {
-    width: 642px;
-    height: 320px;
-    margin-bottom: 15px;
-}
-
-.focus {
-    overflow: hidden;
-}
-
-.focus img {
-    width: 642px;
-    height: 320px;
-}
-
-.focus .shadow .title {
-    margin: 0px;
-    padding: 0px;
-}
-
-.focus .shadow .title a {
-    text-decoration: none;
-    color: #FFF;
-    font-size: 14px;
-    font-weight: bolder;
-    overflow: hidden;
-}
-
-.focus .btn {
-    bottom: 34px;
-    left: 510px;
-    overflow: hidden;
-    zoom: 1;
-}
-
-.focus .btn a {
-    position: relative;
-    display: inline;
-    width: 13px;
-    height: 13px;
-    border-radius: 7px;
-    margin: 0 5px;
-    color: #B0B0B0;
-    font: 12px/15px "\5B8B\4F53";
-    text-decoration: none;
-    text-align: center;
-    outline: 0;
-    float: left;
-    background: #D9D9D9;
-}
-
-.focus .btn a:hover,.focus .btn a.current {
-    cursor: pointer;
-    background: #fc114a;
-}
-
-.focus .fPic {
-    margin: 0px;
-    padding: 0px;
-}
-
-.focus .D1fBt {
-    overflow: hidden;
-    zoom: 1;
-    height: 16px;
-    z-index: 10;
-}
-
-.focus .shadow {
-/*5.25修改，纠正在ie10以下右侧多余黑边问题*/
-    width: 602px;
-    bottom: 0;
-    left: 0px;
-    z-index: 10;
-    display: block;
-    text-align: left;
-    position: relative;
-    height: 100px;
-    top: -146px;
-    right: 0px;
-    background: url(http://www.chinadaily.com.cn/image_e/2016/focusLine.png) repeat-x;
-    padding: 65px 15px 0 25px;
-    cursor: pointer;
-}
-
-.focus .shadow h3 {
-    margin: 40px 0px 0px 0px;
-    padding: 0px;
-    font-size: 24px;
-    line-height: 27px;
-    color: #FFF;
-    font-weight: normal;
-}
-
-.focus .shadow h3 a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: normal;
-}
-
-.focus .fcon {
-    width: 642px;
-    float: left;
-    display: none;
-    margin: 0px;
-    padding: 0px;
-}
-
-.focus .fcon img {
-    display: block;
-}
-
-.focus .fbg {
-}
-
-.focus .fbg div {
-    margin: 4px auto 0;
-    overflow: hidden;
-    zoom: 1;
-    height: 14px
-}
-
-.focus .D1fBt a {
-    position: relative;
-    display: inline;
-    width: 12px;
-    height: 12px;
-    border-radius: 7px;
-    margin: 0 5px;
-    color: #B0B0B0;
-    font: 12px/15px "\5B8B\4F53";
-    text-decoration: none;
-    text-align: center;
-    outline: 0;
-    float: left;
-}
-
-.focus .D1fBt img {
-    display: none
-}
-
-.focus .D1fBt i {
-    display: none;
-    font-style: normal;
-}
-
-.focus .prev,.focus .next {
-    position: absolute;
-    width: 40px;
-    height: 74px;
-    background: url(http://www.chinadaily.com.cn/image_e/2016/focus_btn.png) no-repeat;
-    right: 0px;
-}
-
-.focus .prev {
-    background-position: 0 -74px;
-    cursor: pointer;
-    *margin: 20px 0px 0px -642px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    left: 0px;
-    top: 120px;
-}
-
-.focus .next {
-    background-position: -40px -74px;
-    cursor: pointer;
-    right: 0px;
-    *margin: 20px 0px 0px 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    top: 120px;
-    *right: 642px;
-}
-
-.focus .prev:hover {
-    background-position: 0 0;
-}
-
-.focus .next:hover {
-    background-position: -40px 0;
-}
-
-.gj {
-    margin: 0px auto;
-    padding: 0px;
-    width: 642px;
-    position: absolute;
-    z-index: 33;
-}
-/*focus-end*/
-
-/*bottom-begin*/
-.hui-dingbu {
-    margin: 0px;
-    padding: 0px;
-    background: #F6F6F6;
-}
-
-.ding-nei {
-    margin: 0px auto;
-    padding: 10px 0px;
-    width: 1200px;
-    font-family: "Times New Roman", Times, serif;
-    color: #161616;
-    font-size: 20px;
-    text-align: center;
-}
-
-.ding-nei a:link,.ding-nei a:visited {
-    text-decoration: none;
-    color: #161616;
-    font-size: 20px;
-}
-
-.dibu-one {
-    margin: 0px;
-    padding: 0px;
-    background: #B9B9B9;
-}
-
-.dibu-one-nei {
-    margin: 0px auto;
-    padding: 40px 0px;
-    width: 1200px;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #fff;
-    font-size: 12px;
-}
-
-.dibu-one-nei a:link,.dibu-one-nei a:visited {
-    text-decoration: none;
-    color: #fff;
-    font-family: Arial;
-}
-
-.dibu-one-nei a:hover {
-    text-decoration: underline;
-}
-
-.di-a {
-    margin: 0px 0px 15px 0px;
-    padding: 0px;
-}
-/*底部2*/
-.dibu-two {
-    margin: 0px;
-    padding: 25px 0px;
-    background: #003E6C;
-    overflow: hidden;
-}
-
-.dibu-two-nei {
-    margin: 0px auto;
-    padding: 0px;
-    width: 1200px;
-}
-
-.w-one {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 125px;
-}
-
-.w-bia {
-    margin: 0px 0px 35px 0px;
-    padding: 0px;
-    font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #ccc;
-}
-
-.w-bia a:link,.w-bia a:visited {
-    text-decoration: none;
-    color: #ccc;
-    font-family: Arial;
-}
-
-.w-bia a:hover {
-    text-decoration: underline;
-}
-
-.w-bir {
-    margin: 0px 0px 15px 0px;
-    padding: 0px;
-    font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #ccc;
-}
-
-.w-bir a:link,.w-bir a:visited {
-    text-decoration: none;
-    color: #ccc;
-    font-family: Arial;
-}
-
-.w-bir a:hover {
-    text-decoration: underline;
-}
-
-.w-two {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 125px;
-}
-
-.w-three {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 120px;
-}
-
-.w-for {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 125px;
-}
-
-.w-fiv {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 125px;
-}
-
-.w-six {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 125px;
-}
-
-.w-seven {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 125px;
-}
-
-.w-eight {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 125px;
-}
-
-.w-nine {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 125px;
-}
-/*底部3*/
-.dibu-three {
-    margin: 0px;
-    padding: 35px 0px;
-    background: #004679;
-    overflow: hidden;
-}
-
-.dibu-three-nei {
-    margin: 0px auto;
-    padding: 0px;
-    width: 1200px;
-}
-
-.three-left {
-    margin: 0px;
-    padding: 0px;
-    float: left;
-    width: 445px;
-}
-
-.lo-g {
-    margin: 0px;
-    padding: 0px;
-}
-
-.lo-a {
-    margin: 15px 0px 0px 0px;
-    padding: 0px;
-    font-size: 12px;
-    color: #ccc;
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 18px;
-}
-
-.lo-b {
-    margin: 25px 0px 0px 0px;
-    padding: 0px;
-    font-size: 12px;
-    color: #ccc;
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 18px;
-}
-
-.lo-c {
-    margin: 25px 0px 0px 0px;
-    padding: 0px;
-    font-size: 12px;
-    color: #ccc;
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 18px;
-}
-
-.three-midd {
-    margin: 50px 0px 0px 150px;
-    padding: 0px;
-    float: left;
-    width: 395px;
-}
-
-.midd-a {
-    margin: 0px 0px 20px 0px;
-    padding: 0px;
-    font-size: 14px;
-    color: #ccc;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.midd-a a:link,.midd-a a:visited {
-    text-decoration: none;
-    color: #ccc;
-    font-family: Arial;
-}
-
-.midd-a a:hover {
-    text-decoration: underline;
-}
-
-.three-right {
-    margin: 10px 100px 0px 0px;
-    padding: 0px;
-    float: right;
-    width: 92px;
-}
-
-.right-a {
-    margin: 0px 0px 20px 0px;
-    padding: 0px;
-    font-size: 14px;
-    color: #ccc;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.right-b {
-    margin: 0px;
-    padding: 0px;
-}
-/*bottom-end*/
-.tmR .twBox .Txt h2 a:hover {
-    color: #00457e;
-    text-decoration: none;
-}
-
-.tmR .twBox .Pic img {
-    height: 190px;
-    width: 297px;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.tmR .twBox .Pic:hover img {
-    -webkit-transform: scale(0.15);
-    -moz-transform: scale(1.15);
-    -o-transform: scale(1.15);
-    transform: scale(1.15);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.tmL .twBox a img {
-    height: 99px;
-    width: 153px;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.tmL .twBox a:hover img {
-    -webkit-transform: scale(0.15);
-    -moz-transform: scale(1.15);
-    -o-transform: scale(1.15);
-    transform: scale(1.15);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.tmR .ad1 img {
-    height: 100px;
-    width: 543px;
-}
-
-.cmLBox2 .ad2 img {
-    height: 95px;
-    width: 479px;
-}
-
-.cmLBoxL .twBox span a img {
-    height: 187px;
-    width: 290px;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-    float: left;
-    display: block;
-}
-
-.cmLBoxL .twBox span a:hover img {
-    -webkit-transform: scale(0.15);
-    -moz-transform: scale(1.15);
-    -o-transform: scale(1.15);
-    transform: scale(1.15);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.cmLBoxR .twBox span a img {
-    height: 109px;
-    width: 168px;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.cmLBoxR .twBox span a:hover img {
-    -webkit-transform: scale(0.15);
-    -moz-transform: scale(1.15);
-    -o-transform: scale(1.15);
-    transform: scale(1.15);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.cmLBoxR .twBox li a img {
-    height: 109px;
-    width: 168px;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.cmLBoxR .twBox li a:hover img {
-    -webkit-transform: scale(0.15);
-    -moz-transform: scale(1.15);
-    -o-transform: scale(1.15);
-    transform: scale(1.15);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.cmLBoxR .twBox .Txt2 a {
-    height: 72px;
-    width: 152px;
-    margin-bottom: 10px;
-    padding: 8px;
-    background-color: #F6F6F6;
-}
-
-.cmLBoxR .twBox .Txt2 a:hover {
-    background: #e6e6e6;
-    text-decoration: none;
-}
-
-.cmLBoxL .twBox .v-ico b a img {
-    height: 63px;
-    width: 63px;
-}
-
-.cmLBoxR .twBox .v-ico2 b img {
-    height: 38px;
-    width: 38px;
-}
-
-.cmR div a {
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.cmR .Cont a img {
-    height: 109px;
-    width: 168px;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.cmR .twBox a:hover img {
-    -webkit-transform: scale(0.15);
-    -moz-transform: scale(1.15);
-    -o-transform: scale(1.15);
-    transform: scale(1.15);
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-}
-
-.cmR .ad3 {
-    height: 450px;
-    width: 168px;
-}
-
-.tmL .twBox a:hover {
-    background-color: #e6e6e6;
-}
-
-.cmL .cmLBox .cmLBoxL .Txt a:hover {
-    background-color: #e6e6e6;
-    text-decoration: none;
-}
-
-.cmLBoxR .twBox li:hover {
-    background-color: #e6e6e6;
-    cursor: pointer;
-}
-
-.tmL .twBox a i {
-    overflow: hidden;
-    display: block;
-}
-
-.twBox .v-ico a {
-    display: block;
-    overflow: hidden;
-}
-
-.cmL .cmLBox .cmLBoxR .twBox li.bgB {
-    background-color: #000;
-}
-
-.twBox .bgB .v-ico2 {
-    overflow: hidden;
-    display: block;
-}
-
-.cmR .Cont2 {
-    margin-bottom: 30px;
-}
-
-.Cont3 img {
-    width: 168px;
-    height: 168px;
-}
-
-.adTop {
-    margin: 0px auto;
-    padding: 0px;
-    width: 990px;
-    text-align: center;
-}
-
-/*rwm-begin*/
-.rwm {
-    width: 980px;
-    height: 345px;
-    background: url(http://www.chinadaily.com.cn/image_e/2016/rwmBg_03.jpg);
-    margin-top: 0px;
-    margin-right: auto;
-    margin-bottom: 50px;
-    margin-left: auto;
-    padding-top: 140px;
-    padding-right: 0px;
-    padding-bottom: 0px;
-    padding-left: 123px;
-}
-
-.rwmBox {
-    width: 96px;
-    height: 144px;
-    background: #FFF;
-    float: left;
-    padding-top: 13px;
-    padding-right: 15px;
-    padding-bottom: 13px;
-    padding-left: 15px;
-    margin-right: 118px;
-}
-
-.rwmBox span {
-    display: block;
-    font-family: Arial;
-    line-height: 24px;
-    font-size: 12px;
-    text-align: center;
-}
-/*rwm-end*/
-/*about-begin*/
-.aBout {
-    width: 980px;
-    overflow: hidden;
-    margin-top: 0;
-    margin-right: auto;
-    margin-bottom: 0;
-    margin-left: auto;
-    padding-bottom: 120px;
-}
-
-.aBout_l {
-    width: 300px;
-    float: left;
-}
-
-.ab_Bt {
-    font-size: 44px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 91px;
-    color: #FFF;
-    background: url(http://www.chinadaily.com.cn/image_e/2016/abBg_01.png);
-    margin-left: 10px;
-}
-
-.aBout_r {
-    width: 660px;
-    float: left;
-    padding-left: 20px;
-}
-
-.aBout_r h1 {
-    line-height: 44px;
-    font-size: 44px;
-    color: #2765b2;
-    padding-top: 25px;
-    padding-bottom: 25px;
-}
-
-.aBout_r .Pic2 {
-    margin-bottom: 40px;
-}
-
-.aBout_r .Cont4 {
-    color: #9a9a9a;
-    font-size: 16px;
-    font-family: Arial;
-    line-height: 24px;
-}
-
-.aBout_r .Cont4 p {
-    margin-bottom: 20px;
-}
-
-.ab_lis li {
-    height: 60px;
-}
-
-.ab_lis li.cur {
-    background-image: url(http://www.chinadaily.com.cn/image_e/2016/abHover.png);
-    background-position: center 7px;
-}
-
-.ab_lis .cur a {
-    color: #FFF;
-}
-
-.ab_lis li a {
-    font-family: Arial;
-    color: #6e6e6e;
-    width: 290px;
-    display: block;
-    float: right;
-    line-height: 60px;
-    border-bottom: #ccc 1px dotted;
-    font-size: 18px;
-    text-align: center;
-    margin-left: 10px;
-}
-
-.ab_lis li a:hover {
-    text-decoration: none;
-}
-
-.aBout_r .Cont4 .li_ico {
-    background-image: url(http://www.chinadaily.com.cn/image_e/2016/ico1.png);
-    background-repeat: no-repeat;
-    background-position: left 7px;
-    padding-left: 15px;
-}
-/*about-end*/
-
-.ad4 {
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-.ad4 img {
-    width: 1013px;
-    height: 100px;
-}
-
-.Cont3 {
-    margin-bottom: 30px;
-}
-
-@charset "utf-8";
-
-@media all and (max-width: 1154px) {
+        @charset "utf-8";
+    body {
+        margin: 0px;
+        padding: 0px;
+        color: #161616;
+        font-family: "Times New Roman", Times, serif;
+    }
+    
+    ul,
+    li {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+    }
+    
+    a:link {
+        font-family: "Times New Roman", Times, serif;
+        color: #161616;
+        text-decoration: none;
+    }
+    
+    ul,
+    li,
+    img {
+        margin: 0px;
+        padding: 0px;
+        border-top-width: 0px;
+        border-right-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+    
+    a:visited {
+        color: #161616;
+        text-decoration: none;
+    }
+    
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    p {
+        padding: 0px;
+        margin: 0px;
+    }
+    
     .topBar {
         overflow: hidden;
-        width: 980px;
+        width: 1200px;
         margin: 0 auto;
         padding-top: 27px;
         padding-bottom: 10px;
     }
-
+    
     .logo {
         float: left;
-        margin-right: 65px;
+        margin-right: 120px;
         padding: 7px 0px 0px;
     }
-
+    
     .logo img {
         width: 342px;
         height: 37px;
     }
-
+    
     .search {
         padding-top: 8px;
         float: left;
         padding-right: 13px;
     }
-
+    
     .search input {
         float: left;
         height: 32px;
-        width: 236px;
+        width: 304px;
         border: 1px solid #ccc;
-        margin-right: 5px;
+        margin-right: 7px;
     }
-
+    
     .channel {
         float: left;
         font-size: 12px;
         font-family: Arial;
         width: 129px;
-        padding-right: 8px;
+        padding-right: 18px;
         border-right: 1px solid #ccc;
     }
-
+    
     .channel a {
         color: #9e9e9f;
         text-decoration: none;
@@ -1974,35 +106,35 @@ a,area {
         padding: 1px 3px;
         font-family: Arial;
     }
-
+    
     .channel a:hover {
         background: #004679;
         color: #FFF;
     }
-
+    
     .channel span {
         float: left;
         width: 100%;
     }
-
+    
     .topInfo {
         float: left;
-        padding-left: 10px;
+        padding-left: 20px;
     }
-
+    
     .topInfo a {
-        padding-right: 5px;
+        padding-right: 14px;
         display: block;
         float: left;
     }
-
-/*导航菜单*/
+    /*导航菜单*/
+    
     .topNav {
-        width: 980px;
+        width: 1200px;
         background: #004679;
         margin: 0 auto 15px auto;
     }
-
+    
     .dropdown {
         position: relative;
         background-color: #014073;
@@ -2012,21 +144,21 @@ a,area {
         line-height: 35px;
         color: #FFF;
     }
-
+    
     .topNav .dropdown li a {
         font-family: Arial, Helvetica, sans-serif;
         color: #FFF;
-        padding-right: 10px;
-        padding-left: 10px;
+        padding-right: 18px;
+        padding-left: 18px;
     }
-
+    
     .dropdown li {
         float: left;
         zoom: 1;
         height: 35px;
         text-align: left;
     }
-
+    
     .dropdown li span a {
         display: block;
         color: #FFF;
@@ -2039,33 +171,34 @@ a,area {
         padding-right: 8px;
         padding-left: 7px;
     }
-
+    
     .dropdown li span a:hover {
-        ;color: #FFF;
+        ;
+        color: #FFF;
     }
-
+    
     .dropdown a:active {
         color: #ffa500;
     }
-
+    
     .dropdown li:last-child a {
         border-right: none;
     }
-
+    
     .dropdown li:hover {
         color: #FFF;
         position: relative;
         background-color: #006599;
     }
-
+    
     .dropdown ul {
         visibility: hidden;
         position: absolute;
         top: 100%;
         left: -39px;
-        width: 145px;
+        width: 150px;
     }
-
+    
     .dropdown ul li {
         font-weight: normal;
         float: left;
@@ -2076,29 +209,29 @@ a,area {
         filter: Alpha(Opacity=85, Style=0);
         opacity: 0.85;
     }
-
+    
     .dropdown ul li a {
         display: block;
         height: 25px;
         text-decoration: none;
         color: #FFF;
         line-height: 25px;
-        width: 125px;
+        width: 115px;
     }
-
+    
     .dropdown ul li a:hover {
         background-color: #006599;
     }
-
+    
     .dropdown ul ul {
         left: 100%;
         top: 0;
     }
-
+    
     .dropdown li:hover > ul {
         visibility: visible;
     }
-
+    
     .dropdown li .sub_menu {
         background-color: #014073;
         filter: Alpha(Opacity=85, Style=0);
@@ -2109,135 +242,138 @@ a,area {
         padding-left: 5px;
         z-index: 3;
     }
-
+    
     .sub_menu li a:hover {
         background-color: #0C0;
     }
-
+    
     .newspaper {
         width: 115px;
-        background: url(http://www.chinadaily.com.cn/image_e/2013/arr_bot.gif) no-repeat 90px center;
+        background: url(http://www.chinadaily.com.cn/image_e/2013/arr_bot.gif) no-repeat 102px center;
     }
-/*导航菜单-end*/
+    /*导航菜单-end*/
+    
     .tMain {
-        width: 980px;
+        width: 1200px;
         overflow: hidden;
         margin-top: 0;
         margin-right: auto;
         margin-bottom: 30px;
         margin-left: auto;
     }
-
+    
     .tmL {
-        width: 530px;
+        width: 642px;
         float: left;
     }
-
+    
     .tmL .twBox {
         overflow: hidden;
     }
-
+    
     .tmL .twBox a {
-        width: 125px;
+        width: 153px;
         float: left;
         margin-right: 10px;
         background: #f0f0f0;
-        height: 172px;
         display: block;
         text-decoration: none;
-        font-size: 16px;
-        line-height: 19px;
+        font-size: 20px;
+        line-height: 23px;
+        height: 208px;
+        overflow: hidden;
+        cursor: pointer;
     }
-
+    
     .tmL .twBox a .txt1 {
         padding-top: 8px;
         padding-right: 8px;
         padding-left: 8px;
-        font-weight: bold;
+        display: block;
+        font-weight: normal;
     }
-
+    
     .tmL .twBox a .txt1:hover {
         text-decoration: none;
     }
-
+    
     .tmR {
-        width: 435px;
+        width: 543px;
         float: right;
     }
-
+    
     .tmR .twBox {
         margin-bottom: 10px;
         overflow: hidden;
     }
-
+    
     .tmR .txtBox {
         overflow: hidden;
         font-family: "Times New Roman", Times, serif;
+        margin-bottom: 10px;
     }
-
+    
     .tmR .txtBox div {
         padding: 8px;
         float: left;
         background: #f0f0f0;
-        ;margin-bottom: 10px;
-        font-weight: bold;
     }
-
+    
     .tmR .txtBox a {
-        font-size: 16px;
+        font-size: 20px;
     }
-
-    .tmR .txtBox div span, .tmR .txtBox div span a {
-        color: #0261A7;
-        font-size: 16px;
-        text-decoration: none;
-        line-height: 23px;
-    }
-
-    .tmR .txtBox div:hover {
-        background: #e6e6e6;
-    }
-
+    
     .tmR .txtBox a:hover {
         text-decoration: none;
         cursor: pointer;
     }
-
-    .tmR .txtBox .txt2 {
-        width: 239px;
-        margin-right: 10px;
-        height: 76px;
-        padding: 8px;
-    }
-
-    .tmR .txtBox .txt2 b {
-        color: #b8b8b8;
-        font-size: 16px;
-    }
-
-    .tmR .txtBox .txt3 {
-        width: 153px;
-        height: 76px;
-    }
-
-    .tmR .txtBox .txt3 b {
-        color: #b8b8b8;
-        font-size: 16px;
-    }
-
-    .tmR .Txt h2 a {
+    
+    .tmR .txtBox div span,
+    .tmR .txtBox div span a {
+        color: #0261A7;
         font-size: 20px;
-        font-weight: normal;
-        font-family: "Times New Roman", Times, serif;
+        text-decoration: none;
         line-height: 23px;
     }
-
-    .tmR .Txt {
-        width: 193px;
-        float: left;
-        padding-right: 10px;
+    
+    .tmR .txtBox div:hover {
+        background: #e6e6e6;
     }
-
+    
+    .tmR .txtBox .txt2 {
+        width: 304px;
+        margin-right: 10px;
+        height: 92px;
+        padding: 8px;
+    }
+    
+    .tmR .txtBox .txt2 b {
+        color: #b8b8b8;
+        font-size: 20px;
+    }
+    
+    .tmR .txtBox .txt3 {
+        width: 196px;
+        height: 92px;
+    }
+    
+    .tmR .txtBox .txt3 b {
+        color: #b8b8b8;
+        font-size: 20px;
+    }
+    
+    .tmR .Txt h2 a {
+        font-size: 28px;
+        font-weight: normal;
+        line-height: 31px;
+        font-family: "Times New Roman", Times, serif;
+    }
+    
+    .tmR .Txt {
+        width: 235px;
+        float: left;
+    }
+    
     .tmR .Txt p {
         font-family: Arial;
         font-size: 12px;
@@ -2245,40 +381,42 @@ a,area {
         padding-top: 10px;
         line-height: 15px;
     }
-
+    
     .tmR .Pic {
-        width: 230px;
+        width: 297px;
         float: right;
+        overflow: hidden;
+        cursor: pointer;
     }
-
+    
     .tmR .ad1 {
-        margin-top: 5px;
+        margin-top: 15px;
     }
-
+    
     .cMain {
-        width: 980px;
+        width: 1200px;
         overflow: hidden;
         margin-top: 0;
         margin-right: auto;
         margin-left: auto;
     }
-
+    
     .cmL {
-        width: 825px;
+        width: 1014px;
         float: left;
     }
-
+    
     .cmR {
-        width: 133px;
+        width: 168px;
         float: right;
     }
-
+    
     .cmL h2 {
         width: 100%;
         background: url(http://www.chinadaily.com.cn/image_e/2016/btBg.png) repeat-x center;
         margin-bottom: 9px;
     }
-
+    
     .cmL h2 b {
         background-color: #FFF;
         padding-right: 8px;
@@ -2286,12 +424,20 @@ a,area {
         font-family: "Times New Roman", Times, serif;
         font-size: 24px;
     }
-
+    
+    .cmL h2 b a {
+        color: #004679;
+    }
+    
+    .cmL h2.rose b a {
+        color: #7c2671;
+    }
+    
     .cmL .rose {
         width: 100%;
         background: url(http://www.chinadaily.com.cn/image_e/2016/btBg2.png) repeat-x center;
     }
-
+    
     .cmL .rose b {
         background-color: #FFF;
         padding-right: 8px;
@@ -2299,304 +445,288 @@ a,area {
         font-family: "Times New Roman", Times, serif;
         font-size: 24px;
     }
-
+    
     .cmL .cmLBox {
         overflow: hidden;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
     }
-
+    
+    .cmL .cmLBox.mb15 {
+        margin-bottom: 15px;
+    }
+    
     .cmL .cmLBox .cmLBoxL {
-        width: 395px;
+        width: 480px;
         overflow: hidden;
         float: left;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .Txt {
         overflow: hidden;
         margin-top: 10px;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .Txt a {
         background: #f0f0f0;
         display: block;
-        margin-right: 7px;
+        margin-right: 10px;
         float: left;
-        height: 27px;
-        width: 85px;
-        font-size: 12px;
+        padding: 1px 6px;
+        height: 34px;
+        width: 100px;
+        font-size: 14px;
         font-weight: bold;
-        line-height: 15px;
-        padding-top: 2px;
-        padding-right: 4px;
-        padding-bottom: 2px;
-        padding-left: 4px;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .twBox {
         overflow: hidden;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .twBox span {
         float: left;
-        width: 230px;
+        width: 290px;
+        cursor: pointer;
+        overflow: hidden;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .twBox p {
         float: left;
-        width: 149px;
+        width: 174px;
         background: #004679;
         padding: 8px;
-        height: 132px;
+        height: 171px;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .twBox p a {
         color: #fff;
-        font-size: 18px;
-        line-height: 21px;
+        font-size: 22px;
+        line-height: 25px;
     }
-
+    
     .cmL .cmLBox .cmLBoxR {
-        width: 420px;
+        width: 524px;
         float: right;
     }
-
+    
     .cmL .cmLBox .cmLBoxR .twBox {
         overflow: hidden;
-        margin-bottom: 0px;
     }
-
+    
     .cmL .cmLBox .cmLBoxR .twBox span {
         float: left;
-        width: 131px;
+        width: 168px;
         top: 200px;
+        overflow: hidden;
+        cursor: pointer;
     }
-
+    
     .cmL .cmLBox .cmLBoxR .twBox p {
         float: left;
-        width: 272px;
+        width: 340px;
         background: #f0f0f0;
         padding: 8px;
-        height: 69px;
+        height: 93px;
     }
-
-    .cmL .cmLBox .cmLBoxR .twBox p a {
-        color: #161616;
-        font-size: 16px;
-        line-height: 19px;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
+    
     .cmL .cmLBox .cmLBoxR .twBox p:hover {
         background: #e6e6e6;
+        cursor: pointer;
     }
-
+    
+    .cmL .cmLBox .cmLBoxR .twBox p a {
+        color: #161616;
+        font-size: 22px;
+        line-height: 25px;
+        text-decoration: none;
+    }
+    
     .cmL .cmLBox .cmLBoxR .twBox p.blu {
         float: left;
-        width: 272px;
+        width: 340px;
         background: #00457e;
         padding: 8px;
-        height: 69px;
+        height: 93px;
     }
-
-    .cmL .cmLBox .cmLBoxR .twBox p.blu a {
-        color: #fff;
-        font-size: 16px;
-        line-height: 19px;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
+    
     .cmL .cmLBox .cmLBoxR .twBox p.blu:hover {
         background: #003c68;
+        cursor: pointer;
     }
-
+    
+    .cmL .cmLBox .cmLBoxR .twBox p.blu a {
+        color: #fff;
+        font-size: 22px;
+        line-height: 25px;
+        text-decoration: none;
+    }
+    
     .cmL .cmLBox .cmLBoxR .Txt a {
         background: #f0f0f0;
         display: block;
         margin-right: 10px;
         float: left;
         padding: 8px;
-        height: 78px;
-        width: 189px;
+        height: 99px;
+        width: 241px;
         font-size: 14px;
-        line-height: 17px;
-        font-weight: bold;
+        font-size: 20px;
+        line-height: 23px;
     }
-
+    
+    .cmL .cmLBox .cmLBoxR .Txt a:hover {
+        background: #e6e6e6;
+        text-decoration: none;
+    }
+    
     .liBox {
-        padding-top: 10px;
+        padding-top: 20px;
     }
-
+    
     .liBox li {
         border-top: #e0e0e0 1px solid;
-        padding-top: 4px;
-        padding-right: 0px;
-        padding-bottom: 5px;
-        padding-left: 0px;
+        padding: 6px 0px 7px 0px;
     }
-
+    
     .liBox li a {
         font-size: 16px;
         font-weight: bold;
     }
-
+    
     .liBox2 {
-        padding-top: 5px;
+        padding-top: 10px;
     }
-
+    
     .liBox2 li {
         border-bottom: #e0e0e0 1px solid;
-        padding-top: 4px;
-        padding-right: 0px;
-        padding-bottom: 5px;
-        padding-left: 0px;
+        padding: 6px 0px 7px 0px;
     }
-
+    
     .liBox2 li a {
         font-size: 16px;
         font-weight: bold;
     }
-
+    
     .cmLBoxR .twBox li {
-        width: 133px;
+        width: 168px;
         float: left;
         margin-right: 10px;
         background: #f0f0f0;
-        height: 149px;
+        height: 187px;
     }
-
+    
     .cmLBoxR .twBox li a {
         display: block;
         text-decoration: none;
-        font-size: 12px;
-        line-height: 15px;
+        font-size: 14px;
+        line-height: 17px;
         font-weight: bold;
+        overflow: hidden;
+        cursor: pointer;
     }
-
+    
     .cmLBoxR .twBox li .txt1 {
         padding-top: 8px;
         padding-right: 8px;
         padding-left: 8px;
     }
-
+    
     .cmLBoxR .twBox li .txt1:hover {
         text-decoration: none;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .twBox .bgR {
         background: #7c2671;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .twBox .bgR a {
         color: #FFF;
     }
-
+    
     .cmLBox2 {
-        margin-bottom: 25px;
+        margin-bottom: 30px;
         overflow: hidden;
     }
-
+    
     .ad2 {
-        width: 395px;
+        width: 479px;
         float: left;
     }
-
-/*.bd{
-	width: 420px;
-	float: right;
-	height: 78px;
-	background: #f0f0f0;
-}
-.bd .bdL{
-	width: 260px;
-	float: left;
-	padding: 7px;
-	font-size: 16px;
-	font-weight: bold;
-}
+    /*
+.bd{width: 524px;float: right;height: 95px;background: #f0f0f0;}
+.bd .bdL{width:340px; float:left; padding:10px;font-size: 16px;font-weight: bold;}
 .bd .bdL p{margin-bottom: 8px;font-size: 14px;font-weight: bold;}
 .bd .bdR{width: 140px;float: right;}
-.bd .bdR input{
-	float: right;
-	width: 79px;
-	height: 21px;
-	background: #FFF;
-	border: 1px solid #ccc;
-	margin-bottom: 4px;
-	color: #004679;
-	margin-right: 10px;
-	padding-left: 5px;
-	font-size: 12px;
-	font-family: "Times New Roman", Times, serif;
-	text-align: left;
-}
+.bd .bdR input{ float:right;width: 115px;height: 26px;background: #FFF;border: 1px solid #ccc;margin-bottom: 3px; color:#003155; margin-right:10px;}
 .bd .bdR span{float:right; margin-bottom:9px; width:90px; height:16px; background:#004679; font-size:14px; color:#fff; text-align:center;}
 */
+    
     .bd {
-        width: 400px;
+        width: 504px;
         float: right;
         height: 75px;
         background: #f0f0f0;
         padding: 10px;
     }
-
+    
     .bd .bk {
-        width: 260px;
+        width: 340px;
         float: left;
         font-size: 14px;
         font-weight: bold;
         display: block;
         overflow: auto;
     }
-
+    
     .bd .wsBtn {
-        width: 130px;
+        width: 140px;
         float: right;
     }
-
+    
     .bd .wsBt input.but1 {
         float: right;
-        width: 79px;
-        height: 21px;
+        width: 115px;
+        height: 26px;
         background: #FFF;
         border: 1px solid #ccc;
         margin-bottom: 3px;
         color: #003155;
+        margin-right: 10px;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .twBox .bgW {
         background: #FFF;
     }
-
+    
     .cmL .cmLBox .cmLBoxL .twBox .bgW a {
         color: #161616;
     }
-
+    
     .cmL .cmLBox .cmLBoxR .twBox .Txt {
         background: #FFF;
     }
-
+    
     .cmL .cmLBox .cmLBoxR .twBox .Txt a {
-        height: 54px;
+        height: 72px;
         padding: 8px;
         margin-bottom: 10px;
         background: #f0f0f0;
     }
-
-    .cmLBoxR .twBox .bgB,.cmL .cmLBox .cmLBoxL .twBox .bgB {
+    
+    .cmLBoxR .twBox .bgB,
+    .cmL .cmLBox .cmLBoxL .twBox .bgB {
         background: #000;
     }
-
-    .cmLBoxR .twBox .bgB a,.cmL .cmLBox .cmLBoxL .twBox .bgB a {
+    
+    .cmLBoxR .twBox .bgB a,
+    .cmL .cmLBox .cmLBoxL .twBox .bgB a {
         color: #FFF;
     }
-
+    
     .cmR h2 {
         width: 100%;
         background: url(http://www.chinadaily.com.cn/image_e/2016/btBg.png) repeat-x center;
     }
-
+    
     .cmR h2 b {
         background-color: #004679;
         padding-right: 8px;
@@ -2607,41 +737,35 @@ a,area {
         padding-bottom: 2px;
         padding-left: 8px;
     }
-
+    
     .cmR h2 b a {
         color: #fff;
     }
-
+    
     .cmR .twBox {
         overflow: hidden;
     }
-
+    
     .cmR .twBox div {
-        margin-bottom: 10px;
-        margin-top: 15px;
+        margin-bottom: 11px;
+        margin-top: 19px;
+        overflow: hidden;
+        cursor: pointer;
     }
-
+    
     .cmR .twBox p a {
         font-size: 16px;
         line-height: 19px;
         font-weight: bold;
     }
-
+    
     .cmR .Cont {
-        margin-bottom: 20px;
-    }
-
-    .cmR .twBox2 {
-        overflow: hidden;
         margin-bottom: 30px;
+        overflow: hidden;
+        cursor: pointer;
     }
-
-    .cmR .twBox2 p {
-        font-weight: bold;
-        margin-top: 13px;
-    }
-
-    .cmR .twBox2 span {
+    
+    .cmR .twBox span {
         font-size: 13px;
         padding-top: 3px;
         padding-right: 7px;
@@ -2653,49 +777,50 @@ a,area {
         float: right;
         margin-top: 15px;
     }
-
+    
     .cmLBoxL .twBox .v-ico {
         position: absolute;
         width: 290px;
         height: 187px;
         float: left;
     }
-
+    
     .cmLBoxL .twBox .v-ico b {
         position: relative;
-        top: -55px;
-        left: 174px;
+        top: -80px;
+        left: 208px;
     }
-
+    
     .cmLBoxL .twBox p.v-txt {
         position: relative;
-        left: 230px;
+        left: 290px;
+        *left: 0px;
     }
-
+    
     .v-ico2 {
         display: block;
-        width: 133px;
+        width: 168px;
         height: 109px;
         position: absolute;
     }
-
+    
     .v-ico2 b {
         position: relative;
-        top: -35px;
-        left: 100px;
+        top: -47px;
+        left: 118px;
     }
-
+    
     .v-txt2 {
         background-color: #000;
         position: relative;
-        top: 90px;
+        top: 110px;
     }
-
-/*tab-begin*/
+    /*tab-begin*/
+    
     #topNav {
-        width: 133px;
+        width: 168px;
     }
-
+    
     #topNav .bt {
         margin: 0px;
         list-style-type: none;
@@ -2703,41 +828,46 @@ a,area {
         border-bottom: 1px solid #e0e0e0;
         overflow: hidden;
     }
-
+    
     #topNav .bt li {
         float: left;
-        width: 65px;
+        width: 84px;
     }
-
+    
     #topNav .bt a {
-        font-size: 12px;
+        font-size: 14px;
         text-decoration: none;
         margin-right: 2px;
         margin-left: 2px;
         float: left;
         text-align: center;
     }
-
+    
     #topNav .bt a span {
         display: block;
-        padding: 3px;
-        width: 60px;
+        width: 73px;
+        text-align: left;
+        padding-top: 3px;
+        padding-right: 3px;
+        padding-bottom: 3px;
+        padding-left: 6px;
+        background-color: #F6F6F6;
     }
-
+    
     #topNav .bt a:hover {
         color: #FFCC00;
     }
-
+    
     #topNav .bt a.current:hover {
         color: #666666;
     }
-
+    
     #topNav .bt a.current {
         display: block;
         text-decoration: none;
         color: #666666;
     }
-
+    
     #topNav .bt a.current span {
         background-position: left top;
         display: block;
@@ -2745,25 +875,26 @@ a,area {
         background-color: #004679;
         color: #FFF;
     }
-
-    a,area {
+    
+    a,
+    area {
         blr: expression(this.onFocus=this.blur())
     }
-
+    
     :focus {
         outline-style: none;
     }
-
-    #topNav  .show {
+    
+    #topNav .show {
         clear: both;
-        width: 133px;
+        width: 168px;
         display: block;
     }
-
+    
     #topNav div {
         display: none;
     }
-
+    
     #topNav h2 {
         font-size: 14px;
         color: #003399;
@@ -2771,36 +902,36 @@ a,area {
         line-height: 30px;
         margin: 0px;
     }
-
+    
     #topNav p {
         margin: 0px;
         font-family: Verdana, Arial, Helvetica, sans-serif;
         font-size: 12px;
         line-height: 18px;
     }
-
+    
     #topNav .liBox li {
         padding: 14px 0px;
         font-size: 14px;
         line-height: 17px;
         border-bottom: 1px solid #e0e0e0;
         border-top-width: 0px;
-    } 
-/*tab-end*/
-
-/*scroll-begin*/
+    }
+    /*tab-end*/
+    /*scroll-begin*/
+    
     .scrBox .bt3 {
         background-repeat: no-repeat;
         line-height: 35px;
         height: 35px;
         padding-left: 10px;
     }
-
+    
     .scrBox .bt3 h2 {
         font-size: 26px;
         color: #077da5;
     }
-
+    
     .pic_show_l {
         PADDING-BOTTOM: 0px;
         BACKGROUND-COLOR: #ffffff;
@@ -2811,11 +942,11 @@ a,area {
         MARGIN-LEFT: 0px;
         FONT-SIZE: 12px
     }
-
+    
     .pic_show_l .pcont {
         PADDING-BOTTOM: 5px;
         PADDING-LEFT: 5px;
-        WIDTH: 820px;
+        WIDTH: 1000px;
         FLOAT: left;
         HEIGHT: 238px;
         MARGIN-LEFT: 0px;
@@ -2823,13 +954,13 @@ a,area {
         MARGIN-RIGHT: 0px;
         PADDING-TOP: 10px
     }
-
+    
     .pic_show_l .ScrCont {
         WIDTH: 8758px;
         ZOOM: 1;
         MARGIN-LEFT: -5px
     }
-
+    
     .pic_show_l .leftbotton {
         PADDING-BOTTOM: 0px;
         PADDING-LEFT: 0px;
@@ -2838,28 +969,28 @@ a,area {
         FLOAT: left;
         MARGIN-LEFT: 0px
     }
-
+    
     .pic_show_l .rightbotton {
         PADDING-BOTTOM: 0px;
         PADDING-LEFT: 0px;
         PADDING-RIGHT: 0px;
         FLOAT: left;
     }
-
+    
     .pic_show_l .leftbotton IMG {
         BORDER-BOTTOM-STYLE: none;
         BORDER-RIGHT-STYLE: none;
         BORDER-TOP-STYLE: none;
         BORDER-LEFT-STYLE: none
     }
-
+    
     .pic_show_l .rightbotton IMG {
         BORDER-BOTTOM-STYLE: none;
         BORDER-RIGHT-STYLE: none;
         BORDER-TOP-STYLE: none;
         BORDER-LEFT-STYLE: none
     }
-
+    
     .pic_show_l DIV#list1_1 UL {
         TEXT-ALIGN: center;
         LINE-HEIGHT: 24px;
@@ -2867,21 +998,21 @@ a,area {
         WIDTH: 154px;
         FLOAT: left;
     }
-
+    
     #ISL_Cont_1 #list1_1 UL LI {
         LINE-HEIGHT: 14px;
         DISPLAY: block;
         MARGIN-BOTTOM: 5px;
         HEIGHT: 95px;
     }
-
+    
     #ISL_Cont_1 #list2_1 UL LI {
         LINE-HEIGHT: 14px;
         DISPLAY: block;
         MARGIN-BOTTOM: 5px;
         HEIGHT: 95px;
     }
-
+    
     .pic_show_l DIV#list2_1 UL {
         TEXT-ALIGN: center;
         LINE-HEIGHT: 24px;
@@ -2890,96 +1021,96 @@ a,area {
         FLOAT: left;
         HEIGHT: 248px;
     }
-
+    
     .pic_show_l DIV#list1_1 IMG {
         MARGIN-TOP: 2px;
         DISPLAY: block;
         MARGIN-BOTTOM: 1px;
         CURSOR: pointer;
     }
-
+    
     .pic_show_l DIV#list2_1 IMG {
         MARGIN: 2px auto 1px;
         DISPLAY: block;
         CURSOR: pointer;
     }
-
+    
     .pic_show_l #list1_1 {
         FLOAT: left;
     }
-
+    
     .pic_show_l #list2_1 {
         FLOAT: left;
     }
-
+    
     .pic_show_l .rightbotton IMG {
         MARGIN-LEFT: 2px;
     }
-
+    
     .picshow {
         POSITION: relative;
         MARGIN: 0px;
         WIDTH: 480px
     }
-
+    
     #picarea {
         MARGIN: 0px;
         BACKGROUND: #fff
     }
-
+    
     #bigpicarea {
         POSITION: relative;
         HEIGHT: 310px;
         OVERFLOW: hidden
     }
-
+    
     .image {
         TEXT-ALIGN: center
     }
-
+    
     .image IMG {
         BORDER-LEFT: #ececec 1px solid;
         MARGIN: 0px auto;
         BORDER-TOP: #ececec 1px solid;
         BORDER-RIGHT: #ececec 1px solid
     }
-
+    
     .pic_show_l .bt2 {
         overflow: hidden;
     }
-
+    
     .pic_show_l .bt2 h2 {
-        width: 820px;
+        width: 935px;
         float: left;
     }
-
+    
     .pic_show_l .bt2 .arr {
         float: right;
         width: 70px;
     }
-/*scroll-end*/
-
-/*focus-begin*/
+    /*scroll-end*/
+    /*focus-begin*/
+    
     .cont-roll {
-        width: 530px;
-        height: 264px;
+        width: 642px;
+        height: 320px;
         margin-bottom: 15px;
     }
-
+    
     .focus {
         overflow: hidden;
     }
-
+    
     .focus img {
-        width: 530px;
-        height: 264px;
+        width: 642px;
+        height: 320px;
     }
-
+    
     .focus .shadow .title {
         margin: 0px;
         padding: 0px;
     }
-
+    
     .focus .shadow .title a {
         text-decoration: none;
         color: #FFF;
@@ -2987,14 +1118,14 @@ a,area {
         font-weight: bolder;
         overflow: hidden;
     }
-
+    
     .focus .btn {
         bottom: 34px;
         left: 510px;
         overflow: hidden;
         zoom: 1;
     }
-
+    
     .focus .btn a {
         position: relative;
         display: inline;
@@ -3010,26 +1141,28 @@ a,area {
         float: left;
         background: #D9D9D9;
     }
-
-    .focus .btn a:hover,.focus .btn a.current {
+    
+    .focus .btn a:hover,
+    .focus .btn a.current {
         cursor: pointer;
         background: #fc114a;
     }
-
+    
     .focus .fPic {
         margin: 0px;
         padding: 0px;
     }
-
+    
     .focus .D1fBt {
         overflow: hidden;
         zoom: 1;
         height: 16px;
         z-index: 10;
     }
-
+    
     .focus .shadow {
-        width: 470px;
+        /*5.25修改，纠正在ie10以下右侧多余黑边问题*/
+        width: 602px;
         bottom: 0;
         left: 0px;
         z-index: 10;
@@ -3039,48 +1172,47 @@ a,area {
         height: 100px;
         top: -146px;
         right: 0px;
-        background: url(http://www.chinadaily.com.cn/image_e/2016/focusLine_2.png) repeat-x;
-        padding: 46px 30px 0px 30px;
+        background: url(http://www.chinadaily.com.cn/image_e/2016/focusLine.png) repeat-x;
+        padding: 65px 15px 0 25px;
         cursor: pointer;
     }
-
+    
     .focus .shadow h3 {
-        margin: 60px 0px 0px 0px;
+        margin: 40px 0px 0px 0px;
         padding: 0px;
-        font-size: 20px;
+        font-size: 24px;
         line-height: 27px;
         color: #FFF;
         font-weight: normal;
     }
-
-    .focus .shadow h3 {
+    
+    .focus .shadow h3 a {
         color: #fff;
-        font-weight: normal;
         text-decoration: none;
+        font-weight: normal;
     }
-
+    
     .focus .fcon {
-        width: 530px;
+        width: 642px;
         float: left;
         display: none;
         margin: 0px;
         padding: 0px;
     }
-
+    
     .focus .fcon img {
         display: block;
     }
-
-    .focus .fbg {
-    }
-
+    
+    .focus .fbg {}
+    
     .focus .fbg div {
         margin: 4px auto 0;
         overflow: hidden;
         zoom: 1;
         height: 14px
     }
-
+    
     .focus .D1fBt a {
         position: relative;
         display: inline;
@@ -3095,134 +1227,139 @@ a,area {
         outline: 0;
         float: left;
     }
-
+    
     .focus .D1fBt img {
         display: none
     }
-
+    
     .focus .D1fBt i {
         display: none;
         font-style: normal;
     }
-
-    .focus .prev,.focus .next {
+    
+    .focus .prev,
+    .focus .next {
         position: absolute;
         width: 40px;
         height: 74px;
         background: url(http://www.chinadaily.com.cn/image_e/2016/focus_btn.png) no-repeat;
         right: 0px;
     }
-
+    
     .focus .prev {
         background-position: 0 -74px;
         cursor: pointer;
-        *margin: 180px 0px 0px -925px;
+        *margin: 20px 0px 0px -642px;
         margin-right: 0px;
         margin-bottom: 0px;
         left: 0px;
         top: 120px;
     }
-
+    
     .focus .next {
         background-position: -40px -74px;
         cursor: pointer;
-        *margin: 180px 0px 0px -65px;
+        right: 0px;
+        *margin: 20px 0px 0px 0px;
         margin-right: 0px;
         margin-bottom: 0px;
         top: 120px;
-        right: 0px;
+        *right: 642px;
     }
-
+    
     .focus .prev:hover {
         background-position: 0 0;
     }
-
+    
     .focus .next:hover {
         background-position: -40px 0;
     }
-
+    
     .gj {
         margin: 0px auto;
         padding: 0px;
-        width: 530px;
+        width: 642px;
         position: absolute;
         z-index: 33;
     }
-/*focus-end*/
-
-/*bottom-begin*/
+    /*focus-end*/
+    /*bottom-begin*/
+    
     .hui-dingbu {
         margin: 0px;
         padding: 0px;
         background: #F6F6F6;
     }
-
+    
     .ding-nei {
         margin: 0px auto;
         padding: 10px 0px;
-        width: 980px;
+        width: 1200px;
         font-family: "Times New Roman", Times, serif;
         color: #161616;
         font-size: 20px;
         text-align: center;
     }
-
-    .ding-nei a:link,.ding-nei a:visited {
+    
+    .ding-nei a:link,
+    .ding-nei a:visited {
         text-decoration: none;
         color: #161616;
         font-size: 20px;
     }
-
+    
     .dibu-one {
         margin: 0px;
         padding: 0px;
         background: #B9B9B9;
     }
-
+    
     .dibu-one-nei {
         margin: 0px auto;
         padding: 40px 0px;
-        width: 980px;
+        width: 1200px;
         font-family: Arial, Helvetica, sans-serif;
         color: #fff;
         font-size: 12px;
     }
-
-    .dibu-one-nei a:link,.dibu-one-nei a:visited {
+    
+    .dibu-one-nei a:link,
+    .dibu-one-nei a:visited {
         text-decoration: none;
         color: #fff;
         font-family: Arial;
     }
-
+    
     .dibu-one-nei a:hover {
         text-decoration: underline;
     }
-
+    
     .di-a {
         margin: 0px 0px 15px 0px;
         padding: 0px;
     }
-/*底部2*/
+    /*底部2*/
+    
     .dibu-two {
         margin: 0px;
         padding: 25px 0px;
         background: #003E6C;
         overflow: hidden;
     }
-
+    
     .dibu-two-nei {
         margin: 0px auto;
         padding: 0px;
-        width: 980px;
+        width: 1200px;
     }
-
+    
     .w-one {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 110px;
+        width: 125px;
     }
-
+    
     .w-bia {
         margin: 0px 0px 35px 0px;
         padding: 0px;
@@ -3230,17 +1367,18 @@ a,area {
         font-family: Arial, Helvetica, sans-serif;
         color: #ccc;
     }
-
-    .w-bia a:link,.w-bia a:visited {
+    
+    .w-bia a:link,
+    .w-bia a:visited {
         text-decoration: none;
         color: #ccc;
         font-family: Arial;
     }
-
+    
     .w-bia a:hover {
         text-decoration: underline;
     }
-
+    
     .w-bir {
         margin: 0px 0px 15px 0px;
         padding: 0px;
@@ -3248,98 +1386,100 @@ a,area {
         font-family: Arial, Helvetica, sans-serif;
         color: #ccc;
     }
-
-    .w-bir a:link,.w-bir a:visited {
+    
+    .w-bir a:link,
+    .w-bir a:visited {
         text-decoration: none;
         color: #ccc;
         font-family: Arial;
     }
-
+    
     .w-bir a:hover {
         text-decoration: underline;
     }
-
+    
     .w-two {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 110px;
+        width: 125px;
     }
-
+    
     .w-three {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 115px;
+        width: 120px;
     }
-
+    
     .w-for {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 110px;
+        width: 125px;
     }
-
+    
     .w-fiv {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 100px;
+        width: 125px;
     }
-
+    
     .w-six {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 100px;
+        width: 125px;
     }
-
+    
     .w-seven {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 110px;
+        width: 125px;
     }
-
+    
     .w-eight {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 110px;
+        width: 125px;
     }
-
+    
     .w-nine {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 100px;
+        width: 125px;
     }
-/*底部3*/
+    /*底部3*/
+    
     .dibu-three {
         margin: 0px;
         padding: 35px 0px;
         background: #004679;
         overflow: hidden;
     }
-
+    
     .dibu-three-nei {
         margin: 0px auto;
         padding: 0px;
-        width: 980px;
+        width: 1200px;
     }
-
+    
     .three-left {
         margin: 0px;
         padding: 0px;
         float: left;
         width: 445px;
     }
-
+    
     .lo-g {
         margin: 0px;
         padding: 0px;
     }
-
+    
     .lo-a {
         margin: 15px 0px 0px 0px;
         padding: 0px;
@@ -3348,7 +1488,7 @@ a,area {
         font-family: Arial, Helvetica, sans-serif;
         line-height: 18px;
     }
-
+    
     .lo-b {
         margin: 25px 0px 0px 0px;
         padding: 0px;
@@ -3357,7 +1497,7 @@ a,area {
         font-family: Arial, Helvetica, sans-serif;
         line-height: 18px;
     }
-
+    
     .lo-c {
         margin: 25px 0px 0px 0px;
         padding: 0px;
@@ -3366,14 +1506,14 @@ a,area {
         font-family: Arial, Helvetica, sans-serif;
         line-height: 18px;
     }
-
+    
     .three-midd {
-        margin: 50px 0px 0px 20px;
+        margin: 50px 0px 0px 150px;
         padding: 0px;
         float: left;
         width: 395px;
     }
-
+    
     .midd-a {
         margin: 0px 0px 20px 0px;
         padding: 0px;
@@ -3381,24 +1521,25 @@ a,area {
         color: #ccc;
         font-family: Arial, Helvetica, sans-serif;
     }
-
-    .midd-a a:link,.midd-a a:visited {
+    
+    .midd-a a:link,
+    .midd-a a:visited {
         text-decoration: none;
         color: #ccc;
         font-family: Arial;
     }
-
+    
     .midd-a a:hover {
         text-decoration: underline;
     }
-
+    
     .three-right {
-        margin: 10px 20px 0px 0px;
+        margin: 10px 100px 0px 0px;
         padding: 0px;
         float: right;
         width: 92px;
     }
-
+    
     .right-a {
         margin: 0px 0px 20px 0px;
         padding: 0px;
@@ -3406,109 +1547,1761 @@ a,area {
         color: #ccc;
         font-family: Arial, Helvetica, sans-serif;
     }
-
+    
     .right-b {
         margin: 0px;
         padding: 0px;
     }
-
-    .tmR .ad1 img {
-        height: 82px;
-        width: 435px;
+    /*bottom-end*/
+    
+    .tmR .twBox .Txt h2 a:hover {
+        color: #00457e;
+        text-decoration: none;
     }
-
-    .cmLBox2 .ad2 img {
-        height: 78px;
-        width: 395px;
-    }
-
+    
     .tmR .twBox .Pic img {
-        height: 148px;
-        width: 230px;
+        height: 190px;
+        width: 297px;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
     }
-
+    
+    .tmR .twBox .Pic:hover img {
+        -webkit-transform: scale(0.15);
+        -moz-transform: scale(1.15);
+        -o-transform: scale(1.15);
+        transform: scale(1.15);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
+    }
+    
     .tmL .twBox a img {
-        height: 81px;
-        width: 125px;
+        height: 99px;
+        width: 153px;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
     }
-
+    
+    .tmL .twBox a:hover img {
+        -webkit-transform: scale(0.15);
+        -moz-transform: scale(1.15);
+        -o-transform: scale(1.15);
+        transform: scale(1.15);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
+    }
+    
+    .tmR .ad1 img {
+        height: 100px;
+        width: 543px;
+    }
+    
+    .cmLBox2 .ad2 img {
+        height: 95px;
+        width: 479px;
+    }
+    
     .cmLBoxL .twBox span a img {
-        height: 148px;
-        width: 230px;
+        height: 187px;
+        width: 290px;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
+        float: left;
+        display: block;
     }
-
+    
+    .cmLBoxL .twBox span a:hover img {
+        -webkit-transform: scale(0.15);
+        -moz-transform: scale(1.15);
+        -o-transform: scale(1.15);
+        transform: scale(1.15);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
+    }
+    
     .cmLBoxR .twBox span a img {
-        height: 85px;
-        width: 133px;
+        height: 109px;
+        width: 168px;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
     }
-
+    
+    .cmLBoxR .twBox span a:hover img {
+        -webkit-transform: scale(0.15);
+        -moz-transform: scale(1.15);
+        -o-transform: scale(1.15);
+        transform: scale(1.15);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
+    }
+    
     .cmLBoxR .twBox li a img {
-        height: 85px;
-        width: 133px;
+        height: 109px;
+        width: 168px;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
     }
-
+    
+    .cmLBoxR .twBox li a:hover img {
+        -webkit-transform: scale(0.15);
+        -moz-transform: scale(1.15);
+        -o-transform: scale(1.15);
+        transform: scale(1.15);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
+    }
+    
     .cmLBoxR .twBox .Txt2 a {
-        height: 54px;
-        width: 119px;
+        height: 72px;
+        width: 152px;
         margin-bottom: 10px;
         padding: 8px;
         background-color: #F6F6F6;
     }
-
+    
     .cmLBoxR .twBox .Txt2 a:hover {
         background: #e6e6e6;
         text-decoration: none;
     }
-
+    
     .cmLBoxL .twBox .v-ico b a img {
-        height: 47px;
-        width: 47px;
+        height: 63px;
+        width: 63px;
     }
-
+    
     .cmLBoxR .twBox .v-ico2 b img {
-        height: 28px;
-        width: 28px;
+        height: 38px;
+        width: 38px;
     }
-
+    
+    .cmR div a {
+        overflow: hidden;
+        cursor: pointer;
+    }
+    
     .cmR .Cont a img {
-        height: 85px;
-        width: 133px;
+        height: 109px;
+        width: 168px;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
     }
-
-    .cmR .Cont2 img {
-        height: 133px;
-        width: 133px;
+    
+    .cmR .twBox a:hover img {
+        -webkit-transform: scale(0.15);
+        -moz-transform: scale(1.15);
+        -o-transform: scale(1.15);
+        transform: scale(1.15);
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease;
     }
-
+    
     .cmR .ad3 {
-        height: 357px;
-        width: 133px;
+        height: 450px;
+        width: 168px;
     }
-
+    
+    .tmL .twBox a:hover {
+        background-color: #e6e6e6;
+    }
+    
+    .cmL .cmLBox .cmLBoxL .Txt a:hover {
+        background-color: #e6e6e6;
+        text-decoration: none;
+    }
+    
+    .cmLBoxR .twBox li:hover {
+        background-color: #e6e6e6;
+        cursor: pointer;
+    }
+    
+    .tmL .twBox a i {
+        overflow: hidden;
+        display: block;
+    }
+    
+    .twBox .v-ico a {
+        display: block;
+        overflow: hidden;
+    }
+    
+    .cmL .cmLBox .cmLBoxR .twBox li.bgB {
+        background-color: #000;
+    }
+    
     .twBox .bgB .v-ico2 {
         overflow: hidden;
         display: block;
     }
-
+    
     .cmR .Cont2 {
+        margin-bottom: 30px;
+    }
+    
+    .Cont3 img {
+        width: 168px;
+        height: 168px;
+    }
+    
+    .adTop {
+        margin: 0px auto;
+        padding: 0px;
+        width: 990px;
+        text-align: center;
+    }
+    /*rwm-begin*/
+    
+    .rwm {
+        width: 980px;
+        height: 345px;
+        background: url(http://www.chinadaily.com.cn/image_e/2016/rwmBg_03.jpg);
+        margin-top: 0px;
+        margin-right: auto;
+        margin-bottom: 50px;
+        margin-left: auto;
+        padding-top: 140px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+        padding-left: 123px;
+    }
+    
+    .rwmBox {
+        width: 96px;
+        height: 144px;
+        background: #FFF;
+        float: left;
+        padding-top: 13px;
+        padding-right: 15px;
+        padding-bottom: 13px;
+        padding-left: 15px;
+        margin-right: 118px;
+    }
+    
+    .rwmBox span {
+        display: block;
+        font-family: Arial;
+        line-height: 24px;
+        font-size: 12px;
+        text-align: center;
+    }
+    /*rwm-end*/
+    /*about-begin*/
+    
+    .aBout {
+        width: 980px;
+        overflow: hidden;
+        margin-top: 0;
+        margin-right: auto;
+        margin-bottom: 0;
+        margin-left: auto;
+        padding-bottom: 120px;
+    }
+    
+    .aBout_l {
+        width: 300px;
+        float: left;
+    }
+    
+    .ab_Bt {
+        font-size: 44px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 91px;
+        color: #FFF;
+        background: url(http://www.chinadaily.com.cn/image_e/2016/abBg_01.png);
+        margin-left: 10px;
+    }
+    
+    .aBout_r {
+        width: 660px;
+        float: left;
+        padding-left: 20px;
+    }
+    
+    .aBout_r h1 {
+        line-height: 44px;
+        font-size: 44px;
+        color: #2765b2;
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+    
+    .aBout_r .Pic2 {
+        margin-bottom: 40px;
+    }
+    
+    .aBout_r .Cont4 {
+        color: #9a9a9a;
+        font-size: 16px;
+        font-family: Arial;
+        line-height: 24px;
+    }
+    
+    .aBout_r .Cont4 p {
         margin-bottom: 20px;
     }
-
-    .Cont3 img {
-        width: 133px;
-        height: 133px;
+    
+    .ab_lis li {
+        height: 60px;
     }
-/* CSS Document */
+    
+    .ab_lis li.cur {
+        background-image: url(http://www.chinadaily.com.cn/image_e/2016/abHover.png);
+        background-position: center 7px;
+    }
+    
+    .ab_lis .cur a {
+        color: #FFF;
+    }
+    
+    .ab_lis li a {
+        font-family: Arial;
+        color: #6e6e6e;
+        width: 290px;
+        display: block;
+        float: right;
+        line-height: 60px;
+        border-bottom: #ccc 1px dotted;
+        font-size: 18px;
+        text-align: center;
+        margin-left: 10px;
+    }
+    
+    .ab_lis li a:hover {
+        text-decoration: none;
+    }
+    
+    .aBout_r .Cont4 .li_ico {
+        background-image: url(http://www.chinadaily.com.cn/image_e/2016/ico1.png);
+        background-repeat: no-repeat;
+        background-position: left 7px;
+        padding-left: 15px;
+    }
+    /*about-end*/
+    
     .ad4 {
         padding-top: 0px;
         padding-bottom: 0px;
     }
-
+    
     .ad4 img {
-        width: 825px;
-        height: 81px;
+        width: 1013px;
+        height: 100px;
     }
-
+    
     .Cont3 {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
+    
+    @charset "utf-8";
+    @media all and (max-width: 1154px) {
+        .topBar {
+            overflow: hidden;
+            width: 980px;
+            margin: 0 auto;
+            padding-top: 27px;
+            padding-bottom: 10px;
+        }
+        .logo {
+            float: left;
+            margin-right: 65px;
+            padding: 7px 0px 0px;
+        }
+        .logo img {
+            width: 342px;
+            height: 37px;
+        }
+        .search {
+            padding-top: 8px;
+            float: left;
+            padding-right: 13px;
+        }
+        .search input {
+            float: left;
+            height: 32px;
+            width: 236px;
+            border: 1px solid #ccc;
+            margin-right: 5px;
+        }
+        .channel {
+            float: left;
+            font-size: 12px;
+            font-family: Arial;
+            width: 129px;
+            padding-right: 8px;
+            border-right: 1px solid #ccc;
+        }
+        .channel a {
+            color: #9e9e9f;
+            text-decoration: none;
+            margin-right: 5px;
+            margin-bottom: 0px;
+            display: block;
+            float: left;
+            padding: 1px 3px;
+            font-family: Arial;
+        }
+        .channel a:hover {
+            background: #004679;
+            color: #FFF;
+        }
+        .channel span {
+            float: left;
+            width: 100%;
+        }
+        .topInfo {
+            float: left;
+            padding-left: 10px;
+        }
+        .topInfo a {
+            padding-right: 5px;
+            display: block;
+            float: left;
+        }
+        /*导航菜单*/
+        .topNav {
+            width: 980px;
+            background: #004679;
+            margin: 0 auto 15px auto;
+        }
+        .dropdown {
+            position: relative;
+            background-color: #014073;
+            height: 35px;
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 35px;
+            color: #FFF;
+        }
+        .topNav .dropdown li a {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #FFF;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        .dropdown li {
+            float: left;
+            zoom: 1;
+            height: 35px;
+            text-align: left;
+        }
+        .dropdown li span a {
+            display: block;
+            color: #FFF;
+            height: 25px;
+            font-size: 14px;
+            float: left;
+            text-decoration: none;
+            font-weight: bold;
+            line-height: 25px;
+            padding-right: 8px;
+            padding-left: 7px;
+        }
+        .dropdown li span a:hover {
+            ;
+            color: #FFF;
+        }
+        .dropdown a:active {
+            color: #ffa500;
+        }
+        .dropdown li:last-child a {
+            border-right: none;
+        }
+        .dropdown li:hover {
+            color: #FFF;
+            position: relative;
+            background-color: #006599;
+        }
+        .dropdown ul {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: -39px;
+            width: 145px;
+        }
+        .dropdown ul li {
+            font-weight: normal;
+            float: left;
+            background-color: #014073;
+            height: 25px;
+            color: #FFF;
+            border-width: 0px;
+            filter: Alpha(Opacity=85, Style=0);
+            opacity: 0.85;
+        }
+        .dropdown ul li a {
+            display: block;
+            height: 25px;
+            text-decoration: none;
+            color: #FFF;
+            line-height: 25px;
+            width: 125px;
+        }
+        .dropdown ul li a:hover {
+            background-color: #006599;
+        }
+        .dropdown ul ul {
+            left: 100%;
+            top: 0;
+        }
+        .dropdown li:hover > ul {
+            visibility: visible;
+        }
+        .dropdown li .sub_menu {
+            background-color: #014073;
+            filter: Alpha(Opacity=85, Style=0);
+            opacity: 0.85;
+            padding-top: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
+            padding-left: 5px;
+            z-index: 3;
+        }
+        .sub_menu li a:hover {
+            background-color: #0C0;
+        }
+        .newspaper {
+            width: 115px;
+            background: url(http://www.chinadaily.com.cn/image_e/2013/arr_bot.gif) no-repeat 90px center;
+        }
+        /*导航菜单-end*/
+        .tMain {
+            width: 980px;
+            overflow: hidden;
+            margin-top: 0;
+            margin-right: auto;
+            margin-bottom: 30px;
+            margin-left: auto;
+        }
+        .tmL {
+            width: 530px;
+            float: left;
+        }
+        .tmL .twBox {
+            overflow: hidden;
+        }
+        .tmL .twBox a {
+            width: 125px;
+            float: left;
+            margin-right: 10px;
+            background: #f0f0f0;
+            height: 172px;
+            display: block;
+            text-decoration: none;
+            font-size: 16px;
+            line-height: 19px;
+        }
+        .tmL .twBox a .txt1 {
+            padding-top: 8px;
+            padding-right: 8px;
+            padding-left: 8px;
+            font-weight: bold;
+        }
+        .tmL .twBox a .txt1:hover {
+            text-decoration: none;
+        }
+        .tmR {
+            width: 435px;
+            float: right;
+        }
+        .tmR .twBox {
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .tmR .txtBox {
+            overflow: hidden;
+            font-family: "Times New Roman", Times, serif;
+        }
+        .tmR .txtBox div {
+            padding: 8px;
+            float: left;
+            background: #f0f0f0;
+            ;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .tmR .txtBox a {
+            font-size: 16px;
+        }
+        .tmR .txtBox div span,
+        .tmR .txtBox div span a {
+            color: #0261A7;
+            font-size: 16px;
+            text-decoration: none;
+            line-height: 23px;
+        }
+        .tmR .txtBox div:hover {
+            background: #e6e6e6;
+        }
+        .tmR .txtBox a:hover {
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .tmR .txtBox .txt2 {
+            width: 239px;
+            margin-right: 10px;
+            height: 76px;
+            padding: 8px;
+        }
+        .tmR .txtBox .txt2 b {
+            color: #b8b8b8;
+            font-size: 16px;
+        }
+        .tmR .txtBox .txt3 {
+            width: 153px;
+            height: 76px;
+        }
+        .tmR .txtBox .txt3 b {
+            color: #b8b8b8;
+            font-size: 16px;
+        }
+        .tmR .Txt h2 a {
+            font-size: 20px;
+            font-weight: normal;
+            font-family: "Times New Roman", Times, serif;
+            line-height: 23px;
+        }
+        .tmR .Txt {
+            width: 193px;
+            float: left;
+            padding-right: 10px;
+        }
+        .tmR .Txt p {
+            font-family: Arial;
+            font-size: 12px;
+            color: #7f7f7f;
+            padding-top: 10px;
+            line-height: 15px;
+        }
+        .tmR .Pic {
+            width: 230px;
+            float: right;
+        }
+        .tmR .ad1 {
+            margin-top: 5px;
+        }
+        .cMain {
+            width: 980px;
+            overflow: hidden;
+            margin-top: 0;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .cmL {
+            width: 825px;
+            float: left;
+        }
+        .cmR {
+            width: 133px;
+            float: right;
+        }
+        .cmL h2 {
+            width: 100%;
+            background: url(http://www.chinadaily.com.cn/image_e/2016/btBg.png) repeat-x center;
+            margin-bottom: 9px;
+        }
+        .cmL h2 b {
+            background-color: #FFF;
+            padding-right: 8px;
+            color: #004679;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 24px;
+        }
+        .cmL .rose {
+            width: 100%;
+            background: url(http://www.chinadaily.com.cn/image_e/2016/btBg2.png) repeat-x center;
+        }
+        .cmL .rose b {
+            background-color: #FFF;
+            padding-right: 8px;
+            color: #7c2671;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 24px;
+        }
+        .cmL .cmLBox {
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        .cmL .cmLBox .cmLBoxL {
+            width: 395px;
+            overflow: hidden;
+            float: left;
+        }
+        .cmL .cmLBox .cmLBoxL .Txt {
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .cmL .cmLBox .cmLBoxL .Txt a {
+            background: #f0f0f0;
+            display: block;
+            margin-right: 7px;
+            float: left;
+            height: 27px;
+            width: 85px;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 15px;
+            padding-top: 2px;
+            padding-right: 4px;
+            padding-bottom: 2px;
+            padding-left: 4px;
+        }
+        .cmL .cmLBox .cmLBoxL .twBox {
+            overflow: hidden;
+        }
+        .cmL .cmLBox .cmLBoxL .twBox span {
+            float: left;
+            width: 230px;
+        }
+        .cmL .cmLBox .cmLBoxL .twBox p {
+            float: left;
+            width: 149px;
+            background: #004679;
+            padding: 8px;
+            height: 132px;
+        }
+        .cmL .cmLBox .cmLBoxL .twBox p a {
+            color: #fff;
+            font-size: 18px;
+            line-height: 21px;
+        }
+        .cmL .cmLBox .cmLBoxR {
+            width: 420px;
+            float: right;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox {
+            overflow: hidden;
+            margin-bottom: 0px;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox span {
+            float: left;
+            width: 131px;
+            top: 200px;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox p {
+            float: left;
+            width: 272px;
+            background: #f0f0f0;
+            padding: 8px;
+            height: 69px;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox p a {
+            color: #161616;
+            font-size: 16px;
+            line-height: 19px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox p:hover {
+            background: #e6e6e6;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox p.blu {
+            float: left;
+            width: 272px;
+            background: #00457e;
+            padding: 8px;
+            height: 69px;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox p.blu a {
+            color: #fff;
+            font-size: 16px;
+            line-height: 19px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox p.blu:hover {
+            background: #003c68;
+        }
+        .cmL .cmLBox .cmLBoxR .Txt a {
+            background: #f0f0f0;
+            display: block;
+            margin-right: 10px;
+            float: left;
+            padding: 8px;
+            height: 78px;
+            width: 189px;
+            font-size: 14px;
+            line-height: 17px;
+            font-weight: bold;
+        }
+        .liBox {
+            padding-top: 10px;
+        }
+        .liBox li {
+            border-top: #e0e0e0 1px solid;
+            padding-top: 4px;
+            padding-right: 0px;
+            padding-bottom: 5px;
+            padding-left: 0px;
+        }
+        .liBox li a {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .liBox2 {
+            padding-top: 5px;
+        }
+        .liBox2 li {
+            border-bottom: #e0e0e0 1px solid;
+            padding-top: 4px;
+            padding-right: 0px;
+            padding-bottom: 5px;
+            padding-left: 0px;
+        }
+        .liBox2 li a {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .cmLBoxR .twBox li {
+            width: 133px;
+            float: left;
+            margin-right: 10px;
+            background: #f0f0f0;
+            height: 149px;
+        }
+        .cmLBoxR .twBox li a {
+            display: block;
+            text-decoration: none;
+            font-size: 12px;
+            line-height: 15px;
+            font-weight: bold;
+        }
+        .cmLBoxR .twBox li .txt1 {
+            padding-top: 8px;
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+        .cmLBoxR .twBox li .txt1:hover {
+            text-decoration: none;
+        }
+        .cmL .cmLBox .cmLBoxL .twBox .bgR {
+            background: #7c2671;
+        }
+        .cmL .cmLBox .cmLBoxL .twBox .bgR a {
+            color: #FFF;
+        }
+        .cmLBox2 {
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        .ad2 {
+            width: 395px;
+            float: left;
+        }
+        /*.bd{
+    width: 420px;
+    float: right;
+    height: 78px;
+    background: #f0f0f0;
+}
+.bd .bdL{
+    width: 260px;
+    float: left;
+    padding: 7px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.bd .bdL p{margin-bottom: 8px;font-size: 14px;font-weight: bold;}
+.bd .bdR{width: 140px;float: right;}
+.bd .bdR input{
+    float: right;
+    width: 79px;
+    height: 21px;
+    background: #FFF;
+    border: 1px solid #ccc;
+    margin-bottom: 4px;
+    color: #004679;
+    margin-right: 10px;
+    padding-left: 5px;
+    font-size: 12px;
+    font-family: "Times New Roman", Times, serif;
+    text-align: left;
+}
+.bd .bdR span{float:right; margin-bottom:9px; width:90px; height:16px; background:#004679; font-size:14px; color:#fff; text-align:center;}
+*/
+        .bd {
+            width: 400px;
+            float: right;
+            height: 75px;
+            background: #f0f0f0;
+            padding: 10px;
+        }
+        .bd .bk {
+            width: 260px;
+            float: left;
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            overflow: auto;
+        }
+        .bd .wsBtn {
+            width: 130px;
+            float: right;
+        }
+        .bd .wsBt input.but1 {
+            float: right;
+            width: 79px;
+            height: 21px;
+            background: #FFF;
+            border: 1px solid #ccc;
+            margin-bottom: 3px;
+            color: #003155;
+        }
+        .cmL .cmLBox .cmLBoxL .twBox .bgW {
+            background: #FFF;
+        }
+        .cmL .cmLBox .cmLBoxL .twBox .bgW a {
+            color: #161616;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox .Txt {
+            background: #FFF;
+        }
+        .cmL .cmLBox .cmLBoxR .twBox .Txt a {
+            height: 54px;
+            padding: 8px;
+            margin-bottom: 10px;
+            background: #f0f0f0;
+        }
+        .cmLBoxR .twBox .bgB,
+        .cmL .cmLBox .cmLBoxL .twBox .bgB {
+            background: #000;
+        }
+        .cmLBoxR .twBox .bgB a,
+        .cmL .cmLBox .cmLBoxL .twBox .bgB a {
+            color: #FFF;
+        }
+        .cmR h2 {
+            width: 100%;
+            background: url(http://www.chinadaily.com.cn/image_e/2016/btBg.png) repeat-x center;
+        }
+        .cmR h2 b {
+            background-color: #004679;
+            padding-right: 8px;
+            color: #fff;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 14px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 8px;
+        }
+        .cmR h2 b a {
+            color: #fff;
+        }
+        .cmR .twBox {
+            overflow: hidden;
+        }
+        .cmR .twBox div {
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+        .cmR .twBox p a {
+            font-size: 16px;
+            line-height: 19px;
+            font-weight: bold;
+        }
+        .cmR .Cont {
+            margin-bottom: 20px;
+        }
+        .cmR .twBox2 {
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .cmR .twBox2 p {
+            font-weight: bold;
+            margin-top: 13px;
+        }
+        .cmR .twBox2 span {
+            font-size: 13px;
+            padding-top: 3px;
+            padding-right: 7px;
+            padding-bottom: 3px;
+            padding-left: 7px;
+            background-color: #999999;
+            font-family: Arial;
+            color: #FFF;
+            float: right;
+            margin-top: 15px;
+        }
+        .cmLBoxL .twBox .v-ico {
+            position: absolute;
+            width: 290px;
+            height: 187px;
+            float: left;
+        }
+        .cmLBoxL .twBox .v-ico b {
+            position: relative;
+            top: -55px;
+            left: 174px;
+        }
+        .cmLBoxL .twBox p.v-txt {
+            position: relative;
+            left: 230px;
+        }
+        .v-ico2 {
+            display: block;
+            width: 133px;
+            height: 109px;
+            position: absolute;
+        }
+        .v-ico2 b {
+            position: relative;
+            top: -35px;
+            left: 100px;
+        }
+        .v-txt2 {
+            background-color: #000;
+            position: relative;
+            top: 90px;
+        }
+        /*tab-begin*/
+        #topNav {
+            width: 133px;
+        }
+        #topNav .bt {
+            margin: 0px;
+            list-style-type: none;
+            padding: 0px;
+            border-bottom: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+        #topNav .bt li {
+            float: left;
+            width: 65px;
+        }
+        #topNav .bt a {
+            font-size: 12px;
+            text-decoration: none;
+            margin-right: 2px;
+            margin-left: 2px;
+            float: left;
+            text-align: center;
+        }
+        #topNav .bt a span {
+            display: block;
+            padding: 3px;
+            width: 60px;
+        }
+        #topNav .bt a:hover {
+            color: #FFCC00;
+        }
+        #topNav .bt a.current:hover {
+            color: #666666;
+        }
+        #topNav .bt a.current {
+            display: block;
+            text-decoration: none;
+            color: #666666;
+        }
+        #topNav .bt a.current span {
+            background-position: left top;
+            display: block;
+            background-repeat: no-repeat;
+            background-color: #004679;
+            color: #FFF;
+        }
+        a,
+        area {
+            blr: expression(this.onFocus=this.blur())
+        }
+        :focus {
+            outline-style: none;
+        }
+        #topNav .show {
+            clear: both;
+            width: 133px;
+            display: block;
+        }
+        #topNav div {
+            display: none;
+        }
+        #topNav h2 {
+            font-size: 14px;
+            color: #003399;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            line-height: 30px;
+            margin: 0px;
+        }
+        #topNav p {
+            margin: 0px;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            line-height: 18px;
+        }
+        #topNav .liBox li {
+            padding: 14px 0px;
+            font-size: 14px;
+            line-height: 17px;
+            border-bottom: 1px solid #e0e0e0;
+            border-top-width: 0px;
+        }
+        /*tab-end*/
+        /*scroll-begin*/
+        .scrBox .bt3 {
+            background-repeat: no-repeat;
+            line-height: 35px;
+            height: 35px;
+            padding-left: 10px;
+        }
+        .scrBox .bt3 h2 {
+            font-size: 26px;
+            color: #077da5;
+        }
+        .pic_show_l {
+            PADDING-BOTTOM: 0px;
+            BACKGROUND-COLOR: #ffffff;
+            MARGIN-TOP: 0px;
+            ZOOM: 1;
+            BACKGROUND-REPEAT: repeat-x;
+            HEIGHT: 235px;
+            MARGIN-LEFT: 0px;
+            FONT-SIZE: 12px
+        }
+        .pic_show_l .pcont {
+            PADDING-BOTTOM: 5px;
+            PADDING-LEFT: 5px;
+            WIDTH: 820px;
+            FLOAT: left;
+            HEIGHT: 238px;
+            MARGIN-LEFT: 0px;
+            OVERFLOW: hidden;
+            MARGIN-RIGHT: 0px;
+            PADDING-TOP: 10px
+        }
+        .pic_show_l .ScrCont {
+            WIDTH: 8758px;
+            ZOOM: 1;
+            MARGIN-LEFT: -5px
+        }
+        .pic_show_l .leftbotton {
+            PADDING-BOTTOM: 0px;
+            PADDING-LEFT: 0px;
+            PADDING-RIGHT: 0px;
+            DISPLAY: block;
+            FLOAT: left;
+            MARGIN-LEFT: 0px
+        }
+        .pic_show_l .rightbotton {
+            PADDING-BOTTOM: 0px;
+            PADDING-LEFT: 0px;
+            PADDING-RIGHT: 0px;
+            FLOAT: left;
+        }
+        .pic_show_l .leftbotton IMG {
+            BORDER-BOTTOM-STYLE: none;
+            BORDER-RIGHT-STYLE: none;
+            BORDER-TOP-STYLE: none;
+            BORDER-LEFT-STYLE: none
+        }
+        .pic_show_l .rightbotton IMG {
+            BORDER-BOTTOM-STYLE: none;
+            BORDER-RIGHT-STYLE: none;
+            BORDER-TOP-STYLE: none;
+            BORDER-LEFT-STYLE: none
+        }
+        .pic_show_l DIV#list1_1 UL {
+            TEXT-ALIGN: center;
+            LINE-HEIGHT: 24px;
+            MARGIN: 0px;
+            WIDTH: 154px;
+            FLOAT: left;
+        }
+        #ISL_Cont_1 #list1_1 UL LI {
+            LINE-HEIGHT: 14px;
+            DISPLAY: block;
+            MARGIN-BOTTOM: 5px;
+            HEIGHT: 95px;
+        }
+        #ISL_Cont_1 #list2_1 UL LI {
+            LINE-HEIGHT: 14px;
+            DISPLAY: block;
+            MARGIN-BOTTOM: 5px;
+            HEIGHT: 95px;
+        }
+        .pic_show_l DIV#list2_1 UL {
+            TEXT-ALIGN: center;
+            LINE-HEIGHT: 24px;
+            MARGIN: 0px;
+            WIDTH: 154px;
+            FLOAT: left;
+            HEIGHT: 248px;
+        }
+        .pic_show_l DIV#list1_1 IMG {
+            MARGIN-TOP: 2px;
+            DISPLAY: block;
+            MARGIN-BOTTOM: 1px;
+            CURSOR: pointer;
+        }
+        .pic_show_l DIV#list2_1 IMG {
+            MARGIN: 2px auto 1px;
+            DISPLAY: block;
+            CURSOR: pointer;
+        }
+        .pic_show_l #list1_1 {
+            FLOAT: left;
+        }
+        .pic_show_l #list2_1 {
+            FLOAT: left;
+        }
+        .pic_show_l .rightbotton IMG {
+            MARGIN-LEFT: 2px;
+        }
+        .picshow {
+            POSITION: relative;
+            MARGIN: 0px;
+            WIDTH: 480px
+        }
+        #picarea {
+            MARGIN: 0px;
+            BACKGROUND: #fff
+        }
+        #bigpicarea {
+            POSITION: relative;
+            HEIGHT: 310px;
+            OVERFLOW: hidden
+        }
+        .image {
+            TEXT-ALIGN: center
+        }
+        .image IMG {
+            BORDER-LEFT: #ececec 1px solid;
+            MARGIN: 0px auto;
+            BORDER-TOP: #ececec 1px solid;
+            BORDER-RIGHT: #ececec 1px solid
+        }
+        .pic_show_l .bt2 {
+            overflow: hidden;
+        }
+        .pic_show_l .bt2 h2 {
+            width: 820px;
+            float: left;
+        }
+        .pic_show_l .bt2 .arr {
+            float: right;
+            width: 70px;
+        }
+        /*scroll-end*/
+        /*focus-begin*/
+        .cont-roll {
+            width: 530px;
+            height: 264px;
+            margin-bottom: 15px;
+        }
+        .focus {
+            overflow: hidden;
+        }
+        .focus img {
+            width: 530px;
+            height: 264px;
+        }
+        .focus .shadow .title {
+            margin: 0px;
+            padding: 0px;
+        }
+        .focus .shadow .title a {
+            text-decoration: none;
+            color: #FFF;
+            font-size: 14px;
+            font-weight: bolder;
+            overflow: hidden;
+        }
+        .focus .btn {
+            bottom: 34px;
+            left: 510px;
+            overflow: hidden;
+            zoom: 1;
+        }
+        .focus .btn a {
+            position: relative;
+            display: inline;
+            width: 13px;
+            height: 13px;
+            border-radius: 7px;
+            margin: 0 5px;
+            color: #B0B0B0;
+            font: 12px/15px "\5B8B\4F53";
+            text-decoration: none;
+            text-align: center;
+            outline: 0;
+            float: left;
+            background: #D9D9D9;
+        }
+        .focus .btn a:hover,
+        .focus .btn a.current {
+            cursor: pointer;
+            background: #fc114a;
+        }
+        .focus .fPic {
+            margin: 0px;
+            padding: 0px;
+        }
+        .focus .D1fBt {
+            overflow: hidden;
+            zoom: 1;
+            height: 16px;
+            z-index: 10;
+        }
+        .focus .shadow {
+            width: 470px;
+            bottom: 0;
+            left: 0px;
+            z-index: 10;
+            display: block;
+            text-align: left;
+            position: relative;
+            height: 100px;
+            top: -146px;
+            right: 0px;
+            background: url(http://www.chinadaily.com.cn/image_e/2016/focusLine_2.png) repeat-x;
+            padding: 46px 30px 0px 30px;
+            cursor: pointer;
+        }
+        .focus .shadow h3 {
+            margin: 60px 0px 0px 0px;
+            padding: 0px;
+            font-size: 20px;
+            line-height: 27px;
+            color: #FFF;
+            font-weight: normal;
+        }
+        .focus .shadow h3 {
+            color: #fff;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .focus .fcon {
+            width: 530px;
+            float: left;
+            display: none;
+            margin: 0px;
+            padding: 0px;
+        }
+        .focus .fcon img {
+            display: block;
+        }
+        .focus .fbg {}
+        .focus .fbg div {
+            margin: 4px auto 0;
+            overflow: hidden;
+            zoom: 1;
+            height: 14px
+        }
+        .focus .D1fBt a {
+            position: relative;
+            display: inline;
+            width: 12px;
+            height: 12px;
+            border-radius: 7px;
+            margin: 0 5px;
+            color: #B0B0B0;
+            font: 12px/15px "\5B8B\4F53";
+            text-decoration: none;
+            text-align: center;
+            outline: 0;
+            float: left;
+        }
+        .focus .D1fBt img {
+            display: none
+        }
+        .focus .D1fBt i {
+            display: none;
+            font-style: normal;
+        }
+        .focus .prev,
+        .focus .next {
+            position: absolute;
+            width: 40px;
+            height: 74px;
+            background: url(http://www.chinadaily.com.cn/image_e/2016/focus_btn.png) no-repeat;
+            right: 0px;
+        }
+        .focus .prev {
+            background-position: 0 -74px;
+            cursor: pointer;
+            *margin: 180px 0px 0px -925px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            left: 0px;
+            top: 120px;
+        }
+        .focus .next {
+            background-position: -40px -74px;
+            cursor: pointer;
+            *margin: 180px 0px 0px -65px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            top: 120px;
+            right: 0px;
+        }
+        .focus .prev:hover {
+            background-position: 0 0;
+        }
+        .focus .next:hover {
+            background-position: -40px 0;
+        }
+        .gj {
+            margin: 0px auto;
+            padding: 0px;
+            width: 530px;
+            position: absolute;
+            z-index: 33;
+        }
+        /*focus-end*/
+        /*bottom-begin*/
+        .hui-dingbu {
+            margin: 0px;
+            padding: 0px;
+            background: #F6F6F6;
+        }
+        .ding-nei {
+            margin: 0px auto;
+            padding: 10px 0px;
+            width: 980px;
+            font-family: "Times New Roman", Times, serif;
+            color: #161616;
+            font-size: 20px;
+            text-align: center;
+        }
+        .ding-nei a:link,
+        .ding-nei a:visited {
+            text-decoration: none;
+            color: #161616;
+            font-size: 20px;
+        }
+        .dibu-one {
+            margin: 0px;
+            padding: 0px;
+            background: #B9B9B9;
+        }
+        .dibu-one-nei {
+            margin: 0px auto;
+            padding: 40px 0px;
+            width: 980px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #fff;
+            font-size: 12px;
+        }
+        .dibu-one-nei a:link,
+        .dibu-one-nei a:visited {
+            text-decoration: none;
+            color: #fff;
+            font-family: Arial;
+        }
+        .dibu-one-nei a:hover {
+            text-decoration: underline;
+        }
+        .di-a {
+            margin: 0px 0px 15px 0px;
+            padding: 0px;
+        }
+        /*底部2*/
+        .dibu-two {
+            margin: 0px;
+            padding: 25px 0px;
+            background: #003E6C;
+            overflow: hidden;
+        }
+        .dibu-two-nei {
+            margin: 0px auto;
+            padding: 0px;
+            width: 980px;
+        }
+        .w-one {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 110px;
+        }
+        .w-bia {
+            margin: 0px 0px 35px 0px;
+            padding: 0px;
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #ccc;
+        }
+        .w-bia a:link,
+        .w-bia a:visited {
+            text-decoration: none;
+            color: #ccc;
+            font-family: Arial;
+        }
+        .w-bia a:hover {
+            text-decoration: underline;
+        }
+        .w-bir {
+            margin: 0px 0px 15px 0px;
+            padding: 0px;
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #ccc;
+        }
+        .w-bir a:link,
+        .w-bir a:visited {
+            text-decoration: none;
+            color: #ccc;
+            font-family: Arial;
+        }
+        .w-bir a:hover {
+            text-decoration: underline;
+        }
+        .w-two {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 110px;
+        }
+        .w-three {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 115px;
+        }
+        .w-for {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 110px;
+        }
+        .w-fiv {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 100px;
+        }
+        .w-six {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 100px;
+        }
+        .w-seven {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 110px;
+        }
+        .w-eight {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 110px;
+        }
+        .w-nine {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 100px;
+        }
+        /*底部3*/
+        .dibu-three {
+            margin: 0px;
+            padding: 35px 0px;
+            background: #004679;
+            overflow: hidden;
+        }
+        .dibu-three-nei {
+            margin: 0px auto;
+            padding: 0px;
+            width: 980px;
+        }
+        .three-left {
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 445px;
+        }
+        .lo-g {
+            margin: 0px;
+            padding: 0px;
+        }
+        .lo-a {
+            margin: 15px 0px 0px 0px;
+            padding: 0px;
+            font-size: 12px;
+            color: #ccc;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 18px;
+        }
+        .lo-b {
+            margin: 25px 0px 0px 0px;
+            padding: 0px;
+            font-size: 12px;
+            color: #ccc;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 18px;
+        }
+        .lo-c {
+            margin: 25px 0px 0px 0px;
+            padding: 0px;
+            font-size: 12px;
+            color: #ccc;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 18px;
+        }
+        .three-midd {
+            margin: 50px 0px 0px 20px;
+            padding: 0px;
+            float: left;
+            width: 395px;
+        }
+        .midd-a {
+            margin: 0px 0px 20px 0px;
+            padding: 0px;
+            font-size: 14px;
+            color: #ccc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .midd-a a:link,
+        .midd-a a:visited {
+            text-decoration: none;
+            color: #ccc;
+            font-family: Arial;
+        }
+        .midd-a a:hover {
+            text-decoration: underline;
+        }
+        .three-right {
+            margin: 10px 20px 0px 0px;
+            padding: 0px;
+            float: right;
+            width: 92px;
+        }
+        .right-a {
+            margin: 0px 0px 20px 0px;
+            padding: 0px;
+            font-size: 14px;
+            color: #ccc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .right-b {
+            margin: 0px;
+            padding: 0px;
+        }
+        .tmR .ad1 img {
+            height: 82px;
+            width: 435px;
+        }
+        .cmLBox2 .ad2 img {
+            height: 78px;
+            width: 395px;
+        }
+        .tmR .twBox .Pic img {
+            height: 148px;
+            width: 230px;
+        }
+        .tmL .twBox a img {
+            height: 81px;
+            width: 125px;
+        }
+        .cmLBoxL .twBox span a img {
+            height: 148px;
+            width: 230px;
+        }
+        .cmLBoxR .twBox span a img {
+            height: 85px;
+            width: 133px;
+        }
+        .cmLBoxR .twBox li a img {
+            height: 85px;
+            width: 133px;
+        }
+        .cmLBoxR .twBox .Txt2 a {
+            height: 54px;
+            width: 119px;
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #F6F6F6;
+        }
+        .cmLBoxR .twBox .Txt2 a:hover {
+            background: #e6e6e6;
+            text-decoration: none;
+        }
+        .cmLBoxL .twBox .v-ico b a img {
+            height: 47px;
+            width: 47px;
+        }
+        .cmLBoxR .twBox .v-ico2 b img {
+            height: 28px;
+            width: 28px;
+        }
+        .cmR .Cont a img {
+            height: 85px;
+            width: 133px;
+        }
+        .cmR .Cont2 img {
+            height: 133px;
+            width: 133px;
+        }
+        .cmR .ad3 {
+            height: 357px;
+            width: 133px;
+        }
+        .twBox .bgB .v-ico2 {
+            overflow: hidden;
+            display: block;
+        }
+        .cmR .Cont2 {
+            margin-bottom: 20px;
+        }
+        .Cont3 img {
+            width: 133px;
+            height: 133px;
+        }
+        /* CSS Document */
+        .ad4 {
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+        .ad4 img {
+            width: 825px;
+            height: 81px;
+        }
+        .Cont3 {
+            margin-bottom: 20px;
+        }
