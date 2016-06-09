@@ -1,3 +1,11 @@
-#lol {
+#lol, #lal {
   color: red;
+}
+
+#lawl > div.div ~ span {
+  color: blue;
+}
+
+div span {
+  color: yellow;
 }

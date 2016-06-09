@@ -49,6 +49,7 @@ public M3 createM3FromDirectory(loc project) {
     sourcePaths = getPaths(project, "css");
     
     if (size(sourcePaths) == 0) {
+    	//return composeM3(project, {});
     	throw "<project> contains no .css files.";
     }
     

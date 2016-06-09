@@ -1,0 +1,22 @@
+//////////////////////////////
+// Message Component Extendable Classes
+//////////////////////////////
+
+%message--CORE {
+  @include message();
+}
+
+%message--STATUS {
+  @extend %message--CORE;
+  @include message--coloring($message-color-status);
+}
+
+%message--WARNING {
+  @extend %message--CORE;
+  @include message--coloring($message-color-warning);
+}
+
+%message--ERROR {
+  @extend %message--CORE;
+  @include message--coloring($message-color-error);
+}

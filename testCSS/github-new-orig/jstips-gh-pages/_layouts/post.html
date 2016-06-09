@@ -1,0 +1,45 @@
+---
+layout: default
+is_post: true
+joel: hola
+---
+
+<article class="post single">
+    <div class="header-content">
+        <h1 class="post-title">
+            <span class="tip-number">{{ page.tip-number }}</span>
+            <span class="title">{{ page.title | markdownify}}</span>
+        </h1>
+
+        <div class="tldt">
+            <p>{{ page.tip-tldr | markdownify}}</p>
+        </div>
+
+        <div class="meta-info">
+            <time class="date meta-item" datetime="{{ page.date }}"><i class="fa fa-calendar"></i> {{ page.date | date_to_string }}</time>
+
+            <div class="contributor meta-item"><i class="fa fa-user"></i><a href="{{ page.tip-username-profile }}" target="_blank"> @{{ page.tip-username }}</a></div>
+
+            <div id="social" class="share meta-item social-sharer minimalism">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="entry">
+        {{ content }}
+    </div>  
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            Share(
+              document.getElementById('social'),
+              {
+                url: 'http://www.jstips.co{{page.url}}',
+                title: 'joel',
+                networks: ['in', 'fb', 'tw']
+              }
+            ); 
+        });
+    </script>
+    {% include disqus.html %}
+</article>

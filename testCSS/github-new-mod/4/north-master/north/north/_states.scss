@@ -1,0 +1,21 @@
+//////////////////////////////
+// Functions
+//////////////////////////////
+@function state($name) {
+  @return '[data-state~="#{$name}"]';
+}
+
+//////////////////////////////
+// Mixins
+//////////////////////////////
+@mixin state($name) {
+  @include layouts($name) {
+    @content;
+  }
+}
+
+@mixin states($names...) {
+  @include north--core('state', $names) {
+    @content;
+  }
+}

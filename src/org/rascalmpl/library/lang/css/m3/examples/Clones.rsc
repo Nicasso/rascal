@@ -2,6 +2,7 @@ module lang::css::m3::examples::Clones
 
 import lang::css::m3::AST;
 import lang::css::m3::Core;
+import lang::css::m3::PrettyPrinter;
 
 import IO;
 import String;

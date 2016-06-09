@@ -2,6 +2,7 @@ module lang::css::m3::examples::CodingConventions
 
 import lang::css::m3::AST;
 import lang::css::m3::Core;
+import lang::css::m3::PrettyPrinter;
 
 import IO;
 import String;
@@ -12,8 +13,8 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bootstrapconventions.css|);
-M3 stylesheetM3 = createM3FromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bootstrapconventions.css|);
+Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/test.css|);
+M3 stylesheetM3 = createM3FromFile(|home:///workspace/Rascal/rascal/testCSS/examples/test.css|);
 
 public void checkConventions() {
 	semiColon();
@@ -117,6 +118,23 @@ public void shorthandMargin() {
 		}
 	};
 	println("SemiColon total: <total>");
+}
+
+public void shorthandMargin2() {
+	int total = 0;
+	visit (stylesheetAST) {
+		case rs:ruleSet(list[Type] selector, list[Declaration] declarations): {
+			list[str] margin = ["margin-top", "margin-right", "margin-bottom", "margin-left"];
+			for (d <- declarations, d[0] in margin) {
+				margin -= d[0];
+				if (size(margin) == 0) {
+					print("Margin shorthand should be used at: <rs@src>");
+					total += 1;
+				}
+			}
+		}
+	};
+	println("shorthandMargin total: <total>");
 }
 
 public void zeroUnits() {	
@@ -315,6 +333,8 @@ public void avoidIds() {
 	};
 }
 
+list[str] avoidIds2() = ["ID selector used at: <i@src>" | /i:id(str name) := stylesheetAST];
+
 public void noUppercaseInSelectors() {
 	visit (stylesheetAST) {
 		case i:id(str name): {
@@ -412,13 +432,11 @@ public void noEmptyRules() {
 
 public void vendorPrefixFallback() {
 	list[str] prefixes = ["-moz-","-webkit-","-o-","-ms-"];
-	
 	str originalProperty = "";
 	bool fallback = true;
-	
 	bottom-up visit (stylesheetAST) {
 		case rs:ruleSet(list[Type] selector, list[Declaration] declarations): {
-			if (fallback == false ) {
+			if (fallback == false) {
 				println("The <originalProperty> property has not been provided as a fallback at: <rs@src>");
 			}
 			originalProperty = "";
@@ -435,6 +453,56 @@ public void vendorPrefixFallback() {
 			}
 		}
 	};
+}
+
+public void vendorPrefixFallback2() {
+	list[str] prefixes = ["-moz-","-webkit-","-o-","-ms-"];
+	set[str] required = {};
+	bottom-up visit (stylesheetAST) {
+		case rs:ruleSet(list[Type] selector, list[Declaration] declarations): {
+			if (size(required) > 0) {
+				for(r <- required) {
+					println("The <r> property has not been provided as a fallback at: <rs@src>");
+				}
+			}
+			required = {};
+		}
+		case d:declaration(str property, list[Type] values): {
+			if (property in required) {
+				required -= property;
+			} else {
+				for (pre <- prefixes, startsWith(property, pre)) {
+					required += replaceFirst(property, pre, "");
+				}
+			}
+		}
+	};
+}
+
+public Statement vendorPrefixFallbackRefactor() {
+	return visit (stylesheetAST) {
+		case rs:ruleSet(list[Type] selector, list[Declaration] declarations) => vendorPrefixFallbackRefactorHelper(selector, declarations)
+	};
+}
+
+public Statement vendorPrefixFallbackRefactorHelper(list[Type] selector, list[Declaration] declarations) {
+	list[str] prefixes = ["-moz-","-webkit-","-o-","-ms-"];
+	set[tuple[str,list[Type]]] required = {};
+	for (d:declaration(str property, list[Type] values) <- declarations) {
+		if (<property,values> in required) {
+			required -= <property, values>;
+		} else {
+			for (pre <- prefixes, startsWith(property, pre)) {
+				required += <replaceFirst(property, pre, ""), values>;
+			}
+		}
+	}
+	if (size(required) > 0) {
+		for (r <- required) {
+			declarations += declaration(r[0], r[1]);
+		}
+	}
+	return ruleSet(selector, declarations);
 }
 
 public void noTrailingSpaces() {

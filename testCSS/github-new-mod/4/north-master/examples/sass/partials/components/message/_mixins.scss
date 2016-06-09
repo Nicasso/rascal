@@ -1,0 +1,30 @@
+//////////////////////////////
+// Message Component Mixins
+//////////////////////////////
+
+@mixin message($padding: $message-padding, $width: $message-width, $extend: $message-extend) {
+  padding: $padding;
+  width: $width;
+
+  @include message--static($extend);
+}
+
+@mixin message--static($extend: $message-extend) {
+
+  @if $extend == true {
+    @include dynamic-extend('message') {
+      @include message--static(false);
+    }
+  }
+  @else {
+    @include box-sizing(border-box);
+    margin: 0 auto;
+    border: 2px solid;
+  }
+}
+
+@mixin message--coloring($color) {
+  border-color: $color;
+  background: mix(white, $color, 25%);
+  color: mix(black, $color, 25%);
+}

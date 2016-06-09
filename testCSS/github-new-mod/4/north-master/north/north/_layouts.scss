@@ -1,0 +1,21 @@
+//////////////////////////////
+// Functions
+//////////////////////////////
+@function layout($name) {
+  @return '_#{to-lower-case($name)}';
+}
+
+//////////////////////////////
+// Mixins
+//////////////////////////////
+@mixin layout($name) {
+  @include layouts($name) {
+    @content;
+  }
+}
+
+@mixin layouts($names...) {
+  @include north--core('layout', $names) {
+    @content;
+  }
+}

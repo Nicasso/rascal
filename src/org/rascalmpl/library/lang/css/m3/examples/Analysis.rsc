@@ -90,57 +90,6 @@ public void modifierAnalysis2() {
 	};
 }
 
-/**
- * From the paper: Complexity Metrics for Cascading Style Sheets
- */
- 
-public void metrics1() {
-	iprintln("RL: <ruleLength()>");
-	iprintln("NORB: <numberOfRuleBlocks()>");
-	iprintln("EM: <entropyMetrics()>");
-	iprintln("NOERB: <numberOfExtendedRuleBlocks()>");
-	iprintln("NOADPRB: <numberOfAttributesDefinedPerRuleBlock()>");
-	iprintln("NOCRB: <numberOfCohesiveRuleBlocks()>"); 
-}
- 
-public int ruleLength() {	
-	int ruleLength = 0;
-	bool commentBlock = false;
-	for (rule <- ruleSets(stylesheetM3)) {
-		for (line <- readFileLines(rule)) {	
-			if (contains(line,"/*") && !contains(line,"*/")) {
-				commentBlock = true;
-			} else if (commentBlock && contains(line,"*/")) {
-				commentBlock = false;
-			} else if (!(trim(line) == "")) {
-				ruleLength += 1;
-			}
-		}
-	}
-	return ruleLength;
-}
-
-public int  numberOfRuleBlocks() {	
-	return size(ruleSets(stylesheetM3));
-}
-
-// @TODO / IS THIS EVEN POSSIBLE? CREATING EQUIVALENCE CLASSES IS NOT DEFINE...
-public int entropyMetrics() {
-	return 1;
-}
-
-public int numberOfExtendedRuleBlocks() {	
-	return size(ruleSets(stylesheetM3));
-}
-
-public real numberOfAttributesDefinedPerRuleBlock() {	
-	return toReal(size(declarations(stylesheetM3)))/toReal(size(ruleSets(stylesheetM3)));
-}
-
-public int numberOfCohesiveRuleBlocks() {	
-	return size([rule | rule <- ruleSets(stylesheetM3), size({a | <e,a> <- stylesheetM3@containment, e == rule, isDeclaration(a)}) == 1]);
-}
-
 // From the paper: CSS Code Quality: A Metric for Abstractness
 
 public void universality() {	

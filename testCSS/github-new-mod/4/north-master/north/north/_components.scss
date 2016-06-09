@@ -1,0 +1,21 @@
+//////////////////////////////
+// Functions
+//////////////////////////////
+@function component($name) {
+  @return to-lower-case($name);
+}
+
+//////////////////////////////
+// Mixins
+//////////////////////////////
+@mixin component($name) {
+  @include aspects($name) {
+    @content;
+  }
+}
+
+@mixin components($names...) {
+  @include north--core('component', $names) {
+    @content;
+  }
+}
