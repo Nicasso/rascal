@@ -37,9 +37,9 @@ public class ASTLoader extends FileHandler {
 				StyleSheet style = null;
 
 				ISourceLocation loc = (ISourceLocation) f;
-				eval.getStdOut().println("FILE:");
-				eval.getStdOut().println(loc);
-				eval.getStdOut().flush();
+//				eval.getStdOut().println("FILE:");
+//				eval.getStdOut().println(loc);
+//				eval.getStdOut().flush();
 
 				boolean go = true;
 
@@ -70,9 +70,9 @@ public class ASTLoader extends FileHandler {
 				
 				ISourceLocation loc = (ISourceLocation) f;
 
-				eval.getStdOut().println("FILE:");
-				eval.getStdOut().println(loc);
-				eval.getStdOut().flush();
+//				eval.getStdOut().println("FILE:");
+//				eval.getStdOut().println(loc);
+//				eval.getStdOut().flush();
 
 				String converted = convertPath(f);
 				

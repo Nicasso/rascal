@@ -30,17 +30,85 @@ map[node, lrel[node, loc]] buckets = ();
 map[node, lrel[tuple[node, loc] L, tuple[node, loc] R]] cloneClasses = ();
 list[node] subCloneClasses = [];
 
+list[loc] dirs = [
+		|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/baidu.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/bing.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/blogger.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/chinadaily.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/diply.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ebay.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/fc2.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/gmw.cn.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/google.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/mail.ru.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/microsoft.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/msn.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com1.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com2.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com3.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/qq.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/sina.com.cn.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/sohu.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/stackoverflow.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/taobao.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/tmall.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/tumblr.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/twitter.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/vk.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/weibo.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/whatsapp.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/wikipedia.org.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/wordpress.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/xvideos.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
+	];
+	
+public void go() {
+	for (d <- dirs) {
+		currentProject = d;
+		//iprintln("Type 1");
+		detectClones(1);
+		//iprintln("Type 2");
+		detectClones(2);
+		//iprintln("Type 3");
+		detectClones(3);
+	}
+}	
+
 public void detectClones(int cloneT) {
 	cloneType = cloneT;
 	
-	iprintln("Attack of the clones!");
-	println(printTime(now(), "HH:mm:ss"));
+	//iprintln("Attack of the clones!");
+	//println(printTime(now(), "HH:mm:ss"));
 	
 	buckets = ();
 	cloneClasses = ();
 	subCloneClasses = [];
 	
-	set[Statement] stylesheetAsts = createAstsFromDirectory(currentProject);
+	//set[Statement] stylesheetAsts = createAstsFromDirectory(currentProject);
+	Statement stylesheetAst = createAstFromFile(currentProject);
 
 	if (cloneType <= 2) {
 		similarityThreshold = 1.0;
@@ -50,10 +118,10 @@ public void detectClones(int cloneT) {
 	
 	// Add all the subtrees with a mass higher than the massThreshold into a bucket.
 	// Depening on the clone type we want to find, we normalize the subtrees.
-	placeSubtreesIntoBuckets(stylesheetAsts);
+	placeSubtreesIntoBuckets(stylesheetAst);
 	
-	println("Done with indexing the subtrees into buckets.");
-	println(printTime(now(), "HH:mm:ss"));
+	//println("Done with indexing the subtrees into buckets.");
+	//println(printTime(now(), "HH:mm:ss"));
 	
 	for (bucket <- buckets, size(buckets[bucket]) >= 2) {
 		lrel[tuple[node,loc] L, tuple[node,loc] R] complementBucket = buckets[bucket] * buckets[bucket];
@@ -62,8 +130,8 @@ public void detectClones(int cloneT) {
 		createCloneClasses(complementBucket);
 	}
 	
-	println("Done with finding clones from buckets and created cloneClasses.");
-	println(printTime(now(), "HH:mm:ss"));
+	//println("Done with finding clones from buckets and created cloneClasses.");
+	//println(printTime(now(), "HH:mm:ss"));
 	
 	// Loop through all the clone classes and remove all smaller subclones.
 	for (currentClass <- cloneClasses) {
@@ -73,16 +141,16 @@ public void detectClones(int cloneT) {
 		}
 	}
 	
-	println("Indexed all thesmaller subclones");
-	println(printTime(now(), "HH:mm:ss"));
+	//println("Indexed all thesmaller subclones");
+	//println(printTime(now(), "HH:mm:ss"));
 	
 	// Remove the subclones one by one from the cloneClasses.
 	for (subCloneClas <- subCloneClasses) {
 		cloneClasses = delete(cloneClasses, subCloneClas);
 	}
 
-	println("Removed all subclones from the cloneClasses");
-	println(printTime(now(), "HH:mm:ss"));
+	//println("Removed all subclones from the cloneClasses");
+	//println(printTime(now(), "HH:mm:ss"));
 	
 	printCloneResults();
 }
@@ -102,7 +170,7 @@ public void placeCloneInClass(tuple[tuple[node,loc] L, tuple[node,loc] R] treeRe
 	}
 }
 
-public void placeSubtreesIntoBuckets(set[Statement] stylesheetAsts) {
+public void placeSubtreesIntoBuckets(Statement stylesheetAsts) {
 	if (cloneType == 1) {
 		[addSubTreeToMap(x, x) | /node x := stylesheetAsts, calculateMass(x) >= massThreshold, !(Type a := x)];
 	} else {
@@ -240,22 +308,26 @@ public void printCloneResults() {
 	println();
 	
 	int counting = 0;
+	int lines = 0;
 	
 	set[loc] clonePairsPerClass = {};
-	iprintln("Here come the clones!");
+	//iprintln("Here come the clones!");
 	for (currentClass <- cloneClasses) {
-		iprintln("Total clone pairs in this class: <size(cloneClasses[currentClass])>");
+		//iprintln("Total clone pairs in this class: <size(cloneClasses[currentClass])>");
 		clonePairsPerClass = {};
 		for (currentClone <- cloneClasses[currentClass]) {
 			clonePairsPerClass += currentClone[0][1];
-			clonePairsPerClass += currentClone[1][1];
+			//clonePairsPerClass += currentClone[1][1];
 			counting += 1;
 		}
 		for (uniqueClone <- clonePairsPerClass) {
+			//iprintln("COOLIO");
+			lines += size(readFileLines(uniqueClone));
 			iprintln(uniqueClone);
 		}
-		iprintln("--------------------------------------------------");
+		//iprintln("--------------------------------------------------");
 	}
 	
-	iprintln("Total amount of clone pairs: <counting>");
+	iprintln("Site: <currentProject> - Type <cloneType> - Clone pairs: <counting> - Lines: <lines>");
+	lawl();
 }

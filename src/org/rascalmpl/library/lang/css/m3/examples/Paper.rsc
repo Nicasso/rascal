@@ -20,60 +20,62 @@ import util::Math;
 public void metrics1() {
 
 	list[loc] dirs = [
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/9gag|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/amazon|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/apple|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/ask|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/booking|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/cnn|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/dropbox|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/ebay|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/facebook|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/godaddy|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/live|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/mozilla|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/nytimes|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/paypal|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/pinterest|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/reddit|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/soundcloud|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/spotify|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/stackoverflow|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/twitch|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/twitter|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/vimeo|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/w3|,
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/youtube|,
-		
-		|home:///workspace/Rascal/rascal/testCSS/sample-set/github/animate.css-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/balloon.css-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/blueprint-css-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/bootstrap-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/bulma-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/CSSgram-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/csshake-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/devices.css-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/Gumby-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/hint.css-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/Hover-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/icono-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/lesshat-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/Makisu-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/milligram-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/penthouse-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/photon-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/primer-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/ratchet-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/recess-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/sanitize.css-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/simpsons-in-css-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/tachyons-master|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/ungrid-gh-pages|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/wtf-forms-master|
+		|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/baidu.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/bing.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/blogger.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/chinadaily.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/diply.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ebay.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/fc2.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/gmw.cn.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/google.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/mail.ru.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/microsoft.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/msn.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com1.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com2.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com3.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/qq.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/sina.com.cn.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/sohu.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/stackoverflow.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/taobao.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/tmall.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/tumblr.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/twitter.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/vk.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/weibo.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/whatsapp.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/wikipedia.org.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/wordpress.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/xvideos.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
 	];
 	
 	for (d <- dirs) {
-		stylesheetM3 = createM3FromDirectory(d);
+		stylesheetM3 = createM3FromFile(d);
 		
 		//iprintln("RL: <ruleLength()>");
 		//iprintln("NORB: <numberOfRuleBlocks()>");
@@ -81,7 +83,7 @@ public void metrics1() {
 		//iprintln("NOERB: <numberOfExtendedRuleBlocks()>");
 		//iprintln("NOADPRB: <numberOfAttributesDefinedPerRuleBlock()>");
 		//iprintln("NOCRB: <numberOfCohesiveRuleBlocks()>");
-		iprintln("<d> <ruleLength()> <numberOfRuleBlocks()> <numberOfAttributesDefinedPerRuleBlock()> <numberOfCohesiveRuleBlocks()>"); 
+		iprintln("<d> & <ruleLength()> & <numberOfRuleBlocks()> & <numberOfAttributesDefinedPerRuleBlock()> & <numberOfCohesiveRuleBlocks()>"); 
 	}
 }
 

@@ -426,8 +426,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	@Override
 	public IValue visit(StyleSheet node) {
 		ISourceLocation kak = createLocation(loc, node.getLocation());
-		eval.getStdOut().println("StyleSheet");
-		eval.getStdOut().println(kak);
+//		eval.getStdOut().println("StyleSheet");
+//		eval.getStdOut().println(kak);
 
 		IValueList statements = new IValueList(values);
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
