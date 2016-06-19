@@ -53,5 +53,4 @@ public void selectorAnalysis2() {
 	values["average"] = values["total"]/values["selectors"];
 	
 	iprintln(values);
-	
 }

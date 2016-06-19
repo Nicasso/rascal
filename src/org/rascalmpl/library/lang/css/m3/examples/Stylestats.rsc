@@ -1,7 +1,8 @@
-module lang::css::m3::examples::Test
+module lang::css::m3::examples::Stylestats
 
 import lang::css::m3::AST;
 import lang::css::m3::Core;
+import lang::css::m3::PrettyPrinter;
 
 import IO;
 import String;
@@ -12,9 +13,11 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST;
-
-public void go() {
+/**
+ * From github.com/t32k/stylestats
+ */
+ 
+public void metrics1() {
 
 	list[loc] dirs = [
 		|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|,
@@ -71,27 +74,45 @@ public void go() {
 	
 	for (d <- dirs) {
 		stylesheetAST = createAstFromFile(d);
-		
-		iprintln("<d> & <rulesetCounter()> & <mediaRulesCounter()> & <selectorsCounter()> & <declarationCounter()> & <importantCounter()>"); 
+
+		iprintln("<d> & <simplicity()> & <averageIdentifier()> & <averageCohesion()> & <lowestCohesion()>"); 
 	}
 }
 
-public int rulesetCounter() {
-	return size([d | /d:ruleSet(list[Type] selector, list[Declaration] declarations) := stylesheetAST]);
+Statement stylesheetAST;
+
+public real simplicity() {	
+	return toReal(
+		size([1 | /rs:ruleSet(list[Type] selector, list[Declaration] declarations) := stylesheetAST])
+	/
+		(
+			size([1 | /rs:selector(list[Type] simpleSelectors) := stylesheetAST])+
+			size([1 | /rs:selector(list[Type] simpleSelectors, str combinator) := stylesheetAST])
+		)
+	);
 }
 
-public int mediaRulesCounter() {
-	return size([d | /d:ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) := stylesheetAST]);
+public real averageIdentifier() {
+	return toReal(
+		(
+			size([1 | /rs:class(str name) := stylesheetAST])+
+			size([1 | /rs:id(str name) := stylesheetAST])+
+			size([1 | /rs:domElement(str name) := stylesheetAST])
+		)
+	/
+		(
+			size([1 | /rs:selector(list[Type] simpleSelectors) := stylesheetAST])+
+			size([1 | /rs:selector(list[Type] simpleSelectors, str combinator) := stylesheetAST])
+		)
+	);
 }
 
-public int selectorsCounter() {
-	return size([c | /c:combinedSelector(list[Expression] selectors) := stylesheetAST]);
-}
-
-public int declarationCounter() {
-	return size([d | /d:declaration(str property, list[Type] declarationValues) := stylesheetAST]);
-}
-
-public int importantCounter() {
-	return size([d | /d:declaration(str property, list[Type] declarationValues) := stylesheetAST, d@modifier?]);
+public real averageCohesion() {
+	return toReal(
+	(
+	size([1 | /rs:declaration(str property, list[Type] values) := stylesheetAST])
+	)
+	/
+	size([1 | /rs:ruleSet(list[Type] selector, list[Declaration] declarations) := stylesheetAST])
+	);
 }

@@ -1,7 +1,9 @@
-div {
+div.copy {
 	border :none;
+  color: blue;
 }
 
 div {
 	border :none;
+  color: red;
 }

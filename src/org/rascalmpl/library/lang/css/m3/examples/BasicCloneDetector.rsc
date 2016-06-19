@@ -18,31 +18,25 @@ import util::Math;
 import DateTime;
 import Traversal;
 
-public int massThreshold = 5;
+data CloneType = One() | Two() | Three();
 
-public real similarityThreshold;
+private loc currentProject = |home:///workspace/Rascal/rascal/testCSS/examples/a|;
+private int massThreshold = 5;
+private real similarityThreshold;
+private CloneType cloneType;
+private map[node, list[node]] buckets = ();
+private lrel[node L, node R] clonePairs = [];
 
-loc currentProject = |home:///workspace/Rascal/rascal/testCSS/examples/a|;
-
-int cloneType;
-
-map[node, lrel[node, loc]] buckets = ();
-map[node, lrel[tuple[node, loc] L, tuple[node, loc] R]] cloneClasses = ();
-list[node] subCloneClasses = [];
-
-public void detectClones(int cloneT) {
+public void detectClones(CloneType cloneT) {
 	cloneType = cloneT;
-	
-	iprintln("Attack of the clones!");
-	println(printTime(now(), "HH:mm:ss"));
-	
+
 	buckets = ();
-	cloneClasses = ();
+	clonePairs = [];
 	subCloneClasses = [];
 	
 	set[Statement] stylesheetAsts = createAstsFromDirectory(currentProject);
 
-	if (cloneType <= 2) {
+	if (cloneType == One() || cloneType == Two()) {
 		similarityThreshold = 1.0;
 	} else {
 		similarityThreshold = 0.75;
@@ -50,63 +44,70 @@ public void detectClones(int cloneT) {
 	
 	// Add all the subtrees with a mass higher than the massThreshold into a bucket.
 	// Depening on the clone type we want to find, we normalize the subtrees.
-	placeSubtreesIntoBuckets(stylesheetAsts);
+	chooseSubtrees(stylesheetAsts);
 	
-	println("Done with indexing the subtrees into buckets.");
-	println(printTime(now(), "HH:mm:ss"));
+	iprintln("BUCKETS: <size(buckets)>");
 	
 	for (bucket <- buckets, size(buckets[bucket]) >= 2) {
-		lrel[tuple[node,loc] L, tuple[node,loc] R] complementBucket = buckets[bucket] * buckets[bucket];
-		complementBucket = [p | p <- complementBucket, p.L != p.R];
-		complementBucket = [<L, R> | [*_, <L,R>, *post] := complementBucket, <R, L> notin post];
+		lrel[node L, node R] complementBucket = buckets[bucket] * buckets[bucket];
 		createCloneClasses(complementBucket);
 	}
 	
-	println("Done with finding clones from buckets and created cloneClasses.");
-	println(printTime(now(), "HH:mm:ss"));
+	//clonePairs = [p | p <- clonePairs, p.L != p.R];
+	//clonePairs = [<L, R> | [*_, <L,R>, *post] := clonePairs, <R, L> notin post];
 	
-	// Loop through all the clone classes and remove all smaller subclones.
-	for (currentClass <- cloneClasses) {
-		for (currentClone <- cloneClasses[currentClass]) {
-			checkForInnerClones(currentClone.L);
-			checkForInnerClones(currentClone.R);
-		}
-	}
+	iprintln("PAIRS: <size(clonePairs)>");
 	
-	println("Indexed all thesmaller subclones");
-	println(printTime(now(), "HH:mm:ss"));
-	
-	// Remove the subclones one by one from the cloneClasses.
-	for (subCloneClas <- subCloneClasses) {
-		cloneClasses = delete(cloneClasses, subCloneClas);
+	for (currentClone <- clonePairs) {
+		checkForInnerClones(currentClone.L);
+		checkForInnerClones(currentClone.R);
 	}
 
-	println("Removed all subclones from the cloneClasses");
-	println(printTime(now(), "HH:mm:ss"));
-	
 	printCloneResults();
 }
 
-public void createCloneClasses(lrel[tuple[node,loc] L, tuple[node,loc] R] complementBucket) {
-	for (treeRelation <- complementBucket, calculateSimilarity(treeRelation[0][0], 
-		treeRelation[1][0]) >= similarityThreshold) {
-			placeCloneInClass(treeRelation);
+public void checkForInnerClones(node tree) {
+	visit (tree) {
+		case node x: {
+			if (isMemberOfClones(x)) {
+				//iprintln("FUCK YEAH!");
+				int a;
+			}
+			// Only if the tree is not equal to itself, and has a certain mass.
+			//if (x != tree && calculateMass(x) >= massThreshold) {
+			//	loc location = getLocationOfNode(x);
+			//	if (location != currentProject && size(readFileLines(location)) < 3) {
+			//		if (isMemberOfClones(x)) {
+			//			iprintln("FUCK YEAH!");
+			//		}
+			//	}
+			//}
+		}
 	}
 }
 
-public void placeCloneInClass(tuple[tuple[node,loc] L, tuple[node,loc] R] treeRelation) {
-	if (cloneClasses[treeRelation[0][0]]?) {
-		cloneClasses[treeRelation[0][0]] += treeRelation;
-	} else {
-		cloneClasses[treeRelation[0][0]] = [treeRelation];
+public bool isMemberOfClones(node current) {
+	for (tuple[node L, node R] pair <- clonePairs) {
+		if (pair.L == current || pair.R == current) {
+			//clonePairs -= pair;
+			return true;
+		} 
+	}
+	return false;
+}
+
+public void createCloneClasses(lrel[node L, node R] complementBucket) {
+	for (treeRelation <- complementBucket, calculateSimilarity(treeRelation.L, 
+		treeRelation.R) >= similarityThreshold) {
+			clonePairs += treeRelation;
 	}
 }
 
-public void placeSubtreesIntoBuckets(set[Statement] stylesheetAsts) {
-	if (cloneType == 1) {
-		[addSubTreeToMap(x, x) | /node x := stylesheetAsts, calculateMass(x) >= massThreshold, !(Type a := x)];
+public void chooseSubtrees(set[Statement] stylesheetAsts) {
+	if (cloneType == One()) {
+		[placeSubtreeIntoBucket(x, x) | /node x := stylesheetAsts, calculateMass(x) >= massThreshold, !(Type a := x)];
 	} else {
-		[addSubTreeToMap(normalizeNodeDec(x), normalizeNodeDec(x)) | /node x := stylesheetAsts, calculateMass(x) >= massThreshold, !(Type a := x)];
+		[placeSubtreeIntoBucket(normalizeNodeDec(x), normalizeNodeDec(x)) | /node x := stylesheetAsts, calculateMass(x) >= massThreshold, !(Type a := x)];
 	}
 }
 
@@ -127,43 +128,12 @@ public Statement normalizedRuleset(Statement s, list[Declaration] declarations) 
 }
 
 public Type normalizedSelector(Type n) {
-	Type sel = class("lol");
+	Type sel = class("normal");
 	sel@src = n@src;
 	return sel;
 }
 
-public void checkForInnerClones(tuple[node,loc] tree) {
-	visit (tree[0]) {
-		case node x: {
-			// Only if the tree is not equal to itself, and has a certain mass.
-			if (x != tree[0] && calculateMass(x) >= massThreshold) {
-				loc location = getLocationOfNode(x);
-				if (location != currentProject && isMemberOfClones(<x, location>)) {			
-					subCloneClasses += x;
-				}
-			}
-		}
-	}
-}
-
-public bool isMemberOfClones(tuple[node n, loc l] current) {
-	for (currentcloneClass <- cloneClasses) {
-		for (tuple[tuple[node n, loc l] L, tuple[node n, loc l] R] pair <- cloneClasses[currentcloneClass]) {
-			if ((current.l <= pair.L.l && pair.L.n == current.n) ||
-				(current.l <= pair.R.l && pair.R.n == current.n)) {
-				if (cloneClasses[current.n]?) {
-					if (size(cloneClasses[current.n]) == size(cloneClasses[currentcloneClass])) {
-						return true;
-					}
-				}
-			} 
-		}
-	}
-	return false;
-}
-
 public num calculateSimilarity(node t1, node t2) {
-	//Similarity = 2 x S / (2 x S + L + R)
 	list[node] tree1 = [x | /node x := t1];
 	list[node] tree2 = [x | /node x := t2];
 	
@@ -175,24 +145,14 @@ public num calculateSimilarity(node t1, node t2) {
 }
 
 public loc getLocationOfNode(node subTree) {
-	if (Declaration d := subTree) { 
-		if (d@src?) {
-			return d@src;
-		}
-	} else if (Expression e := subTree) {
-		if (e@src?) {
-			return e@src;
-		}
-	} else if (Statement s := subTree) {
-		if (s@src?) {
-			return s@src;
-		}
-	} else if (Type t := subTree) {
-		if (t@src?) {
-			return t@src;
-		}
+	loc result;
+	switch(subTree) {
+		case Declaration n: result = n@src;
+		case Expression n: result = n@src;
+		case Statement n: result = n@src;
+		case Type n: result = n@src;
 	}
-	throw "Could not retrieve the source code location.";
+	return result;
 }
 
 public node getBestKey(node key) {
@@ -210,51 +170,39 @@ public node getBestKey(node key) {
 	if (highestSimilarity > 0) {
 		return bestKeyMatch;
 	}
-	
 	return key;
 }
 
-public int addSubTreeToMap(node key, node subTree) {
+public int placeSubtreeIntoBucket(node key, node subTree) {
 	loc location = getLocationOfNode(subTree);
 	
-	if (location == currentProject) {
+	if (size(readFileLines(location)) < 3) {
 		return 0;
 	}
 	
-	if (cloneType == 3) {
+	if (cloneType == Three()) {
 		key = getBestKey(key);
 	}
 	
 	if (buckets[key]?) {
-		buckets[key] += <subTree, location>;
+		buckets[key] += subTree;
 	} else {
-		buckets[key] = [<subTree, location>];
+		buckets[key] = [subTree];
 	}
 	
-	return 1;
+	return 0;
 }
 
 int calculateMass(node currentNode) = size([n | /node n := currentNode]);
 
 public void printCloneResults() {
-	println();
-	
 	int counting = 0;
 	
-	set[loc] clonePairsPerClass = {};
 	iprintln("Here come the clones!");
-	for (currentClass <- cloneClasses) {
-		iprintln("Total clone pairs in this class: <size(cloneClasses[currentClass])>");
-		clonePairsPerClass = {};
-		for (currentClone <- cloneClasses[currentClass]) {
-			clonePairsPerClass += currentClone[0][1];
-			clonePairsPerClass += currentClone[1][1];
-			counting += 1;
-		}
-		for (uniqueClone <- clonePairsPerClass) {
-			iprintln(uniqueClone);
-		}
-		iprintln("--------------------------------------------------");
+
+	for (currentClone <- clonePairs) {
+		counting += 1;
+		println("<getLocationOfNode(currentClone[0])> - <getLocationOfNode(currentClone[1])>");
 	}
 	
 	iprintln("Total amount of clone pairs: <counting>");

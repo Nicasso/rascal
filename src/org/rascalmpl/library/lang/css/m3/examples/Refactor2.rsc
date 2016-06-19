@@ -13,7 +13,7 @@ import Node;
 import List;
 import util::Math;
 
-Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/test.css|);
+Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/test.css|);
 
 public void zeroUnits() {
 	newAST = visit (stylesheetAST) {
