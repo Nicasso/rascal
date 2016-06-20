@@ -223,30 +223,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		return val;
 	}
 
-	/**
-	 * Isn't this handled already? Check it out!
-	 */
-	@Override
-	public IValue visit(MediaSpec node) {
-		//eval.getStdOut().println("MediaSpec");
-		return null;
-	}
-
-	/**
-	 * Wtf is this?! Never called so far.
-	 */
-	@Override
-	public IValue visit(RuleArrayList node) {
-		//eval.getStdOut().println("RuleArrayList");
-
-		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
-			RuleBlock<?> r = it.next();
-			r.accept(this);
-		}
-
-		return null;
-	}
-
 	@Override
 	public IValue visit(RuleFontFace node) {
 		//eval.getStdOut().println("RuleFontFace");
@@ -268,21 +244,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		rule = ((IConstructor) rule).asAnnotatable().setAnnotation("src", nodeLocation);
 		
 		return rule;
-	}
-
-	/**
-	 * No clue when this is used.
-	 */
-	@Override
-	public IValue visit(RuleMargin node) {
-		//eval.getStdOut().println("RuleMargin");
-
-		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
-			Declaration d = it.next();
-			d.accept(this);
-		}
-
-		return null;
 	}
 
 	@Override
@@ -395,39 +356,28 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	public IValue visit(Selector node) {
 		//eval.getStdOut().println("Selector");
 		//eval.getStdOut().println("\t"+node.getCombinator());
-
-		IValueList statements = new IValueList(values);
-		for (Iterator<SelectorPart> it = node.iterator(); it.hasNext();) {
-			SelectorPart m = it.next();
-			IValue temp = (IValue) m.accept(this);
-			statements.add(temp);
-		}
+		
+		SelectorPart m = node.iterator().next();
+		IValue sel = (IValue) m.accept(this);
+		
+		IValue val = constructExpressionNode("selector", sel);
 		
 		if (node.getCombinator() != null) {
-			IValue combinator = values.string(node.getCombinator().toString());
-			
-			IValue val = constructExpressionNode("selector", statements.asList(), combinator);
-			
-			ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
-			
-			return val;
-		} else {
-			
-			IValue val = constructExpressionNode("selector", statements.asList());
-			
-			ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
-			
-			return val;
+			IValue combinator = constructModifierNode("combinator", values.string(node.getCombinator().toString().toLowerCase()));
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("combinator", combinator);
 		}
+
+		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
+		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
+		
+		return val;
 	}
 
 	@Override
 	public IValue visit(StyleSheet node) {
-		ISourceLocation kak = createLocation(loc, node.getLocation());
+		ISourceLocation test = createLocation(loc, node.getLocation());
 //		eval.getStdOut().println("StyleSheet");
-//		eval.getStdOut().println(kak);
+//		eval.getStdOut().println(test);
 
 		IValueList statements = new IValueList(values);
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
@@ -536,16 +486,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		}
 		
 		return val;
-	}
-
-	/**
-	 * This one can go? Since all its children are covered?
-	 */
-	@Override
-	public IValue visit(TermFloatValue node) {
-		//eval.getStdOut().println("TermFloatValue");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
 	}
 
 	@Override
@@ -657,15 +597,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		return val;
 		
-	}
-
-	/**
-	 * This one can go?
-	 */
-	@Override
-	public IValue visit(TermList node) {
-		//eval.getStdOut().println("TermList");
-		return null;
 	}
 
 	@Override
@@ -825,25 +756,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		IValue className = values.string(node.getClassName());
 		
 		IValue val = constructTypeNode("class", className);
-		
-		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
-		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
-		
-		return val;
-	}
-
-	/**
-	 *  This one can go I guess? ElementName really handles stuff like "div" and "span". Not this one.
-	 *  Not even visited so far.
-	 */
-	@Override
-	public IValue visit(ElementDOM node) {
-		//eval.getStdOut().println("ElementDOM");
-		//eval.getStdOut().println("\t" + node.getElement());
-		
-		IValue domElement = values.string(node.getElement().getTagName());
-		
-		IValue val = constructTypeNode("domElement", domElement);
 		
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);

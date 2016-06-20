@@ -165,30 +165,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		return null;
 	}
 
-	/**
-	 * Isn't this handled already? Check it out!
-	 */
-	@Override
-	public Void visit(MediaSpec node) {
-		//eval.getStdOut().println("MediaSpec");
-		return null;
-	}
-
-	/**
-	 * Wtf is this?! Never called so far.
-	 */
-	@Override
-	public Void visit(RuleArrayList node) {
-		//eval.getStdOut().println("RuleArrayList");
-
-		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
-			RuleBlock<?> r = it.next();
-			r.accept(this);
-		}
-
-		return null;
-	}
-
 	@Override
 	public Void visit(RuleFontFace node) {
 		//eval.getStdOut().println("RuleFontFace");		
@@ -227,38 +203,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		
 		if(!fontTitle.equals("")) {
 			fontFaces.add(fontTitle);
-		}
-		
-		scopeManager.pop();
-
-		return null;
-	}
-
-	/**
-	 * No clue when this is used.
-	 */
-	@Override
-	public Void visit(RuleMargin node) {
-		//eval.getStdOut().println("RuleMargin");
-		
-		//makeBinding("css+marginrule", null, "RULEMARGIN");
-		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
-		ownValue = nodeLocation;
-
-		ISourceLocation bindedLocation = makeBinding("css+marginrule", null, node.getMarginArea().toString());
-		insert(containment, getParent(), bindedLocation);
-		insert(declarations, bindedLocation, nodeLocation);
-		
-		commentTarget = bindedLocation;
-		if (node.getComment() != null) {
-			node.getComment().accept(this);
-		}
-		
-		scopeManager.push(bindedLocation);
-
-		for (Iterator<Declaration> it = node.iterator(); it.hasNext();) {
-			Declaration d = it.next();
-			d.accept(this);
 		}
 		
 		scopeManager.pop();
@@ -472,16 +416,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		return null;
 	}
 
-	/**
-	 * This one can go? Since all its children are covered?
-	 */
-	@Override
-	public Void visit(TermFloatValue node) {
-		//eval.getStdOut().println("TermFloatValue");
-		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
-	}
-
 	@Override
 	public Void visit(TermFrequency node) {
 		//eval.getStdOut().println("TermFrequency");
@@ -535,15 +469,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Void visit(TermLength node) {
 		//eval.getStdOut().println("TermLength");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
-		return null;
-	}
-
-	/**
-	 * This one can go?
-	 */
-	@Override
-	public Void visit(TermList node) {
-		//eval.getStdOut().println("TermList");
 		return null;
 	}
 
@@ -609,17 +534,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 		insert(names, values.string(node.getClassName().substring(1, node.getClassName().length())), bindedLocation);
 		insert(declarations, bindedLocation, nodeLocation);
 
-		return null;
-	}
-
-	/**
-	 * This one can go I guess? ElementName really handles stuff like "div" and
-	 * "span". Not this one. Not even visited so far.
-	 */
-	@Override
-	public Void visit(ElementDOM node) {
-		//eval.getStdOut().println("ElementDOM");
-		//eval.getStdOut().println("\t" + node.getElement());
 		return null;
 	}
 

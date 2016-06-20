@@ -1,0 +1,11 @@
+div a {
+	color: red;
+}
+
+div > a, .cool {
+	color: red;
+}
+
+div {
+	color: red;
+}

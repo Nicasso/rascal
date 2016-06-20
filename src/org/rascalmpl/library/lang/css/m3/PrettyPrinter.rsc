@@ -39,7 +39,7 @@ public str formatNumber(num number, str unit) {
 public str getTabs() {
 	int n = 0;
 	str tabs = "";
-	while( n < statementTabCount ) {
+	while ( n < statementTabCount ) {
 		tabs += "\t";
 		n = n + 1;
 	}
@@ -54,22 +54,22 @@ public str pp(list[Statement] rules) {
 	return result;
 }
 
-public str ppSelectors(list[Type] selector) {
+public str ppSelectors(Type selector) {
 	str result = "";
-	for (Type sel <- selector) {
-		result += "<ppx(sel)>";
-	}
+	
+	result += "<ppx(selector)>";
+	
 	return trim(result);
 }
 
 public str ppSelectors(list[Type] selector, str combinator) {
 	str result = "";
 	
-	if(combinator == "ADJACENT") {
+	if (combinator == "ADJACENT") {
 		combinator = " +";
-	} else if(combinator == "CHILD") {
+	} else if (combinator == "CHILD") {
 		combinator = " \>";
-	} else if(combinator == "PRECEDING") {
+	} else if (combinator == "PRECEDING") {
 		combinator = " ~";
 	} else {
 		combinator = "";	
@@ -260,14 +260,6 @@ public str ppx(rk:Statement::ruleKeyframes(str name, list[Statement] ruleSets)) 
 	decreaseTabs();
 	return result;
 }
-public str ppx(rm:Statement::ruleMargin(Expression atRule, Statement stat)) {
-	str result = "";
-	if (rm@comment?) {
-		result += formatComment(rm@comment);
-	 }
-	result += "<getTabs()>@margin <pp(atRule)>{\n<pp(stat)>}\n\n";
-	return result;
-}
 public str ppx(rp:Statement::rulePage(str pseudo, list[Declaration] declarations)) {
 	str result = "";
 	if (rp@comment?) {
@@ -284,7 +276,6 @@ public str ppx(rv:Statement::ruleViewport(list[Declaration] declarations)) {
 	result += "<getTabs()>@viewport {\n<pp(declarations)>}\n\n";
 	return result;
 }
-//public str ppx(Statement::comment(str text)) = "<getTabs()>/* <text> */\n\n";
 public default str ppx(Statement smth) = "??<smth>??";
 
 public str ppx(d:Declaration::declaration(str property, list[Type] values)) {
@@ -303,8 +294,30 @@ public str ppx(d:Declaration::declaration(str property, list[Type] values)) {
 }
 public default str ppx(Declaration smth) = "??<smth>??";
 
-public str ppx(Expression::selector(list[Type] simpleSelectors)) = "<ppSelectors(simpleSelectors)>";
-public str ppx(Expression::selector(list[Type] simpleSelectors, str combinator)) = "<ppSelectors(simpleSelectors, combinator)>";
+public str ppx(s:Expression::selector(Type simpleSelector)) {
+	str result = "";
+	result += "<ppSelectors(simpleSelector)>";
+	//@TODO FIX THIS SHIT!
+	if (s@combinator?) {
+		iprintln("JA");
+		//iprintln(s@combinator);
+		wtf(s@combinator);
+		//result += " <ppx(s@combinator)>"; 
+	} else {
+		iprintln("NEE");
+	}
+	 
+	return result;
+}
+
+public str wtf(Modifier::combinator(str combinator)) {
+	iprintln("COOL");
+	return "a";
+}
+
+//public str ppx(Expression::selector(list[Type] simpleSelectors)) = "<ppSelectors(simpleSelectors)>";
+//public str ppx(Expression::selector(list[Type] simpleSelectors, str combinator)) = "<ppSelectors(simpleSelectors, combinator)>";
+
 public str ppx(Expression::mediaExpression(str property, list[Type] values)) = "<property>: <ppExpressions(values)>";
 public default str ppx(Expression smth) = "??<smth>??";
 
@@ -356,7 +369,6 @@ public str ppx(Type::ident(str ident)) = "<toLowerCase(ident)>";
 public str ppx(Type::integer(int val)) = "<val>";
 public str ppx(Type::length(num len, str unit)) = formatNumber(len, unit);
 public str ppx(Type::percent(num perc)) = formatNumber(perc, "%");
-public str ppx(Type::\list(list[Type] pair)) = "<ppExpressions(pair)>";
 public str ppx(Type::number(num number)) = formatNumber(number, "");
 public str ppx(Type::resolution(num res, str unit)) = formatNumber(res, unit);
 public str ppx(Type::string(str string)) {
@@ -375,8 +387,11 @@ public str ppx(Type::mediaQuery(str \type, list[Expression] expressions)) {
 	}
 	return result;
 }
-// = "<\type> <trim(ppMediaQueryExpressions(expressions))>";
 public default str ppx(Type smth) = "??<smth>??";
 
 public str ppx(Modifier::important()) = "!important";
+public str ppx(Modifier::combinator(str combinator)) {
+	iprintln("COOL");
+	return combinator;
+}
 public default str ppx(Modifier smth) = "??<smth>??";

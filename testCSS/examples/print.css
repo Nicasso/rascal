@@ -1,0 +1,4 @@
+#lol .cool > div + span {
+  color: red !important;
+  width: 10px;
+}
