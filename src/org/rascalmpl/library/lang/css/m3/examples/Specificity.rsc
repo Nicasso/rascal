@@ -1,4 +1,4 @@
-module lang::css::m3::examples::Stylestats
+module lang::css::m3::examples::Specificity
 
 import lang::css::m3::AST;
 import lang::css::m3::Core;
@@ -13,10 +13,8 @@ import Node;
 import List;
 import util::Math;
 
-/**
- * From github.com/t32k/stylestats
- */
- 
+Statement stylesheetAST;
+
 public void metrics1() {
 
 	list[loc] dirs = [
@@ -70,49 +68,73 @@ public void metrics1() {
 	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
 	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
 	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
+	 //|home:///Documents/workspace/Rascal/rascal/testCSS/examples/pseudo.css|
 	];
 	
 	for (d <- dirs) {
 		stylesheetAST = createAstFromFile(d);
 
-		iprintln("<d> & <simplicity()> & <averageIdentifier()> & <averageCohesion()>"); 
+		iprintln("<d.file>");
+		//iprintln(specificity());
+		
+		writeFile(|home:///Documents/workspace/Rascal/rascal/testCSS/specificity/<d.file>.txt|, specificity());
 	}
 }
 
-Statement stylesheetAST;
+public list[str] specificity() {	
+	int a = 0;
+	int b = 0;
+	int c = 0;
+	
+	list[str] result = [];
+	
+	bottom-up visit (stylesheetAST) {
+		case selector(list[Type] simpleSelectors, str combinator): {
+			result += "<a><b><c>,";
 
-public real simplicity() {	
-	return toReal(
-		toReal(size([1 | /rs:ruleSet(list[Type] selector, list[Declaration] declarations) := stylesheetAST]))
-	/
-		(
-			toReal(size([1 | /rs:selector(list[Type] simpleSelectors) := stylesheetAST]))+
-			toReal(size([1 | /rs:selector(list[Type] simpleSelectors, str combinator) := stylesheetAST]))
-		)
-	);
+			a = 0;
+			b = 0;
+			c = 0;
+		}
+		case selector(list[Type] simpleSelectors): {
+			result += "<a><b><c>,";
+
+			a = 0;
+			b = 0;
+			c = 0;
+		}
+		case class(str name): {
+			b += 1;
+		}
+		case id(str name): {
+			a += 1;
+		}
+    	case domElement(str name): {
+    		if (name != "*") {
+    			c += 1;
+    		}
+    	}
+    	case attributeSelector(str attribute, str op, str \value): {
+    		b += 1;
+    	}
+    	case attributeSelector(str attribute): {
+    		b += 1;
+    	}
+    	case pseudoClass(str class): {
+    		if (isPseudoElement(class)) {
+    			c += 1;
+    		} else {
+    			b += 1;
+    		}
+    	}
+	};
+	
+	return result;
 }
 
-public real averageIdentifier() {
-	return toReal(
-		(
-			toReal(size([1 | /rs:class(str name) := stylesheetAST]))+
-			toReal(size([1 | /rs:id(str name) := stylesheetAST]))+
-			toReal(size([1 | /rs:domElement(str name) := stylesheetAST]))
-		)
-	/
-		(
-			toReal(size([1 | /rs:selector(list[Type] simpleSelectors) := stylesheetAST]))+
-			toReal(size([1 | /rs:selector(list[Type] simpleSelectors, str combinator) := stylesheetAST]))
-		)
-	);
-}
-
-public real averageCohesion() {
-	return toReal(
-	(
-	toReal(size([1 | /rs:declaration(str property, list[Type] values) := stylesheetAST]))
-	)
-	/
-	toReal(size([1 | /rs:ruleSet(list[Type] selector, list[Declaration] declarations) := stylesheetAST]))
-	);
+public bool isPseudoElement(str class) {
+	if (class == "after" || class == "before" || class == "first-letter" || class == "first-line" || class == "section") {
+		return true;
+	}
+	return false;
 }
