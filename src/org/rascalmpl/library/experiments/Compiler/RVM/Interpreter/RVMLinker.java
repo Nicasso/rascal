@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.rascalmpl.interpreter.utils.Timing;
 import org.rascalmpl.value.IBool;
 import org.rascalmpl.value.IConstructor;
 import org.rascalmpl.value.IInteger;
@@ -285,9 +284,12 @@ public class RVMLinker {
 			if(uresolver != null){
 				// right is an overloaded function, replace by its alternatives
 				OverloadedFunction of = overloadedStore.get(uresolver);
-				for(int uuid : of.functions){
-					String nm = functionStore.get(uuid).name;
-					w.insert(vf.tuple(left, vf.string(nm)));
+				for (int uuid : of.functions){
+					Function function = functionStore.get(uuid);
+					if (function == null) {
+					    throw new CompilerError("No function for uuid " + uuid + " in store, part of overloaded function:" + of);
+					}
+					w.insert(vf.tuple(left, vf.string(function.name)));
 				}
 			} else {
 				// otherwise, keep original tuple
@@ -333,6 +335,7 @@ public class RVMLinker {
 	}
 	
 	private void addOverloadedFunctionUses(ISetWriter w, IString fname, ISet uses){
+		//System.err.println("addOverloadedFunctionUses:" + fname + ", " + uses);
 		for(IValue use : uses){
 			w.insert(vf.tuple(fname, use));
 		}
@@ -360,8 +363,6 @@ public class RVMLinker {
 		}
 		
 		boolean eliminateDeadCode = true;
-		
-		long start = Timing.getCpuTime();
 		
 		functionStore = new ArrayList<Function>();
 		constructorStore = new ArrayList<Type>();

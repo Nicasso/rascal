@@ -326,13 +326,24 @@ public class ParsingTools {
 				  .withModuleTags(w.done())
 				  .customSearchPath(ctx.getEvaluator().getRascalResolver())
 				  .build();
+		  
+		  rex.getConfiguration().setRascalJavaClassPathProperty(ctx.getConfiguration().getRascalJavaClassPathProperty());
+		  
 		  return parseFragment1(name, start, tree, loc, grammar, rex);
 	  }
 		
 	  // Rascal library function (compiler version)
 	  // TODO moduleTags is only needed in interpreted version
-	  public ITree parseFragment(IString name, IMap moduleTags, IValue start, IConstructor tree, ISourceLocation loc, IMap grammar, RascalExecutionContext rex) throws IOException{ 
-		  return parseFragment1(name, start, tree, loc, grammar, rex);
+	  public ITree parseFragment(IString name, IMap moduleTags, IValue start, IConstructor tree, ISourceLocation loc, IMap grammar, RascalExecutionContext rex) throws IOException{
+	      IMapWriter w = vf.mapWriter();
+          w.insert(vf.tuple(name, moduleTags));
+          
+	      RascalExecutionContext rex2 = RascalExecutionContextBuilder.normalContext(vf, rex.getStdOut(), rex.getStdErr())
+	              .withModuleTags(w.done())
+	              .customSearchPath(rex.getRascalSearchPath())
+	              .build();
+	      
+		  return parseFragment1(name, start, tree, loc, grammar, rex2);
 	  }
 	
 	/**
@@ -378,9 +389,7 @@ public class ParsingTools {
 	    catch (ParseError e) {
 	      ISourceLocation loc = TreeAdapter.getLocation((ITree) tree);
 	      ISourceLocation src = vf.sourceLocation(loc, loc.getOffset() + e.getOffset(), loc.getLength(), loc.getBeginLine() + e.getBeginLine() - 1, loc.getEndLine() + e.getEndLine() - 1, loc.getBeginColumn() + e.getBeginColumn(), loc.getBeginColumn() + e.getEndColumn());
-	      rex.getStdErr().println("***** WARNING: parseFragment, parse error at " + src);
-	      //getMonitor().warning("parse error in concrete syntax", src);
-	      return (ITree) tree.asAnnotatable().setAnnotation("parseError", src);
+	      throw RascalRuntimeException.parseError(src, null);
 	    }
 	  }
 	  

@@ -112,7 +112,7 @@ public class BytecodeGenerator implements Opcodes {
 		for (Function f : functionStore) {
 			//System.err.println(f.getName());
 //			currentFunction = f;
-			emitMethod(f, debug);
+		    emitMethod(f, debug);
 			//System.err.println(f.toString() );
 		}
 		
@@ -202,8 +202,10 @@ public class BytecodeGenerator implements Opcodes {
 	 */
 	
 	public void dumpClass() {
-		if (endCode == null)
+		if (endCode == null) {
 			finalizeCode();
+		}
+		
 		try {
 			FileOutputStream fos = new FileOutputStream("/tmp/Class.jvm");
 			fos.write(endCode);

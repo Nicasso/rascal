@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -167,7 +169,31 @@ public abstract class RVMCore {
 		}
 	
 	public Map<IValue, IValue> getModuleVariables() { return moduleVariables; }
+	
+	public void updateModuleVariable(IValue name, IValue newVal){
+		IValue oldVal = moduleVariables.get(name);
+		if(oldVal != null && !oldVal.getType().comparable(newVal.getType())){
+			throw new CompilerError("Module variable " + name + " initalized with incompatible value " + newVal + " was " + oldVal);
+		}
+		moduleVariables.put(name, newVal);
+	}
 
+	/**
+	 * Create an object which implements the provided interface by forwarding calls to its methods directly to Rascal functions.
+	 * 
+	 * This works for interfaces which contain a specific kind of methods:
+	 *    * each method should have a name which maps to a Rascal function name which is loaded into the current RVMCore
+	 *    * the arity of the method should be equal to at least one of the Rascal functions with the given name
+	 *    * all arguments of the methods should have a type which is a sub-type of IValue
+	 *    * the return type of the methods should be either IValue or void
+	 *    
+	 * @param interf the interface which is to be implemented
+	 * @return an object which implements this interface by forwarding to Rascal functions
+	 */
+	public <T> T asInterface(Class<T> interf) {
+	    return interf.cast(Proxy.newProxyInstance(RVMCore.class.getClassLoader(), new Class<?> [] { interf }, new ProxyInvocationHandler(this, interf)));
+	}
+	
 	public PrintWriter getStdErr() { return rex.getStdErr(); }
 	
 	public PrintWriter getStdOut() { return rex.getStdOut(); }
@@ -216,6 +242,28 @@ public abstract class RVMCore {
 			}
 		}
 		return null;
+	}
+	
+	private OverloadedFunction getFirstOverloadedFunctionByNameAndArity(String name, int arity) throws NoSuchRascalFunction {
+        for(OverloadedFunction of : overloadedStore) {
+            if (of.getName().equals(name)) {
+                for (int alt : of.getFunctions()) {
+                    if (functionStore[alt].ftype.getArity() == arity) {
+                        return of;
+                    }
+                }
+            }
+        }
+
+        // ?? why are constructors not part of overloaded functions?
+        for(int i = 0; i < constructorStore.size(); i++){
+            Type tp = constructorStore.get(i);
+            if (tp.getName().equals(name) && tp.getArity() == arity) {
+                return new OverloadedFunction(name, tp,  new int[]{}, new int[] { i }, "");
+            }
+        }
+        
+        throw new NoSuchRascalFunction(name);
 	}
 	
 	public OverloadedFunction getOverloadedFunction(String signature) throws NoSuchRascalFunction{
@@ -444,6 +492,9 @@ public abstract class RVMCore {
 			}
 			return w.done();
 		}
+		if(result == null){
+			return null;
+		}
 		throw new CompilerError("Cannot convert object back to IValue: " + result);
 	}
 	
@@ -541,6 +592,59 @@ public abstract class RVMCore {
 	public String asString(Object o, int w){
 		String repr = asString(o);
 		return (repr.length() < w) ? repr : repr.substring(0, w) + "...";
+	}
+	
+	private static class ProxyInvocationHandler implements InvocationHandler {
+	    private final RVMCore core;
+
+        public ProxyInvocationHandler(RVMCore core, Class<?> clazz) {
+	        this.core = core;
+	        initialize(clazz);
+        }
+	    
+	    private void initialize(Class<?> clazz) {
+	        // TODO: some static checking and some caching.
+        }
+
+        @Override
+	    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            if (args[args.length - 1] instanceof IMap) { 
+                // keyword parameters present
+                OverloadedFunction f = core.getFirstOverloadedFunctionByNameAndArity(method.getName(), method.getParameterCount() - 1);
+                IMap kwArgs = (IMap) args[args.length - 1];
+                return core.executeRVMFunction(f, prepareArguments(args, true), kwArgs);
+            }
+            else { 
+                // no keyword parameters present
+                OverloadedFunction f = core.getFirstOverloadedFunctionByNameAndArity(method.getName(), method.getParameterCount());
+                return core.executeRVMFunction(f, prepareArguments(args, false));
+            }
+	    }
+
+        private IValue[] prepareArguments(Object[] args, boolean skipKeywordArguments) {
+            int len = args.length - (skipKeywordArguments ? 1 : 0);
+            IValue[] result = new IValue[len];
+            
+            for (int i = 0; i < len; i++) {
+                result[i] = prepareArgument(args[i]);
+            }
+            
+            return result;
+        }
+
+        private IValue prepareArgument(Object object) {
+           if (object instanceof Integer) {
+               return core.vf.integer((Integer) object);
+           }
+           else if (object instanceof String) {
+               return core.vf.string((String) object);
+           }
+           else if (object instanceof IValue) {
+               return (IValue) object;
+           }
+           
+           throw new IllegalArgumentException("parameter is not convertible to IValue:" + object.getClass().getCanonicalName());
+        }
 	}
 	
 	/********************************************************************************/
@@ -1004,9 +1108,7 @@ public abstract class RVMCore {
 			}
 			
 			throw e.getTargetException();
-//			e.printStackTrace();
 		}
-//		return sp;
 	}
 	
 	private HashSet<String> converted = new HashSet<String>(Arrays.asList(

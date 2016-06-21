@@ -23,7 +23,7 @@ void ex(str title, Figure b, bool debug = false) = render(b, debug = debug, alig
 // --------------------------------------------------------------------------
 
 public Figure newNgon(str lc, Figure el) {
-      return at(0, 0, ngon(n = 5,  grow=1.0, align = centerMid, lineColor= lc, 
+      return atXY(0, 0, ngon(n = 5,  grow=1.0, align = centerMid, lineColor= lc, 
              lineWidth = 8, fillColor = "white", padding=<0,0,0,0>,
       fig = el));
       }
@@ -33,49 +33,45 @@ public Figure demo1() {
            return hcat(size=<300, 400>, figs=[
              (idNgon(5, 20) |newNgon(e, it)| e<-colors)
              ,
-             frame((idNgon(5, -1) |newNgon(e, it)| e<-colors), shrink=0.9)
+             (idNgon(5, -1) |newNgon(e, it)| e<-colors)
            ]);}
-void tdemo1()  {render(box(fig=demo1()), align = centerMid);}
+void tdemo1()  {render(demo1());}
 
 
  void tfdemo1(loc l) {
-      // println(schoolPlot());
-      writeFile(l, toHtmlString(demo1()), debug = false, width = 600, height = 600);
+      writeFile(l, toHtmlString(demo1(), debug = false, width = 600, height = 600));
       }
 
 // --------------------------------------------------------------------------
 
 public Figure newBox(str lc, Figure el) {
-      return at(10, 10, box(align = centerMid, lineColor= lc, 
+      return atXY(10, 10, box(align = centerMid, lineColor= lc, 
              fillColor = "none", fig = el, lineWidth = 8));
       }
 public Figure demo2() { 
          list[str] colors = ["green", "red", "blue", "grey", "magenta", "brown"];
-         return hcat(fillColor="none", size=<400, 400>, hgap = 6, figs = [
+         return hcat(fillColor="none", borderWidth = 0, size=<400, 400>, hgap = 6, figs = [
            (
-           at(10, 10, box(align = centerMid, 
+           atXY(10, 10, box(align = centerMid, 
              lineColor="grey", fillColor = "yellow", lineOpacity=1.0, size=<30, 40>))
            |newBox(e, 
           it)| e<-colors)
           ,
-          frame(
-           (at(10, 10, box(align = centerMid, lineColor="grey", fillColor = "yellow", lineOpacity=1.0))
+           (atXY(10, 10, box(align = centerMid, lineColor="grey", fillColor = "yellow", lineOpacity=1.0))
            |newBox(e, it)| e<-colors)
-           , shrink=0.90)
             ]);
           }
-void tdemo2(){ render(box(fig=demo2(), align = centerRight)); }
+void tdemo2(){ render(demo2()); }
 
  void tfdemo2(loc l) {
-      // println(schoolPlot());
-      writeFile(l, toHtmlString(rotate(45, demo2()), debug = false, width = 600, height = 600));
+      writeFile(l, toHtmlString(demo2(), debug = false, width = 600, height = 600));
       }
 
 // --------------------------------------------------------------------------
 
 
 public Figure newEllipse(str lc, Figure el) {
-      return at(0, 0, ellipse(lineColor= lc, lineWidth = 8, 
+      return atXY(0, 0, ellipse(lineColor= lc, lineWidth = 8, 
            fillColor = "white", padding=<0,0,0,0>, 
       fig = el));
       }
@@ -84,7 +80,9 @@ public Figure demo3() {
       return hcat(fillColor="none", size=<400, 200>, hgap = 6, figs = [
       (idEllipse(17, 12) |newEllipse(e,  it)| e<-colors)
       ,
-      frame((idEllipse(-1, -1) |newEllipse(e, it)| e<-colors), shrink=0.85)
+      // frame(
+      (idEllipse(-1, -1) |newEllipse(e, it)| e<-colors)
+      // , shrink=1.0)
       ]);
       ;
       }
@@ -93,7 +91,7 @@ void tdemo3()  {render(demo3(), debug = false);}
 
 void tfdemo3(loc l) {
       // println(schoolPlot());
-      writeFile(l, toHtmlString(demo3()), debug = false, width = 600, height = 600);
+      writeFile(l, toHtmlString(demo3(), debug = false, width = 600, height = 600));
       }
 // ---------------------------------------------------------------------------
 
@@ -136,10 +134,10 @@ Figure schoolPlot() {
         ,lineWidth = 10, lineColor = "red", lineOpacity=0.5, fillOpacity=0.5, fig = text("Hello")
         )
         ,
-        at(50, 50, circle(lineWidth=10, lineColor= "red", fillColor = "none",  padding=<10, 10, 10, 10>, fig= at(0,0, 
-             box(width=50, height = 50, fillColor = "antiquewhite")
+        atXY(50, 50, circle(lineWidth=10, lineColor= "red", fillColor = "none",  padding=<0, 0, 0, 0>, fig= atXY(0,0, 
+             box(width=50, height = 50, lineColor="grey", fillColor = "antiquewhite")
              )))
-        ,at(250, 250, circle(lineWidth=10, fillColor="none", lineColor="brown", padding=<5, 5, 5, 5>
+        ,atXY(250, 250, circle(lineWidth=10, fillColor="none", lineColor="brown", padding=<0, 0, 0, 0>
         , fig=ngon(n=7, r=40, lineWidth = 10, lineColor = "grey", fillColor = "none")))
         ])
         ;
@@ -194,26 +192,6 @@ Figure labeled(Figure g) {
       }
       
 
-   
-
-
-Figure butt() = hcat(figs= [
-    button("Click me", id = "aap"
-    , event = on("click", 
-    void (str n, str e) {
-       if (getStyle("mies").fillColor=="green")
-          setStyle("mies", style(fillColor="red"));
-       else 
-          setStyle("mies", style(fillColor="green"));
-       }
-    ))
-    , box(size=<50, 50>, id = "mies")  
-    ]);
-    
-void tbutt()= render(butt(), debug = false);
-
-void tfbutt(loc l)= writeFile(l, toHtmlString(butt(), debug = false));
-
 // ----------------------------------------------------------------------------------
 
 Vertices hilbert(num x0, num y0, num xis, num xjs, num yis, num yjs, int n){
@@ -233,7 +211,7 @@ Vertices hilbert(num x0, num y0, num xis, num xjs, num yis, num yjs, int n){
 Figure demo5() = shape(hilbert(0, 0, 300, 0, 0, 300, 5), 
 								startMarker=box(size=<10,10>, fillColor="red"),
 								midMarker=box(size=<3,3>,fillColor="blue"),
-								endMarker=box(size=<10,10>,fillColor="green")
+								endMarker=box(size=<10,10>,fillColor="green"), size=<400, 400>
 					   );
 
 void hilbert1(){
@@ -363,7 +341,7 @@ public void thcat() = render(hcat0(), align =  centerMid);
 void thfcat(loc l)= writeFile(l, toHtmlString(hcat0(), debug = false));
 
 Figure title(str s, Figure f) = 
-     vcat(align = topLeft, size=<70, 50>, figs = [f, box(fillColor="antiqueWhite", height=15, width = 70, fig=text(s, fontSize = 9, width = 60, height = 10))]);
+     vcat(align = topLeft, size=<70, 51>, figs = [f, box(fillColor="antiqueWhite", lineWidth=0, height=15, width = 70, fig=text(s, fontSize = 9, height = 10))]);
 
 
 /**********************  flag ******************************/
@@ -429,9 +407,11 @@ list[tuple[str, Figure]] flagNodes = [<"nl", dutch()>, <"be", belgium()>
                   edge("be", "fr"), edge("be", "de"), edge("fr", "it")];
                   
                  
-Figure gflags() = graph(flagNodes, flagEdges, size=<300, 600>);
+Figure gflags() = graph(nodes=flagNodes, edges=flagEdges, size=<300, 600>);
 
 void tgflags() = render(box(fig=gflags(), size=<400, 400>, align =  centerMid));
+
+void fgflags(loc l) = writeFile(l, toHtmlString(flags()));
 
 void ftgflags(loc l) = writeFile(l, toHtmlString(gflags()));
    
@@ -443,23 +423,20 @@ Figure demo10() = sinAndCos();
 
 Figure demo11() = box(fig=gflags(), size=<400, 400>); 
 
-Figure demo12() = nederland(7); 
-
 Figure demo13() = fsm();                
                     
 void tflags() = render(flags());           
 
-void tsteden() = render(steden(width=800, height = 800));
+void tsteden() = render(frame(atXY(100, 100, box(fig=steden(width=400, height = 400)))));
 
-void tnederland() = render(nederland(5, width=400, height = 200));
+void fsteden(loc l) = writeFile(l, toHtmlString(frame(atXY(100, 100, hcat(figs=[steden(width=400, height = 400)])))));
 
 void tsincos() = render(sinAndCos());
 
-void taex() = render(aex());
 
 void tfsm() = render(fsm());
 
-Figure klokBox(int r, int n) =  at(0, n/2, box(size=<10, n>,  rounded=<10, 10>, lineWidth = 1, fillColor="yellow"));
+Figure klokBox(int r, int n) =  atXY(0, n/2, box(size=<10, n>,  rounded=<10, 10>, lineWidth = 1, lineColor="black", fillColor="yellow"));
 
 Figure klokFrame() {
      int r = 80; 
@@ -471,13 +448,13 @@ Figure klokFrame() {
           [circle(r=r, cx= cx, cy = cy, fillColor = "silver", lineColor = "red")]
           +
           [
-           at(20-6+r+toInt(sin((PI()*2*i)/12)*r1), toInt(20-5+r-cos((PI()*2*i)/12)*r1), htmlText("<i>", size=<20, 20>))|int i<-[12, 3, 6, 9]
+           atXY(20-6+r+toInt(sin((PI()*2*i)/12)*r1), toInt(20-5+r-cos((PI()*2*i)/12)*r1), htmlText("<i>", size=<20, 20>))|int i<-[12, 3, 6, 9]
           ]
         
-        +[at(20-1+r+toInt(sin((PI()*2*i)/12)*(r)), toInt(20+r-cos((PI()*2*i)/12)*(r)), circle(r=d, fillColor="black"))|int i<-[12, 3, 6, 9]
+        +[atXY(20-1+r+toInt(sin((PI()*2*i)/12)*(r)), toInt(20+r-cos((PI()*2*i)/12)*(r)), circle(r=d, fillColor="black"))|int i<-[12, 3, 6, 9]
          ]
-        +box(lineWidth = 0, fillColor= "none", fig=at(20, 20, rotate(210, box(size=<2*r, 2*r>, fig =klokBox(r, 70), align = centerMid))))      
-        +box(lineWidth = 0,fillColor= "none",fig=at(20, 20, rotate(180, box(size=<2*r, 2*r>, fig =klokBox(r, 50), align = centerMid))))  
+        +box(lineColor = "none", fillColor= "none", fig=atXY(20, 20, rotateDeg(210, box(lineColor="none", size=<2*r, 2*r>, fig =klokBox(r, 70), align = centerMid))))      
+        +box(lineColor = "none",fillColor= "none",fig=atXY(20, 20, rotateDeg(180, box(lineColor="none", size=<2*r, 2*r>, fig =klokBox(r, 50), align = centerMid))))  
           +[circle(r=5, cx = cx, cy = cy, fillColor = "red")]
         ;
      return box(fig=overlay(figs=cs, size=<220, 220>), size=<250, 250>);
@@ -490,26 +467,27 @@ void tklok()= render(klokFrame());
 
 void fklok(loc l) = writeFile(l, toHtmlString(klokFrame()));
 
-Figure ovBox(str color) =  box(lineWidth = 0, fillOpacity=0.8, size=<100, 100>, fillColor= "none", align = centerMid, fig=box(size=<50, 10>, fillColor=color));
+Figure ovBox(str color) =  box(lineColor = "none", fillOpacity=0.8, size=<100, 100>, fillColor= "none", align = centerMid, fig=box(size=<50, 10>
+, fillColor=color));
 
 Figure ov() = overlay(figs = [
-    rotate(45, ovBox("red"))
-   ,rotate(135, ovBox("green"))
-   ,rotate(0, ovBox("magenta"))
-   ,rotate(90, ovBox("blue"))
+    rotateDeg(45, ovBox("red"))
+   ,rotateDeg(135, ovBox("green"))
+   ,rotateDeg(0, ovBox("magenta"))
+   ,rotateDeg(90, ovBox("blue"))
     ]);
 
 void tov()= render(ov());
 
 Figure demo15()= ov();
 
-list[Figure] rgbFigs = [box(fillColor="red",size=<50,100>), box(fillColor="green", size=<200,200>), box(fillColor="blue",  size=<10,10>)];
+list[Figure] rgbFigs = [box(fillColor="red",size=<50,100>), box(fillColor="antiquewhite", size=<200,200>), box(fillColor="blue",  size=<10,10>)];
 
 public Figure hcat11() = 
-       box(padding=<0, 0, 0, 0>, lineWidth = 10 
+       box(padding=<0, 0, 0, 0>, lineWidth = 10, lineColor = "darkgrey"
        ,fig= ellipse(padding=<0, 0, 0, 0>
              ,fig=hcat(lineWidth=2, lineColor="brown", figs=rgbFigs) 
-       ,lineWidth = 10, lineColor= "yellow", grow = 1.45, fillColor="lightgrey",align = centerMid
+       ,lineWidth = 10, lineColor= "yellow", grow = 1.00, fillColor="lightgrey",align = centerMid
        )
  )
 ;
@@ -522,7 +500,7 @@ void tfhcat11(loc l)= writeFile(l,
 Figure demo16()= hcat11();
 
 Figure bigg(num bigger) = circle(r=30, fig = 
-    box(size=<40, 10>, fig= rotate(-30, ngon(n=3, r=3, lineWidth=0, fillColor= "white")), 
+    box(size=<40, 10>, fig= rotateDeg(-30, ngon(n=3, r=3, lineWidth=0, fillColor= "white")), 
         fillColor="antiquewhite", lineWidth = 2, lineColor="brown"),
     fillColor = "beige", lineColor = "green", bigger = bigger);
 
@@ -666,14 +644,14 @@ public list[list[Figure]] figures() =
              [demo1(), demo2()]
              ,[demo3() , demo4()]
              ,[demo5(), demo6()]
-             ,[demo7(), demo8()]
+             , [demo7(), demo8()]
              ,[demo9(), demo10()]          
              ,[demo15(), demo13()]
              ,[demo14(),demo11()]
              ,[demo16(), demo17()]
              ,[demo18(), demo19()]
-             ,[tetris(), box(fig=shrink(false), size=<400, 400>)]
-             ,[decision(), triangle()]
+            ,[tetris(), box(fig=shrink(false), size=<400, 400>)]
+            ,[decision(), triangle()]
             ];
             
 Figure demoFig() = grid(vgap=4, figArray=figures());
@@ -687,10 +665,13 @@ void fdemo(loc l) {
       writeFile(l, toHtmlString(demoFig(), debug = false, width = 800, height = 1800));
       }
       
- Figure sb(Figure tt) {return box(size=<20, 20>, fillColor = "antiquewhite", tooltip = at(30, 30, hcat(figs=[
-        box(fig=tt, fillColor="whitesmoke", lineWidth =1)])));}
+ Figure sb(Figure tt) {return box(size=<20, 20>, fillColor = "antiquewhite", 
+     tooltip = frame(atXY(30, 30, box(fig=tt, fillColor="whitesmoke", visibility="visible", lineWidth =1)))
+ );}
  
- list[Figure] sb(list[Figure] tt) {return  mapper(tt, sb);}
+ // list[Figure] sb(list[Figure] tt) {return  mapper(tt, sb);}
+ 
+list[Figure] sb(list[Figure] tt) = [sb(f)|Figure f<-tt];
  
  Figure summary() = grid(figArray = [[sb(x)|x<-y]|y<-figures()]);
  

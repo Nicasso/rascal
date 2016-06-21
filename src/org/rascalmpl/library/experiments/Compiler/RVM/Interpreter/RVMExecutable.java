@@ -5,13 +5,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.nustaq.serialization.FSTBasicObjectSerializer;
 import org.nustaq.serialization.FSTClazzInfo;
-import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTClazzInfo.FSTFieldInfo;
+import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectInput;
 import org.nustaq.serialization.FSTObjectOutput;
 import org.rascalmpl.interpreter.utils.Timing;
@@ -31,11 +33,10 @@ import org.rascalmpl.values.uptr.RascalValueFactory;
  * RVMExecutable contains all data needed for executing an RVM program.
  *
  * RVMExecutable is serialized by FSTRVMExecutableSerializer; make sure that
- * all fields declared here are synced with the serializer.
+ * all **non-static** fields declared here are synced with the serializer.
  */
 public class RVMExecutable implements Serializable{
 	
-	static private final FSTConfiguration FSTConfig;
 	static private final FSTSerializableType serializableType;
 	static private final FSTSerializableIValue serializableIValue;
 	static private final FSTRVMExecutableSerializer rvmExecutableSerializer;
@@ -44,43 +45,49 @@ public class RVMExecutable implements Serializable{
 	static private final FSTCodeBlockSerializer codeblockSerializer;
 	
 	static {
-		// set up FST serialization
-
-		FSTConfig = FSTConfiguration.createDefaultConfiguration();   
+		// set up FST serialization in gredients that will be reused across read/write calls
 
 		// PDB Types
 		serializableType = new FSTSerializableType();
-		FSTConfig.registerSerializer(FSTSerializableType.class, serializableType, false);
 
 		// PDB values
 		serializableIValue =  new FSTSerializableIValue();
-		FSTConfig.registerSerializer(FSTSerializableIValue.class, serializableIValue, false);
-
+		
 		// Specific serializers
 		rvmExecutableSerializer = new FSTRVMExecutableSerializer();
-		FSTConfig.registerSerializer(RVMExecutable.class, rvmExecutableSerializer, false);
 
 		functionSerializer = new FSTFunctionSerializer();
-		FSTConfig.registerSerializer(Function.class, functionSerializer, false);
 
 		overloadedFunctionSerializer = new FSTOverloadedFunctionSerializer();
-		FSTConfig.registerSerializer(OverloadedFunction.class, overloadedFunctionSerializer, false);
 
 		codeblockSerializer = new FSTCodeBlockSerializer();
-		FSTConfig.registerSerializer(CodeBlock.class, codeblockSerializer, false);
-
-		// For efficiency register some classes that are known to occur in serialization
-		FSTConfig.registerClass(OverloadedFunction.class);
-		//conf.registerClass(FSTSerializableType.class);
-		//conf.registerClass(FSTSerializableIValue.class);
-	}   
+	} 
+	
+	/**
+	 * Create an FSTConfiguration depending on the used extension: ".json" triggers the JSON reader/writer.
+	 * Note: the JSON version is somewhat larger and slower but is usefull for recovery during bootstrapping incidents.
+	 * @param source or desination of executable
+	 * @return an initialized FSTConfiguration
+	 */
+	private static FSTConfiguration makeFSTConfig(ISourceLocation path){
+		FSTConfiguration config = path.getURI().getPath().contains(".json") ?
+				FSTConfiguration.createJsonConfiguration() : FSTConfiguration.createDefaultConfiguration(); 
+		config.registerSerializer(FSTSerializableType.class, serializableType, false);
+		config.registerSerializer(FSTSerializableIValue.class, serializableIValue, false);
+		config.registerSerializer(RVMExecutable.class, rvmExecutableSerializer, false);
+		config.registerSerializer(Function.class, functionSerializer, false);
+		config.registerSerializer(OverloadedFunction.class, overloadedFunctionSerializer, false);
+		config.registerSerializer(CodeBlock.class, codeblockSerializer, false);
+		config.registerClass(OverloadedFunction.class);
+		return config;
+	}
 
 	private static final long serialVersionUID = -8966920880207428792L;
 	static final String RASCAL_MAGIC = "Rascal Vincit Omnia";
 	
 	// transient fields
-	transient static IValueFactory vf;
-	transient static TypeStore store;
+	static IValueFactory vf;
+	static TypeStore store;
 	
 	// Serializable fields
 	
@@ -302,7 +309,14 @@ public class RVMExecutable implements Serializable{
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+		    if (e.getMessage() != null && e.getMessage().startsWith("Method code too large")) {
+		        // ASM does not provide an indication of _which_ method is too large, so let's find out:
+		        Comparator<Function> c = ((x, y) -> x.codeblock.finalCode.length - y.codeblock.finalCode.length); 
+		        throw new RuntimeException("Function too large: " + Arrays.stream(functionStore).max(c).get());
+		    }
+		    else {
+		        throw e;
+		    }
 		}
 	}
 	
@@ -320,7 +334,7 @@ public class RVMExecutable implements Serializable{
 
 		ISourceLocation compOut = rvmExecutable;
 		fileOut = URIResolverRegistry.getInstance().getOutputStream(compOut, false);
-		FSTObjectOutput out = new FSTObjectOutput(fileOut, FSTConfig);
+		FSTObjectOutput out = new FSTObjectOutput(fileOut, makeFSTConfig(rvmExecutable));
 		long before = Timing.getCpuTime();
 		out.writeObject(this);
 		out.close();
@@ -344,12 +358,12 @@ public class RVMExecutable implements Serializable{
 		try {
 			ISourceLocation compIn = rvmExecutable;
 			InputStream fileIn = URIResolverRegistry.getInstance().getInputStream(compIn);
-			in = new FSTObjectInput(fileIn, FSTConfig);
+			in = new FSTObjectInput(fileIn, makeFSTConfig(rvmExecutable));
 			long before = Timing.getCpuTime();
 			executable = (RVMExecutable) in.readObject(RVMExecutable.class);
 			in.close();
 			in = null;
-			//System.out.println("Reading: " + compIn.getPath() + " [" +  (Timing.getCpuTime() - before)/1000000 + " msec]");
+			System.out.println("Reading: " + compIn.getPath() + " [" +  (Timing.getCpuTime() - before)/1000000 + " msec]");
 		} catch (ClassNotFoundException c) {
 			throw new IOException("Class not found: " + c.getMessage());
 		} catch (Exception e) {
@@ -564,8 +578,8 @@ class FSTRVMExecutableSerializer extends FSTBasicObjectSerializer {
 		if(!sv.satisfiesVersion("~" + VersionInfo.RASCAL_COMPILER_VERSION)){
 			throw new RuntimeException("RASCAL_COMPILER_VERSION " + rascal_compiler_version + " in Rascal executable incompatible with current version " + VersionInfo.RASCAL_COMPILER_VERSION);
 		}
-		System.err.println("RascalShell: Rascal: " + VersionInfo.RASCAL_VERSION + "; Runtime: " + VersionInfo.RASCAL_RUNTIME_VERSION + "; Compiler: " + VersionInfo.RASCAL_COMPILER_VERSION);
-		System.err.println("Executable : Rascal: " + rascal_version + "; Runtime: " + rascal_runtime_version + "; Compiler: " + rascal_compiler_version);
+//		System.err.println("RascalShell: Rascal: " + VersionInfo.RASCAL_VERSION + "; Runtime: " + VersionInfo.RASCAL_RUNTIME_VERSION + "; Compiler: " + VersionInfo.RASCAL_COMPILER_VERSION);
+//		System.err.println("Executable : Rascal: " + rascal_version + "; Runtime: " + rascal_runtime_version + "; Compiler: " + rascal_compiler_version);
 				
 		// String[] errors
 				

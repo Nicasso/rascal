@@ -6000,7 +6000,8 @@ public enum RascalPrimitive {
 		@Override
 		public Object execute2(final Object arg_2, final Object arg_1, final Frame currentFrame, final RascalExecutionContext rex) {
 			Type type = (Type) arg_2;
-			return $type2symbol(type);
+			return rex.type2Symbol(type);
+			//return $type2symbol(type);
 		}
 	},
 
@@ -6831,7 +6832,7 @@ public enum RascalPrimitive {
 			try {
 				temp_array_of_2[1] = loc_field_access.execute2(arg_2, arg_1, currentFrame, rex);
 				temp_array_of_2[0] = Rascal_TRUE;
-			} catch (Exception e) {
+			} catch (Exception e) { // TODO: this hides implementation bugs and its not the semantics of isDefined. 
 				temp_array_of_2[0] = Rascal_FALSE;
 			}
 			return temp_array_of_2;
@@ -7869,11 +7870,6 @@ public enum RascalPrimitive {
 		public Object execute2(final Object arg_2, final Object arg_1, final Frame currentFrame, final RascalExecutionContext rex) {
 			IValue result = ((IMap) arg_2).get((IValue) arg_1);
 			if(result == null) {
-//				System.err.println("EXCEPTION NoSuchKey at: " + currentFrame.src);
-//				System.err.println("containsKey: " + ((IMap) arg_2).containsKey((IValue) arg_1));
-//				for(Frame f = currentFrame; f != null; f = f.previousCallFrame) {
-//					System.err.println("\t" + f.toString());
-//				}
 				throw RascalRuntimeException.noSuchKey((IValue) arg_1, currentFrame);
 			}
 			return result;
@@ -7972,86 +7968,184 @@ public enum RascalPrimitive {
 			return temp_array_of_2;
 		}
 	},
+	
+	/**
+	 * Subscript of a binary rel with a single subscript (no set and unequal to _)
+	 * 
+	 * [ ..., IRelation r, IValue idx1] => r[idx1] ]
+	 */
+	rel2_subscript1_noset {
+		@Override
+		public Object execute2(final Object arg_2, final Object arg_1, final Frame currentFrame, final RascalExecutionContext rex) {
+			ISet rel = (ISet) arg_2;
+			if(rel.isEmpty()){
+				return rel;
+			}
+			IValue index = (IValue) arg_1;
+			ISetWriter wset = vf.setWriter();
+
+			for (IValue v : rel) {
+				ITuple tup = (ITuple)v;
+
+				if(tup.get(0).isEqual(index)){
+					wset.insert(tup.get(1));
+				} 
+			}
+			return wset.done();
+		}
+	},
+
+	
+	/**
+	 * Subscript of a binary rel with a single subscript (a set but unequal to _)
+	 * 
+	 * [ ..., IRelation r, IValue idx1] => r[idx1] ]
+	 */
+	rel2_subscript1_set {
+		@Override
+		public Object execute2(final Object arg_2, final Object arg_1, final Frame currentFrame, final RascalExecutionContext rex) {
+			ISet rel = (ISet) arg_2;
+			if(rel.isEmpty()){
+				return rel;
+			}
+			IValue index = (IValue) arg_1;
+			ISetWriter wset = vf.setWriter();
+
+			for (IValue v : rel) {
+				ITuple tup = (ITuple)v;
+
+				if((((ISet) index).contains(tup.get(0)))){
+					wset.insert(tup.get(1));
+				} 
+			}
+			return wset.done();
+		}
+	},
 
 	/**
-	 * Subscript of a rel
+	 * Subscript of an n-ary (n > 2) rel with a single subscript (not a set and unequal to _)
 	 * 
-	 * [ ..., IRelation r, IValue idx1, IValue idx2, ...] => r[idx1, idx2, ...] ]
+	 * [ ..., IRelation r, IValue idx1] => r[idx1] ]
+	 */
+	rel_subscript1_noset {
+		@Override
+		public Object execute2(final Object arg_2, final Object arg_1, final Frame currentFrame, final RascalExecutionContext rex) {
+			ISet rel = (ISet) arg_2;
+			if(rel.isEmpty()){
+				return rel;
+			}
+			int relArity = rel.getElementType().getArity();
+			
+			IValue index = (IValue) arg_1;
+			ISetWriter wset = vf.setWriter();
+			IValue args[] = new IValue[relArity - 1];
+
+			for (IValue v : rel) {
+				ITuple tup = (ITuple)v;
+
+				if(tup.get(0).isEqual(index)){
+					for (int i = 1; i < relArity; i++) {
+						args[i - 1] = tup.get(i);
+					}
+					wset.insert(vf.tuple(args));
+				} 
+			}
+			return wset.done();
+		}
+	},
+	
+	/**
+	 * Subscript of an n-ary (n > 2) rel with a single subscript (a set and unequal to _)
+	 * 
+	 * [ ..., IRelation r, IValue idx1] => r[idx1] ]
+	 */
+	rel_subscript1_set {
+		@Override
+		public Object execute2(final Object arg_2, final Object arg_1, final Frame currentFrame, final RascalExecutionContext rex) {
+			ISet rel = (ISet) arg_2;
+			if(rel.isEmpty()){
+				return rel;
+			}
+			int relArity = rel.getElementType().getArity();
+			IValue index = (IValue) arg_1;			
+			
+			ISetWriter wset = vf.setWriter();
+			IValue args[] = new IValue[relArity - 1];
+			
+			for (IValue v : rel) {
+				ITuple tup = (ITuple)v;
+
+				if((((ISet) index).contains(tup.get(0)))){
+					for (int i = 1; i < relArity; i++) {
+						args[i - 1] = tup.get(i);
+					}
+					wset.insert(vf.tuple(args));
+				} 
+			}
+			return wset.done();
+		}
+	},
+	
+	/**
+	 * Subscript of rel, general case
+	 * subsDesc is a subscript descriptor: a list with integers: 0: noset, 1: set, 2: wildcard
+	 * 
+	 * [ ..., IRelation r, IList subsDesc, IValue idx1, IValue idx2, ...] => rel[idx1, idx2, ...] ]
 	 */
 	rel_subscript {
 		@Override
-		public int executeN(Object[] stack, int sp, int arity, Frame currentFrame, RascalExecutionContext rex) {
-			assert arity >= 2;
+		public int executeN(final Object[] stack, final int sp, final int arity, final Frame currentFrame, final RascalExecutionContext rex) {
+			assert arity >= 4;
+			
 			ISet rel = ((ISet) stack[sp - arity]);
 			if(rel.isEmpty()){
 				stack[sp - arity] = rel;
 				return sp - arity + 1;
 			}
-			int indexArity = arity - 1;
+			IList subsDesc = ((IList) stack[sp - arity + 1]);
+			int indexArity = arity - 2;
 			int relArity = rel.getElementType().getArity();
-			assert indexArity < relArity ;
-			
-			IValue[] indices = new IValue[indexArity];
-			Type subscriptType[] = new Type[indexArity];
-			boolean subscriptIsSet[] = new boolean[indexArity];
-			
-			boolean yieldSet = (relArity - indexArity) == 1;
-			Type resFieldType[] = new Type[relArity - indexArity];
-			
-			for(int i = 0; i < indexArity; i++ ){
-				indices[i] = (IValue) stack[sp - arity + i + 1];
-				if(indices[i].getType().isString()){
-					String s = ((IString) indices[i]).getValue();
-					if(s.equals("_"))
-						indices[i] = null;
-				}
-				subscriptType[i] = indices[i] == null ? valueType : indices[i].getType();
-			}
-			
-			for (int i = 0; i < relArity; i++) {
-				Type relFieldType = rel.getType().getFieldType(i);
-				if (i < indexArity) {
-					if (subscriptType[i].isSet() && 
-							relFieldType.comparable(subscriptType[i].getElementType())){
-						subscriptIsSet[i] = true;
-					} 
-					else if (indices[i] == null || relFieldType.comparable(subscriptType[i])){
-						subscriptIsSet[i] = false;
-					} 
-				} else {
-					resFieldType[i - indexArity] = relFieldType;
-				}
-			}
 			
 			ISetWriter wset = vf.setWriter();
-			
-			for (IValue v : rel) {
-				ITuple tup = (ITuple)v;
-				boolean allEqual = true;
-				for(int k = 0; k < indexArity; k++){
-					if(subscriptIsSet[k] && ((indices[k] == null) ||
-							                 ((ISet) indices[k]).contains(tup.get(k)))){
-						/* ok */
-					} else if (indices[k] == null || tup.get(k).isEqual(indices[k])){
-						/* ok */
-					} else {
-						allEqual = false;
+			int indexBase = sp - arity + 2 ;
+
+			if(relArity - indexArity == 1){	// Return a set
+				allValues:
+					for (IValue v : rel) {
+						ITuple tup = (ITuple)v;
+						for(int k = 0; k < indexArity; k++){
+							switch(((IInteger)subsDesc.get(k)).intValue()){
+							case 0: 
+									if(!tup.get(k).isEqual((IValue)stack[indexBase + k])) continue allValues; 
+									continue;
+							case 1: 
+									if(!((ISet)stack[indexBase + k]).contains(tup.get(k))) continue allValues;
+							}
+						}
+						wset.insert(tup.get(indexArity));
 					}
-				}
-				
-				if (allEqual) {
-					IValue args[] = new IValue[relArity - indexArity];
-					for (int i = indexArity; i < relArity; i++) {
-						args[i - indexArity] = tup.get(i);
-					}
-					if(yieldSet){
-						wset.insert(args[0]);
-					} else {
+			} else {						// Return a relation
+				IValue args[] = new IValue[relArity - indexArity];
+				allValues:
+					for (IValue v : rel) {
+						ITuple tup = (ITuple)v;
+						for(int k = 0; k < indexArity; k++){
+							switch(((IInteger)subsDesc.get(k)).intValue()){
+							case 0: 
+									if(!tup.get(k).isEqual((IValue)stack[indexBase + k])) continue allValues; 
+									continue;
+							case 1: 
+									if(!((ISet)stack[indexBase + k]).contains(tup.get(k))) continue allValues;
+							}
+						}
+
+						for (int i = indexArity; i < relArity; i++) {
+							args[i - indexArity] = tup.get(i);
+						}
 						wset.insert(vf.tuple(args));
 					}
-				}
 			}
-			
+
 			stack[sp - arity] = wset.done();
 			return sp - arity + 1;
 		}
@@ -8396,22 +8490,6 @@ public enum RascalPrimitive {
 			assert arity == 4;
 			IString id = (IString) stack[sp - 4];
 			
-//			DescendantDescriptor desc = rex.getDescendantDescriptorMap().get(id, k-> {
-//				ISet symbolset = (ISet) stack[sp - 3];
-//				IBool concreteMatch = (IBool) stack[sp - 2];
-//				IMap definitions = (IMap) stack[sp - 1];
-//				return new DescendantDescriptor(vf, symbolset, definitions, concreteMatch);
-//			});
-
-			
-//			DescendantDescriptor desc = rex.getDescendantDescriptorMap().get(id);
-//			if(desc == null){
-//				ISet symbolset = (ISet) stack[sp - 3];
-//				IBool concreteMatch = (IBool) stack[sp - 2];
-//				IMap definitions = (IMap) stack[sp - 1];
-//				desc = new DescendantDescriptor(vf, symbolset, definitions, concreteMatch);
-//				rex.getDescendantDescriptorMap().put(id,  desc);
-//			}
 			stack[sp - 4] = rex.getDescendantDescriptorCache()
 					.get(id, k -> {
 						ISet symbolset = (ISet) stack[sp - 3];
@@ -8437,7 +8515,7 @@ public enum RascalPrimitive {
 		@Override
 		public Object execute1(final Object arg_1, final Frame currentFrame, final RascalExecutionContext rex) {
 			IString message = (IString) arg_1;
-			rex.getStdOut().println("Assertion failed" + message + " at " + currentFrame.src);
+			rex.getStdOut().println("Assertion " + message + " failed at " + currentFrame.src);
 			throw RascalRuntimeException.assertionFailed(message, currentFrame.src,  currentFrame);
 		}
 	},
@@ -8791,7 +8869,7 @@ public enum RascalPrimitive {
 			}
 			if (ch == '\n') { // atBeginning &&
 				sb.append(buf);
-				buf = new StringBuffer(indent);
+				buf = new StringBuffer();
 				atBeginning = true;
 				sb.appendCodePoint(ch);
 				continue;
@@ -9444,9 +9522,7 @@ public enum RascalPrimitive {
 				TreeAdapter.unparse(c, w);
 				return w.toString();
 			} catch (FactTypeUseException | IOException e) {
-				// TODO Auto-generated catch block
-				//e.printcurrentFrame();
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 		return val.toString();

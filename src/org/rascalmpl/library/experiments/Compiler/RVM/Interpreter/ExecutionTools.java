@@ -2,8 +2,8 @@ package org.rascalmpl.library.experiments.Compiler.RVM.Interpreter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.rascalmpl.interpreter.ITestResultListener;
 import org.rascalmpl.interpreter.load.RascalSearchPath;
@@ -85,9 +85,20 @@ public class ExecutionTools {
 	public static IValue executeProgram(RVMExecutable executable, IMap keywordArguments, RascalExecutionContext rex){
 		RVMCore rvm = rex.getJVM() ? new RVMJVM(executable, rex) : new RVMInterpreter(executable, rex);
 		
+		Map<IValue, IValue> moduleVariables = rex.getModuleVariables();
+		
 		rvm = initializedRVM(executable, rex);
 		
-		return executeProgram(rvm, executable, keywordArguments, rex);
+		if(moduleVariables != null){
+			for(IValue key : moduleVariables.keySet()){
+				IValue newVal = moduleVariables.get(key);
+				rvm.updateModuleVariable(key, newVal);
+			}
+		}
+		
+		IValue result = executeProgram(rvm, executable, keywordArguments, rex);
+		rex.setModuleVariables(rvm.getModuleVariables());
+		return result;
 	}
 	
 	/**
@@ -135,9 +146,9 @@ public class ExecutionTools {
 					throw RascalRuntimeException.noMainFunction(null);
 				}
 				String moduleName = executable.getModuleName();
-				if(!uid_module_init.isEmpty()){
-					rvm.executeRVMProgram(moduleName, executable.getUidModuleInit(), arguments, hmKeywordArguments);
-				}
+//				if(!uid_module_init.isEmpty()){
+//					rvm.executeRVMProgram(moduleName, executable.getUidModuleInit(), arguments, hmKeywordArguments);
+//				}
 				//System.out.println("Initializing: " + (Timing.getCpuTime() - start)/1000000 + "ms");
 				result = rvm.executeRVMProgram(moduleName, executable.getUidModuleMain(), arguments, hmKeywordArguments);
 			}
@@ -175,25 +186,12 @@ public class ExecutionTools {
 	 
 	 /**
 	  * Create initialized RVM given a scheme and path of a compiled binary
-	  * @param scheme of compiled binary
-	  * @param path of compiled binary
+	  * @param bin of compiled binary
 	  * @return initialized RVM
+	 * @throws IOException 
 	  */
-	public static RVMCore initializedRVM(String scheme, String path){
-
-		 ISourceLocation binLoc = null;
-		 try {
-			 binLoc = vf.sourceLocation(scheme, "", path);
-		 } catch (URISyntaxException e) {
-			 System.err.println("Could not create location using '" + scheme + "' and '" + path + "'");
-		 }
-		 RVMExecutable rvmExecutable = null; 
-		 try {
-			 rvmExecutable = RVMExecutable.read(binLoc);
-		 } catch (IOException e) {
-			 e.printStackTrace();
-		 }
-
+	public static RVMCore initializedRVM(ISourceLocation bin) throws IOException  {
+		 RVMExecutable rvmExecutable = RVMExecutable.read(bin);
 		 RascalExecutionContext rex = 
 				 RascalExecutionContextBuilder.normalContext(vf)
 				 .forModule(rvmExecutable.getModuleName())
@@ -216,21 +214,10 @@ public class ExecutionTools {
 	  * @param path of compiled binary
 	  * @param rex the execution context to be used
 	  * @return initialized RVM
+	 * @throws IOException 
 	  */
-	public static RVMCore initializedRVM(String scheme, String path,  RascalExecutionContext rex){
-
-		 ISourceLocation binLoc = null;
-		 try {
-			 binLoc = vf.sourceLocation(scheme, "", path);
-		 } catch (URISyntaxException e) {
-			 System.err.println("Could not create bin location using '" + scheme + "' and '" + path + "'");
-		 }
-		 RVMExecutable rvmExecutable = null; 
-		 try {
-			 rvmExecutable = RVMExecutable.read(binLoc);
-		 } catch (IOException e) {
-			 e.printStackTrace();
-		 }
+	public static RVMCore initializedRVM(ISourceLocation bin,  RascalExecutionContext rex) throws IOException {
+		 RVMExecutable rvmExecutable  = RVMExecutable.read(bin);
 
 		 RVMCore rvm = rex.getJVM() ? new RVMJVM(rvmExecutable, rex) : new RVMInterpreter(rvmExecutable, rex);
 

@@ -1,8 +1,13 @@
 package org.rascalmpl.library.experiments.Compiler.Commands;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.rascalmpl.library.experiments.Compiler.RVM.Interpreter.NoSuchRascalFunction;
 import org.rascalmpl.library.experiments.Compiler.RVM.Interpreter.RascalExecutionContext;
 import org.rascalmpl.library.experiments.Compiler.RVM.Interpreter.RascalExecutionContextBuilder;
 import org.rascalmpl.library.lang.rascal.boot.Kernel;
+import org.rascalmpl.value.IBool;
 import org.rascalmpl.value.IValueFactory;
 import org.rascalmpl.values.ValueFactoryFactory;
 
@@ -12,35 +17,44 @@ public class RascalTests {
 	 * Main function for rascalTests command: rascalTests
 	 * 
 	 * @param args	list of command-line arguments
+	 * @throws NoSuchRascalFunction 
+	 * @throws IOException 
+	 * @throws URISyntaxException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, NoSuchRascalFunction, URISyntaxException {
 		
 		IValueFactory vf = ValueFactoryFactory.getValueFactory();
 		
 		CommandOptions cmdOpts = new CommandOptions("rascalTests");
 		cmdOpts
-			.pathOption("srcPath")		.pathDefault(cmdOpts.getDefaultStdPath().isEmpty() ? vf.list(cmdOpts.getDefaultStdPath()) : cmdOpts.getDefaultStdPath())
-										.respectNoDefaults()
-										.help("Add (absolute!) source path, use multiple --srcPaths for multiple paths")
+			.locsOption("src")		
+			.locsDefault(cmdOpts.getDefaultStdlocs().isEmpty() ? vf.list(cmdOpts.getDefaultStdlocs()) : cmdOpts.getDefaultStdlocs())
+			.respectNoDefaults()
+			.help("Add (absolute!) source location, use multiple --src arguments for multiple locations")
 		
-			.pathOption("libPath")		.pathDefault((co) -> vf.list(co.getCommandLocOption("binDir")))
-										.respectNoDefaults()
-										.help("Add new lib path, use multiple --libPaths for multiple paths")
+			.locsOption("lib")		
+			.locsDefault((co) -> vf.list(co.getCommandLocOption("bin")))
+			.respectNoDefaults()
+			.help("Add new lib location, use multiple --lib arguments for multiple locations")
 		
-			.locOption("bootDir")		.locDefault(cmdOpts.getDefaultBootLocation())
-										.help("Rascal boot directory")
+			.locOption("boot")		
+			.locDefault(cmdOpts.getDefaultBootLocation())
+			.help("Rascal boot directory")
 		
-			.locOption("binDir") 		.help("Directory for Rascal binaries")
+			.locOption("bin") 		
+			.help("Directory for Rascal binaries")
 			
-			.boolOption("help") 		.help("Print help message for this command")
+			.boolOption("help")
+			.help("Print help message for this command")
 			
-			.boolOption("trace")		.help("Print Rascal functions during execution of compiler")
+			.boolOption("trace")
+			.help("Print Rascal functions during execution of compiler")
 			
-			.boolOption("profile")		.help("Profile execution of compiler")
+			.boolOption("profile")
+			.help("Profile execution of compiler")
 			
-			//.boolOption("jvm")			.help("Generate JVM code")
-			
-			.boolOption("verbose")		.help("Make the compiler verbose")
+			.boolOption("verbose")		
+			.help("Make the compiler verbose")
 			
 			.rascalModules("Rascal modules with tests")
 			
@@ -50,18 +64,24 @@ public class RascalTests {
 				.customSearchPath(cmdOpts.getPathConfig().getRascalSearchPath())
 				.setTrace(cmdOpts.getCommandBoolOption("trace"))
 				.setProfile(cmdOpts.getCommandBoolOption("profile"))
-				//.setJVM(cmdOpts.getCommandBoolOption("jvm"))
 				.forModule(cmdOpts.getRascalModule().getValue())
 				.build();
 
-		Kernel kernel = new Kernel(vf, rex);
+		Kernel kernel = new Kernel(vf, rex, cmdOpts.getCommandLocOption("boot"));
+		try {
+		    IBool success = (IBool) kernel.rascalTests(
+		            cmdOpts.getRascalModules(),
+		            cmdOpts.getCommandlocsOption("src"),
+		            cmdOpts.getCommandlocsOption("lib"),
+		            cmdOpts.getCommandLocOption("boot"),
+		            cmdOpts.getCommandLocOption("bin"), 
+		            cmdOpts.getModuleOptionsAsIMap());
 
-		kernel.rascalTests(
-				cmdOpts.getRascalModules(),
-				cmdOpts.getCommandPathOption("srcPath"),
-				cmdOpts.getCommandPathOption("libPath"),
-				cmdOpts.getCommandLocOption("bootDir"),
-				cmdOpts.getCommandLocOption("binDir"), 
-				cmdOpts.getModuleOptionsAsIMap());
+		    System.exit(success.getValue() ? 0 : 1);
+		}
+		catch (Throwable e) {
+		    e.printStackTrace();
+		    System.exit(1);
+		}
 	}
 }

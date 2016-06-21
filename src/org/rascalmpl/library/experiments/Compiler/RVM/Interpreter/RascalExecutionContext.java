@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.rascalmpl.debug.IRascalMonitor;
@@ -78,12 +79,13 @@ public class RascalExecutionContext implements IRascalMonitor {
 	private boolean coverage;
 	private boolean jvm;
 	private final IMap moduleTags;
+	private Map<IValue, IValue> moduleVariables;
 	
 	private Cache<Type[], Boolean> subtypeCache;
-	private final int subtypeCacheSize = 200;
+	private final int subtypeCacheSize = 1000;
 	
-	private final int type2symbolCacheSize = 100;
-	private final int descendantDescriptorCacheSize = 50;
+	private final int type2symbolCacheSize = 1000;
+	private final int descendantDescriptorCacheSize = 1000;
 	
 	private Cache<String, Function> companionDefaultFunctionCache;
 	private final int companionDefaultFunctionCacheSize = 100;
@@ -108,6 +110,20 @@ public class RascalExecutionContext implements IRascalMonitor {
 	private IListWriter test_results;
 	
 	private Cache<IString, DescendantDescriptor> descendantDescriptorCache;
+	
+	private static Cache<IValue, IValue> sharedConstantCache = Caffeine.newBuilder()
+//			.weakKeys()
+		    .weakValues()
+//		    .recordStats()
+			.maximumSize(10000)
+			.build();
+	
+	private static Cache<Type, Type> sharedTypeConstantCache = Caffeine.newBuilder()
+//			.weakKeys()
+		    .weakValues()
+//		    .recordStats()
+			.maximumSize(10000)
+			.build();
 	
 	public RascalExecutionContext(
 			IValueFactory vf, 
@@ -314,6 +330,14 @@ public class RascalExecutionContext implements IRascalMonitor {
 		return result;
 	}
 	
+	public static IValue shareConstant(IValue c){
+		return sharedConstantCache.get(c, k -> k);
+	}
+	
+	public static Type shareTypeConstant(Type t){
+		return sharedTypeConstantCache.get(t, k -> k);
+	}
+	
 	public IValueFactory getValueFactory(){ return vf; }
 	
 	public IMap getSymbolDefinitions() { return symbol_definitions; }
@@ -351,6 +375,14 @@ public class RascalExecutionContext implements IRascalMonitor {
 		if(frameObserver != null){
 			frameObserver.setRVM(rvmCore);
 		}
+	}
+	
+	public Map<IValue, IValue> getModuleVariables(){
+		return moduleVariables;
+	}
+	
+	void setModuleVariables(Map<IValue, IValue> moduleVariables){
+		this.moduleVariables = moduleVariables;
 	}
 	
 	public void addClassLoader(ClassLoader loader) {
@@ -512,9 +544,9 @@ public class RascalExecutionContext implements IRascalMonitor {
 		return (ISourceLocation) resolver.call(argTypes, argValues, null).getValue();
 	}
 	
-	void registerCommonSchemes(){
-		addRascalSearchPath(URIUtil.rootLocation("test-modules"));
-		addRascalSearchPathContributor(StandardLibraryContributor.getInstance());
-		addRascalSearchPath(URIUtil.rootLocation("courses"));
-	}
+//	void registerCommonSchemes(){
+//		addRascalSearchPath(URIUtil.rootLocation("test-modules"));
+//		addRascalSearchPathContributor(StandardLibraryContributor.getInstance());
+//		addRascalSearchPath(URIUtil.rootLocation("courses"));
+//	}
 }

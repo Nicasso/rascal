@@ -56,7 +56,9 @@ void set_nlocals(int n) {
     nlocal[functionScope] = n;
 }
 
-void init(){
+private bool optimize = true;
+
+void init(bool optimizeFlag){
     nlabel = -1;
     usedLabels = {};
     functionScope = "";
@@ -77,6 +79,8 @@ void init(){
     
     usedOverloadedFunctions = {};
     usedFunctions = {};
+    
+    optimize = optimizeFlag;
 }
 
 // Map names of <fuid, pos> pairs to local variable names ; Note this info could also be collected in Rascal2muRascal
@@ -288,9 +292,10 @@ RVMModule mu2rvm(muModule(str module_name,
                            rel[str,str] importGraph,
                            loc src), 
                   bool listing=false,
-                  bool verbose=true){
+                  bool verbose=true,
+                  bool optimize=true){
  
-  init();
+  init(optimize);
   if(any(m <- messages, error(_,_) := m)){
     return errorRVMModule(module_name, messages, src);
   }
@@ -742,7 +747,7 @@ INS tr(muAssignKwp(str fuid, str name, MuExp exp), Dest d, CDest c) = [ *tr_arg_
 
 // Constructor
 
-INS tr(muCallConstr(str fuid, list[MuExp] args), Dest d, CDest c) = [ *tr_args_stack(args), CALLCONSTR(fuid, size(args)), *plug(accu(), d) ];
+//INS tr(muCallConstr(str fuid, list[MuExp] args), Dest d, CDest c) = [ *tr_args_stack(args), CALLCONSTR(fuid, size(args)), *plug(accu(), d) ];
 
 // muRascal functions
 
@@ -1004,7 +1009,7 @@ INS tr(muTry(MuExp exp, MuCatch \catch, MuExp \finally), Dest d, CDest c) {
     leaveTry();
     
     // Translate the 'finally' block; inlining 'finally' blocks where necessary
-    code = code + [ LABEL(try_to), *trMuFinally(\finally, stack(), c) ];
+    code = code + [ LABEL(try_to), *trMuFinally(\finally, nowhere()/*stack()*/, c) ];
     
     // Translate the 'catch' block; inlining 'finally' blocks where necessary
     // 'Catch' block may also throw an exception, and if it is part of an outer 'try' block,
@@ -1014,7 +1019,7 @@ INS tr(muTry(MuExp exp, MuCatch \catch, MuExp \finally), Dest d, CDest c) {
     tryBlocks = catchAsPartOfTryBlocks;
     finallyBlocks = oldFinallyBlocks;
     
-    trMuCatch(\catch, catch_from, catchAsPartOfTry_from, catch_to, try_to, d, c);
+    trMuCatch(\catch, catch_from, catchAsPartOfTry_from, catch_to, try_to, /*nowhere()*/d, c);
         
     // Restore 'try' block environment
     catchAsPartOfTryBlocks = tryBlocks;
@@ -1065,7 +1070,7 @@ void trMuCatch(m: muCatch(str id, str fuid, Symbol \type, MuExp exp), str from, 
                        fuid == functionScope ? LOADLOC(getTmp(id,fuid))  : LOADVAR(fuid,getTmp(id,fuid)), PUSHACCU(),
                        // unwrap it and store the unwrapped one in a separate local variable 
                        fuid == functionScope ? UNWRAPTHROWNLOC(getTmp(asUnwrappedThrown(id),fuid)) : UNWRAPTHROWNVAR(fuid,getTmp(asUnwrappedThrown(id),fuid)),
-                       *tr(exp, d, labelDest(jmpto)), LABEL(to), JMP(jmpto) ];
+                       *tr(exp, /*nowhere()*/d, labelDest(jmpto)), LABEL(to), JMP(jmpto) ];
     }
     
     if(!isEmpty(catchBlocks[currentCatchBlock])) {
@@ -1089,7 +1094,7 @@ void trMuCatch(m: muCatch(str id, str fuid, Symbol \type, MuExp exp), str from, 
 }
 
 // TODO: Re-think the way empty 'finally' blocks are translated
-INS trMuFinally(MuExp \finally, Dest d, CDest c) = (muBlock([]) := \finally) ? [ /*LOADCON(666), POP()*/ ] : tr(\finally, d, c);
+INS trMuFinally(MuExp \finally, Dest d, CDest c) = (muBlock([]) := \finally) ? [ /*LOADCON(666), POP()*/ ] : tr(\finally, /*nowhere()*/d, c);
 
 void inlineMuFinally(Dest d, CDest c) {
     
@@ -1132,7 +1137,7 @@ void inlineMuFinally(Dest d, CDest c) {
     
     finallyBlock = [ LABEL(finally_from) ];
     for(int i <- [0..size(finallyStack)]) {
-        finallyBlock = [ *finallyBlock, *trMuFinally(finallyStack[i], stack(), c), LABEL(finally_to + "_<i>") ];
+        finallyBlock = [ *finallyBlock, *trMuFinally(finallyStack[i], nowhere()/*stack()*/, c), LABEL(finally_to + "_<i>") ];
         if(i < size(finallyStack) - 1) {
             EEntry currentTry = topTry();
             // Fill in the 'catch' block entry into the current exception table
@@ -1154,7 +1159,7 @@ void inlineMuFinally(Dest d, CDest c) {
 
 // Control flow
 
-bool containsFail(list[MuExp] exps) = /muFail(_) := exps;
+bool containsFail(list[MuExp] exps) = optimize ? /muFail(_) := exps : false;
 
 // If
 
