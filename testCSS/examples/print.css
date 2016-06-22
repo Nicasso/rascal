@@ -1,4 +1,4 @@
-#lol .cool > div + span {
+#lol .cool > div + span ~ .div span {
   color: red !important;
   width: 10px;
 }

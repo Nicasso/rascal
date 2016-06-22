@@ -15,7 +15,7 @@ import util::Math;
 
 public void go() {
 	
-	Statement stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/print.css|);
+	Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/fb.css|);
 	
 	iprintln(stylesheetAST);
 	

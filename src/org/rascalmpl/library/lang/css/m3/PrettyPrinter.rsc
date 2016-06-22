@@ -46,6 +46,30 @@ public str getTabs() {
 	return tabs;
 }
 
+public str formatComment(str comment) {
+	comment = replaceAll(comment,"  ","");
+	comment = replaceAll(comment,"\t","");
+	comment = replaceAll(comment,"\n","\n<getTabs()>");
+	return "<getTabs()><comment>\n";
+}
+
+public str decimal2hex(int d) {
+    str digits = "0123456789ABCDEF";
+    if (d == 0) { 
+    	return "00";
+    }
+    str hex = "";
+    while (d > 0) {
+        int digit = d % 16;
+        hex = stringChar(charAt(digits, digit)) + hex;
+        d = d / 16;
+    }
+    if (size(hex) == 1) {
+    	return "0<hex>";
+    }
+    return hex;
+}
+
 public str pp(list[Statement] rules) {
 	str result = "";
 	for (Statement rule <- rules) {
@@ -60,30 +84,6 @@ public str ppSelectors(Type selector) {
 	result += "<ppx(selector)>";
 	
 	return trim(result);
-}
-
-public str ppSelectors(list[Type] selector, str combinator) {
-	str result = "";
-	
-	if (combinator == "ADJACENT") {
-		combinator = " +";
-	} else if (combinator == "CHILD") {
-		combinator = " \>";
-	} else if (combinator == "PRECEDING") {
-		combinator = " ~";
-	} else {
-		combinator = "";	
-	}
-
-	for (Type sel <- selector) {
-		if (stringChar(charAt(ppx(sel), 0)) == ":") {
-			result += "<ppx(sel)>";
-		} else {
-			result += "<combinator><ppx(sel)>";
-		}
-		
-	}
-	return result;
 }
 
 public str ppExpressions(list[Type] selector) {
@@ -122,18 +122,6 @@ public str pp(list[Declaration] declarations) {
 	return result;
 }
 
-public str pp(Expression atRule) {
-	return ppx(atRule);
-}
-
-public str pp(Statement stat) {
-	return ppx(stat);
-}
-
-public str pp(Type t) {
-	return ppx(t);
-}
-
 public str ppMediaQueryExpressions(list[Expression] selectors) {
 	str result = "";
 	for (Expression sel <- selectors) {
@@ -164,6 +152,7 @@ public str ppCombinatedSelectors(list[Type] selectors) {
 	return trim(result);
 }
 
+// Statements
 public str ppx(ss:Statement::stylesheet(str name, list[Statement] rules)) {
 	str result = "";
 	if (ss@comment?) {
@@ -278,6 +267,7 @@ public str ppx(rv:Statement::ruleViewport(list[Declaration] declarations)) {
 }
 public default str ppx(Statement smth) = "??<smth>??";
 
+// Declarations
 public str ppx(d:Declaration::declaration(str property, list[Type] values)) {
 	str result = "";
 	increaseTabs();
@@ -296,31 +286,29 @@ public default str ppx(Declaration smth) = "??<smth>??";
 
 public str ppx(s:Expression::selector(Type simpleSelector)) {
 	str result = "";
-	result += "<ppSelectors(simpleSelector)>";
-	//@TODO FIX THIS SHIT!
+	
+	// @TODO real combinator (modifier) node is not used here...
 	if (s@combinator?) {
-		iprintln("JA");
-		//iprintln(s@combinator);
-		wtf(s@combinator);
-		//result += " <ppx(s@combinator)>"; 
+		switch(s@combinator) {
+			case "descendant": result += " ";
+			case "adjacent": result += " + ";
+			case "preceding": result += " ~ ";
+			case "child": result += " \> ";
+		} 
 	} else {
-		iprintln("NEE");
+		result += " ";
 	}
+	
+	result += "<ppSelectors(simpleSelector)>";
 	 
 	return result;
 }
 
-public str wtf(Modifier::combinator(str combinator)) {
-	iprintln("COOL");
-	return "a";
-}
-
-//public str ppx(Expression::selector(list[Type] simpleSelectors)) = "<ppSelectors(simpleSelectors)>";
-//public str ppx(Expression::selector(list[Type] simpleSelectors, str combinator)) = "<ppSelectors(simpleSelectors, combinator)>";
-
+// Expressions
 public str ppx(Expression::mediaExpression(str property, list[Type] values)) = "<property>: <ppExpressions(values)>";
 public default str ppx(Expression smth) = "??<smth>??";
 
+// Types
 public str ppx(Type::class(str name)) = " <name>";
 public str ppx(Type::id(str name)) = " <name>";
 public str ppx(Type::domElement(str name)) = " <name>";
@@ -336,30 +324,6 @@ public str ppx(Type::color(int red, int green, int blue, num alpha)) {
  	} else {
  		return "#<decimal2hex(red)><decimal2hex(green)><decimal2hex(blue)>";
  	}
-}
-
-public str formatComment(str comment) {
-	comment = replaceAll(comment,"  ","");
-	comment = replaceAll(comment,"\t","");
-	comment = replaceAll(comment,"\n","\n<getTabs()>");
-	return "<getTabs()><comment>\n";
-}
-
-public str decimal2hex(int d) {
-    str digits = "0123456789ABCDEF";
-    if (d == 0) { 
-    	return "00";
-    }
-    str hex = "";
-    while (d > 0) {
-        int digit = d % 16;
-        hex = stringChar(charAt(digits, digit)) + hex;
-        d = d / 16;
-    }
-    if (size(hex) == 1) {
-    	return "0<hex>";
-    }
-    return hex;
 }
 public str ppx(Type::expression(str expression)) = "expression(<expression>)";
 public str ppx(Type::calc(str expression)) = "calc(<expression>)";
@@ -389,9 +353,9 @@ public str ppx(Type::mediaQuery(str \type, list[Expression] expressions)) {
 }
 public default str ppx(Type smth) = "??<smth>??";
 
+// Modifiers
 public str ppx(Modifier::important()) = "!important";
 public str ppx(Modifier::combinator(str combinator)) {
-	iprintln("COOL");
 	return combinator;
 }
 public default str ppx(Modifier smth) = "??<smth>??";

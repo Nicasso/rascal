@@ -1,0 +1,15 @@
+/* style sheet comment */
+
+/* keyframes comment */
+@keyframes mymove {
+    /* rule-set 1 */
+    from {
+      /* declaration comment 1 */
+      top: 0px;
+    }
+    /* rule-set 2 */
+    to {
+      /* declaration comment 2 */
+      top: 10px;
+    }
+}

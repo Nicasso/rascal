@@ -86,30 +86,6 @@ public class M3Loader extends FileHandler {
 		return result.done();
 	}
 	
-	public IValue createM3FromString(IString contents, ISourceLocation loc, IEvaluatorContext eval) {
-		this.eval = eval;
-
-		StyleSheet style = null;
-		boolean go = true;
-
-		try {
-			style = CSSFactory.parseString(contents.getValue(), null);
-		} catch (CSSException | IOException e) {
-			eval.getStdErr().println(e.getMessage());
-			eval.getStdErr().flush();
-			go = false;
-		}
-
-		if (go) {
-			TypeStore store = new TypeStore();
-			store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
-			store.extendStore(eval.getHeap().getModule("lang::css::m3::Core").getStore());
-
-			return convertToM3(store, new HashMap<>(), style, loc);
-		}
-		return null;
-	}
-	
 	protected IValue convertToM3(TypeStore store, Map<String, ISourceLocation> cache, StyleSheet ast, ISourceLocation loc) {
 		SourceConverter converter = new SourceConverter(store, cache, loc, eval);
 		converter.convert(ast);

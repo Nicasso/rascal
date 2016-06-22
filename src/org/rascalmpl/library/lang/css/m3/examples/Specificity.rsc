@@ -81,24 +81,13 @@ public void metrics1() {
 	}
 }
 
-public list[str] specificity() {	
-	int a = 0;
-	int b = 0;
-	int c = 0;
-	
+public list[str] specificity(Statement stylesheetAST) {	
+	int a, b, c = 0;
 	list[str] result = [];
 	
 	bottom-up visit (stylesheetAST) {
-		case selector(list[Type] simpleSelectors, str combinator): {
+		case selector(Type simpleSelector): {
 			result += "<a><b><c>,";
-
-			a = 0;
-			b = 0;
-			c = 0;
-		}
-		case selector(list[Type] simpleSelectors): {
-			result += "<a><b><c>,";
-
 			a = 0;
 			b = 0;
 			c = 0;

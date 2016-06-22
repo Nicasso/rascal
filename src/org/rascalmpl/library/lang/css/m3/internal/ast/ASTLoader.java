@@ -92,31 +92,5 @@ public class ASTLoader extends FileHandler {
 		}
 		return result.done();
 	}
-
-	public IValue createAstFromString(IString contents, ISourceLocation loc, IEvaluatorContext eval) {
-		this.eval = eval;
-
-		StyleSheet style = null;
-		boolean go = true;
-
-		try {
-			style = CSSFactory.parseString(contents.getValue(), null);
-		} catch (CSSException | IOException e) {
-			eval.getStdErr().println("PARSING THE CSS HAS FAILED!");
-			eval.getStdErr().println(e.getMessage());
-			eval.getStdErr().flush();
-			go = false;
-		}
-
-		if (go) {
-			TypeStore store = new TypeStore();
-			store.extendStore(eval.getHeap().getModule("lang::css::m3::AST").getStore());
-
-			ASTConverter ast = new ASTConverter(style, store, loc, eval);
-			return ast.getAST();
-		}
-		return null;
-	}
-
 	
 }

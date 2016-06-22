@@ -146,7 +146,6 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		if (node.isImportant()) {
 			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("modifier", values.string("important"));
 		}
-
 		
 		if (node.getComment() != null) {
 			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("comment", values.string(node.getComment().getText()));
@@ -363,8 +362,9 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		IValue val = constructExpressionNode("selector", sel);
 		
 		if (node.getCombinator() != null) {
-			IValue combinator = constructModifierNode("combinator", values.string(node.getCombinator().toString().toLowerCase()));
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("combinator", combinator);
+			//IValue combinator = constructModifierNode("combi", values.string(node.getCombinator().toString().toLowerCase()));
+			//val = ((IConstructor) val).asAnnotatable().setAnnotation("combi", combinator);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("combinator", values.string(node.getCombinator().toString().toLowerCase()));
 		}
 
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());

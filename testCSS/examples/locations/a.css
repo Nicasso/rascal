@@ -1,0 +1,10 @@
+/* Stylesheet comment */
+
+/* Media rule comment */
+@media only screen and (max-width : 410px) {
+  /* Ruleset comment */
+  article {
+    /* Declaration comment */
+    width: 89%;
+  }
+}

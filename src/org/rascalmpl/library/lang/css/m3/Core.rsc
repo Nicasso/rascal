@@ -49,7 +49,6 @@ public M3 createM3FromDirectory(loc project) {
     sourcePaths = getPaths(project, "css");
     
     if (size(sourcePaths) == 0) {
-    	//return composeM3(project, {});
     	throw "<project> contains no .css files.";
     }
     
@@ -58,16 +57,15 @@ public M3 createM3FromDirectory(loc project) {
     return result;
 }
 
-public M3 createM3FromFiles(loc projectName, set[loc] files)
-    = composeCSSM3(projectName, createM3sFromFiles(files));
+public M3 createM3FromFiles(loc project, set[loc] files) {
+	M3 result = composeCSSM3(project, createM3sFromFiles(files));
+	registerProject(project, result);
+    return result;
+}
 
 @javaClass{org.rascalmpl.library.lang.css.m3.internal.m3.M3Loader}
 @reflect
 public java set[M3] createM3sFromFiles(set[loc] files);
-    
-@javaClass{org.rascalmpl.library.lang.css.m3.internal.m3.M3Loader}
-@reflect
-public java M3 createM3FromString(str source, loc file = |unknown:///|);
 
 public bool isStyleSheet(loc entity) = entity.scheme == "css+stylesheet";
 public bool isId(loc entity) = entity.scheme == "css+id";
