@@ -48,10 +48,10 @@ public void metrics1() {
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
-	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|
+	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/qq.com.css|,
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
