@@ -753,7 +753,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("ElementClass");
 		//eval.getStdOut().println("\t" + node.getClassName());
 		
-		IValue className = values.string(node.getClassName());
+		IValue className = values.string(node.getClassName().substring(1));
 		
 		IValue val = constructTypeNode("class", className);
 		
@@ -768,7 +768,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("ElementID");
 		//eval.getStdOut().println("\t" + node.getID());
 		
-		IValue idName = values.string(node.getID());
+		IValue idName = values.string(node.getID().substring(1));
 		
 		IValue val = constructTypeNode("id", idName);
 		
