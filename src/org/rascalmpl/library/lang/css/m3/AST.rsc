@@ -22,7 +22,7 @@ anno list[Message] Statement@messages;
 data Statement
 	// Rulesets
     = stylesheet(str name, list[Statement] rules) // #lol { color: red; } #lal { color: blue; }
-    | ruleSet(list[Type] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors) (@TODO selector is a list of types because of the combinedSelector)
+    | ruleSet(list[Expression] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors) (@TODO selector is a list of types because of the combinedSelector)
     // At rules
     | ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) // @media only screen and (max-width : 480px) {
     | ruleFontFace(list[Declaration] decs) // @font-face { (TODO WHY IS THIS A LIST OF DECLARATIONS?! AND NOT A STATEMENT)
@@ -42,7 +42,8 @@ data Declaration
     ;
 
 data Expression 
-    = selector(Type simpleSelector) // Combinator is not present with the first selector part, so made it optional by adding the rule below.
+	= combinedSelector(list[Expression] selectors) // .lol > .hej div.you a single complete selector
+    | selector(list[Type] simpleSelector) // .lol.hej or #hej Combinator is not present with the first selector part, so made it optional by adding the rule below.
     | mediaExpression(str property, list[Type] values) // (max-width : 480px) and (orientation: landscape) in mediaqueries like "@media tv and (min-width: 700px) and (orientation: landscape)"
     ;
 
@@ -51,7 +52,6 @@ data Type
     = class(str name) // .lol
     | id(str name) // #lol
     | domElement(str name) // div
-    | combinedSelector(list[Expression] selectors) // .lol.hej.you, #hej.you, #hi#there (single element with all noted attributes)
     | attributeSelector(str attribute, str op, str attrval) // div[class*="post"] (This rule only relates to the [class*="post"] part)
     | attributeSelector(str attribute) // div[disabled] (This rule only relates to the [disabled] part)
     | pseudoClass(str class) // :after, :link, :first-child

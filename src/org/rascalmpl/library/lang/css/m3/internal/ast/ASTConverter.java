@@ -170,7 +170,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("CombinedSelector selectors: "+selectors.asList());
 		//eval.getStdOut().println("constructTypeNode CombinedSelector");
 		
-		IValue val = constructTypeNode("combinedSelector", selectors.asList());
+		IValue val = constructExpressionNode("combinedSelector", selectors.asList());
 				
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		val = ((IConstructor) val).asAnnotatable().setAnnotation("src", nodeLocation);
@@ -355,11 +355,24 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	public IValue visit(Selector node) {
 		//eval.getStdOut().println("Selector");
 		//eval.getStdOut().println("\t"+node.getCombinator());
+//		
+//		IValueList statements = new IValueList(values);
+//		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
+//			RuleBlock<?> r = it.next();
+//			IValue temp = (IValue) r.accept(this);
+//			statements.add(temp);
+//		}
 		
-		SelectorPart m = node.iterator().next();
-		IValue sel = (IValue) m.accept(this);
+		IValueList selector = new IValueList(values);
+		for (Iterator<SelectorPart> it = node.iterator(); it.hasNext();) {
+			SelectorPart m = it.next();
+			IValue temp = (IValue) m.accept(this);
+			selector.add(temp);
+		}
 		
-		IValue val = constructExpressionNode("selector", sel);
+		//IValue sel = (IValue) m.accept(this);
+		
+		IValue val = constructExpressionNode("selector", selector.asList());
 		
 		if (node.getCombinator() != null) {
 			//IValue combinator = constructModifierNode("combi", values.string(node.getCombinator().toString().toLowerCase()));
