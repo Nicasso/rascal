@@ -1,0 +1,34 @@
+@font-face {
+  font-family: myFirstFont;
+  src: url(sansation_light.woff);
+}
+
+@font-face {
+  font-family: wtFont;
+  src: url(sansation_light.woff);
+}
+
+div {
+  font-family: myFirstFont;
+  font-family: wtFont;
+  animation-name: example;
+}
+
+@keyframes example {
+    from {background-color: red;}
+    to {background-color: yellow;}
+}
+
+@keyframes hello {
+    from {background-color: red;}
+    to {background-color: yellow;}
+}
+
+span {
+  font-family: wtFont;
+  animation-name: example;
+}
+
+strong {
+  animation-name: hello;
+}
