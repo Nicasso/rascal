@@ -816,6 +816,17 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		IValue pseudoPage = values.string(node.getValue());
 		
 		IValue val;
+		
+//		boolean element = false;
+//		
+//		switch(node.getDeclaration()) {
+//			case AFTER: element = true;
+//			case BEFORE: element = true;
+//			case FIRST_LETTER: element = true;
+//			case FIRST_LINE: element = true;
+//			default: element = false;
+//		}
+		
 		if (node.getDeclaration().isPseudoElement()) {
 			val = constructTypeNode("pseudoElement", pseudoPage);
 		} else {
