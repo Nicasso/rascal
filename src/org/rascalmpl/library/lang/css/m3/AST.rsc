@@ -55,6 +55,7 @@ data Type
     | attributeSelector(str attribute, str op, str attrval) // div[class*="post"] (This rule only relates to the [class*="post"] part)
     | attributeSelector(str attribute) // div[disabled] (This rule only relates to the [disabled] part)
     | pseudoClass(str class) // :after, :link, :first-child
+    | pseudoElement(str elem) // ::first-letter, ::after
     // Values
     | audio(num aud, str unit) // 10db, -10db
     | angle(num angle, str unit) // 10deg, 10grad, 1rad, 0.25turn

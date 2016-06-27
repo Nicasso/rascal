@@ -87,15 +87,12 @@ public list[str] specificity(Statement stylesheetAST) {
 	int c = 0;
 	list[str] result = [];
 	
-	int i = 0;
-	
 	bottom-up visit (stylesheetAST) {
 		case selector(Type simpleSelector): {
 			result += "<a><b><c>,";
 			a = 0;
 			b = 0;
 			c = 0;
-			i += 1;
 		}
 		case class(str name): {
 			b += 1;
@@ -115,20 +112,12 @@ public list[str] specificity(Statement stylesheetAST) {
     		b += 1;
     	}
     	case pseudoClass(str class): {
-    		if (isPseudoElement(class)) {
-    			c += 1;
-    		} else {
-    			b += 1;
-    		}
+    		b += 1;
+    	}
+    	case pseudoElement(str elem): {
+    		c += 1;
     	}
 	};
 	
 	return result;
-}
-
-public bool isPseudoElement(str class) {
-	if (class == "after" || class == "before" || class == "first-letter" || class == "first-line" || class == "section") {
-		return true;
-	}
-	return false;
 }
