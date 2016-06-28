@@ -76,14 +76,16 @@ public void metrics1() {
 	];
 	
 	for (d <- dirs) {
-		datetime begin = now();
+		//datetime begin = now();
 		stylesheetAST = createAstFromFile(d);
-		datetime end = now();
+		//datetime end = now();
 		
-		diff = end-begin;
-		iprintln("<d.file> <diff>");
+		//diff = end-begin;
+		//iprintln("<d.file> <diff>");
 		
-		//iprintln("<d> & <ruleLength()> & <numberOfRuleBlocks()> & <numberOfAttributesDefinedPerRuleBlock()> & <numberOfCohesiveRuleBlocks()>"); 
+		//iprintln("<d> & <ruleLength()> & <numberOfRuleBlocks()> & <numberOfAttributesDefinedPerRuleBlock()> & <numberOfCohesiveRuleBlocks()>");
+		
+		println(precision(numberOfAttributesDefinedPerRuleBlock(),3)); 
 	}
 }
 
@@ -119,8 +121,9 @@ public real numberOfAttributesDefinedPerRuleBlock() {
 	return toReal(
 	toReal(size([1 | /declaration(str property, list[Type] values) := stylesheetAST]))
 	/
-	toReal(size([1 | /ruleSet(list[Type] selector, list[Declaration] declarations) := stylesheetAST]))
+	toReal(size([1 | /ruleSet(list[Expression] selector, list[Declaration] declarations) := stylesheetAST]))
 	);
+	//return toReal(size([1 | /ruleSet(list[Expression] selector, list[Declaration] declarations) := stylesheetAST]));
 }
 
 public int numberOfCohesiveRuleBlocks() {	
