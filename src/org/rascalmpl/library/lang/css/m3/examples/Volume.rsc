@@ -98,19 +98,20 @@ int calculateLinesOfCode(loc style) = (calculateAllLines(style)-calculateBlankLi
 int calculateLinesOfComments(loc style) {
 	int comment = 0;
 	bool commentBlock = false;
-	
 	for (line <- readFileLines(style)) {
 		if (contains(line,"/*") && !contains(line,"*/")) { 
 			commentBlock = true;
 			comment += 1;
-		} else if (contains(line,"/*") && contains(line,"*/") || commentBlock) {
-			comment += 1;
+		} else if (commentBlock && contains(line,"*/")) { 
 			commentBlock = false;
-		} else if (commentBlock && contains(line,"*/")) { commentBlock = false;
+			comment += 1;
+		} else if (contains(line,"/*") && contains(line,"*/") || commentBlock) {
 			comment += 1;
 		}
 	}
-	
 	return comment; 
 }
 int calculateBlankLines(loc style) = size([1 | line <- readFileLines(style), trim(line) == ""]); 
+
+
+public int calculateLinesOfComments2(M3 style) = sum([calculateAllLines(d[1]) | d <- style@documentation]);
