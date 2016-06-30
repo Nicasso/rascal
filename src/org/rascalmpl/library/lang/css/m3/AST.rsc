@@ -1,4 +1,3 @@
-@contributor{ADT2PP}
 module lang::css::m3::AST
 
 extend analysis::m3::AST;

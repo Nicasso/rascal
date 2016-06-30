@@ -18,43 +18,43 @@ Statement stylesheetAST;
 public void metrics1() {
 
 	list[loc] dirs = [
-		|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/baidu.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/bing.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/blogger.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/chinadaily.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/diply.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ebay.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/fc2.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/gmw.cn.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/google.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/mail.ru.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/microsoft.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/msn.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
+		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/baidu.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/bing.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/blogger.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/chinadaily.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/diply.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ebay.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/fc2.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/gmw.cn.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/google.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/mail.ru.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/microsoft.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/msn.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
 	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/qq.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sina.com.cn.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sohu.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/stackoverflow.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sina.com.cn.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sohu.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/stackoverflow.com.css|,
 	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/taobao.com.css|,
 	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/tmall.com.css|,
 	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/tumblr.com.css|,
@@ -87,45 +87,45 @@ public void metrics1() {
 
 public void checkConventions() {
 	int a = semiColon();
-	println("a");
+	print("a");
 	int b = urlQuotes();
-	println("b");
+	print("b");
 	int c = shortHexValues();
-	println("c");
+	print("c");
 	int d = shorthandMargin();
-	println("d");
+	print("d");
 	int e = zeroUnits();
-	println("e");
+	print("e");
 	int f = leadingZeros();
-	println("f");
+	print("f");
 	int g = qualifyingNameWithTypeSelectors();
-	println("g");
+	print("g");
 	int h = useEmInsteadOfPix();
-	println("h");
+	print("h");
 	int i = avoidZindex();
-	println("i");
+	print("i");
 	int j = compatibleVendorPrefix();
-	println("j");
+	print("j");
 	int k = avoidIds();
-	println("k");
+	print("k");
 	int l = noUppercaseInSelectors();
-	println("l");
+	print("l");
 	int m = noUppercaseInValues();
-	println("m");
+	print("m");
 	int n = singleQuotesInCharset();
-	println("n");
+	print("n");
 	int \o = singleQuotesInAttributeSelector();
-	println("o");
+	print("o");
 	int p = declarationColonSpace();
-	println("p");
+	print("p");
 	int q = spaceAfterLastSelector();
-	println("q");
+	print("q");
 	int r = oneSelectorPerLine();
-	println("r");
+	print("r");
 	int s = noEmptyRules();
-	println("s");
+	print("s");
 	int t = vendorPrefixFallback();
-	println("t");
+	print("t");
 	int u = noTrailingSpaces();
 	
 	println("<a>,<b>,<c>,<d>,<e>,<f>,<g>,<h>,<i>,<j>,<k>,<l>,<m>,<n>,<\o>,<p>,<q>,<r>,<s>,<t>,<u>");
@@ -209,7 +209,7 @@ public int shorthandMargin() {
 			for (d <- declarations, d[0] in margin) {
 				margin -= d[0];
 				if (size(margin) == 0) {
-					print("Margin shorthand should be used at: <rs@src>");
+					//print("Margin shorthand should be used at: <rs@src>");
 					total += 1;
 				}
 			}

@@ -1,0 +1,49 @@
+div {
+  color: #CCCCCC;
+}
+
+div {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+div {
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+span {
+
+}
+
+#lol {
+  color: red;
+}
+
+div {
+  -moz-animation-name: lawl;
+  -webkit-animation-name: lawl;
+}
+
+div {   font-size: 10pix;   font: 10px; }
+
+div {
+  color: red;
+  color: blue;
+  color: red;
+}
+
+@import 'crap.css';
+@import 'crap.css' screen;
+
+div {
+  float: left !important;
+}
+
+div.left, div.top {
+  color: blue;
+}
