@@ -18,56 +18,56 @@ Statement stylesheetAST;
 public void metrics1() {
 
 	list[loc] dirs = [
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/baidu.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/bing.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/blogger.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/chinadaily.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/diply.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ebay.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/fc2.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/gmw.cn.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/google.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/mail.ru.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/microsoft.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/msn.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
-	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/qq.com.css|
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sina.com.cn.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sohu.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/stackoverflow.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/taobao.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/tmall.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/tumblr.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/twitter.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/vk.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/weibo.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/whatsapp.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/wikipedia.org.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/wordpress.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/xvideos.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
-	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
+		|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/baidu.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/bing.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/blogger.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/chinadaily.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/diply.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ebay.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/fc2.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/gmw.cn.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/google.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/mail.ru.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/microsoft.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/msn.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/qq.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sina.com.cn.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sohu.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/stackoverflow.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/taobao.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/tmall.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/tumblr.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/twitter.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/vk.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/weibo.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/whatsapp.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/wikipedia.org.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/wordpress.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/xvideos.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
 	    //|home:///workspace/Rascal/rascal/testCSS/examples/cc.css|
 	];
 	
@@ -80,26 +80,26 @@ public void metrics1() {
 }
 
 public void checkConventions() {
-	int a = shortHexValues();
-	println("<a>");
-	int b = shorthandMarginPadding();
-	println("<b>");
-	int c = noEmptyRules();
-	println("<c>");
-	int d = avoidIds();
-	println("<d>");
+	//int a = shortHexValues();
+	//println("<a>");
+	//int b = shorthandMarginPadding();
+	//println("<b>");
+	//int c = noEmptyRules();
+	//println("<c>");
+	//int d = avoidIds();
+	//println("<d>");
 	int e = vendorPrefixFallback();
 	println("<e>");
-	int f = useEmInsteadOfPix();
-	println("<f>");
-	int g = duplicateProperties();
-	println("<g>");
-	int h = disallowImport();
-	println("<h>");
-	int i = disallowImportant();
-	println("<i>");
-	int j = qualifyingNameWithTypeSelectors();
-	println("<j>");
+	//int f = useEmInsteadOfPix();
+	//println("<f>");
+	//int g = duplicateProperties();
+	//println("<g>");
+	//int h = disallowImport();
+	//println("<h>");
+	//int i = disallowImportant();
+	//println("<i>");
+	//int j = qualifyingNameWithTypeSelectors();
+	//println("<j>");
 }
 
 public int shortHexValues() {
@@ -179,15 +179,12 @@ public int vendorPrefixFallback() {
 	list[str] prefixes = ["-moz-","-webkit-","-o-","-ms-"];
 	set[str] required = {};
 	int total = 0;
-	bottom-up visit (stylesheetAST) {
+	top-down visit (stylesheetAST) {
 		case rs:ruleSet(list[Expression] selector, list[Declaration] declarations): {
 			if (size(required) > 0) {
-				for(r <- required) {
-					//println("The <r> property has not been provided as a fallback at: <rs@src>");
-					total += 1;
-				}
+				total += size(required);
+				required = {};
 			}
-			required = {};
 		}
 		case d:declaration(str property, list[Type] values): {
 			if (property in required) {
@@ -195,6 +192,7 @@ public int vendorPrefixFallback() {
 			} else {
 				for (pre <- prefixes, startsWith(property, pre)) {
 					required += replaceFirst(property, pre, "");
+					break;
 				}
 			}
 		}

@@ -78,10 +78,12 @@ public str pp(list[Statement] rules) {
 	return result;
 }
 
-public str ppSelectors(Type selector) {
+public str ppSelectors(list[Type] selector) {
 	str result = "";
 	
-	result += "<ppx(selector)>";
+	for (Type sel <- selector) {
+		result += "<ppx(sel)>";
+	}
 	
 	return trim(result);
 }
@@ -138,10 +140,10 @@ public str pp(list[Expression] selectors) {
 	return result;
 }
 
-public str ppCombinatedSelectors(list[Type] selectors) {
+public str ppCombinatedSelectors(list[Expression] selectors) {
 	str result = "";
 	int i = 0;
-	for (Type sel <- selectors) {
+	for (Expression sel <- selectors) {
 		result += "<ppx(sel)>";
 		if (i < size(selectors)-1) {
 			result += ",\n";
@@ -161,7 +163,7 @@ public str ppx(ss:Statement::stylesheet(str name, list[Statement] rules)) {
 	result += pp(rules);
 	return result;
 }
-public str ppx(rs:Statement::ruleSet(list[Type] selector, list[Declaration] declarations)) {
+public str ppx(rs:Statement::ruleSet(list[Expression] selector, list[Declaration] declarations)) {
 	str result = "";
 	if (rs@comment?) {
 		result += formatComment(rs@comment);	
@@ -284,7 +286,17 @@ public str ppx(d:Declaration::declaration(str property, list[Type] values)) {
 }
 public default str ppx(Declaration smth) = "??<smth>??";
 
-public str ppx(s:Expression::selector(Type simpleSelector)) {
+// Expressions
+
+public str ppx(Type::combinedSelector(list[Expression] selectors)) { 
+	str result = "";
+	for(sel <- selectors) {
+		result  += "<pp(selectors)>";
+	}
+	return result;
+}
+
+public str ppx(s:Expression::selector(list[Type] simpleSelector)) {
 	str result = "";
 	
 	// @TODO real combinator (modifier) node is not used here...
@@ -304,7 +316,6 @@ public str ppx(s:Expression::selector(Type simpleSelector)) {
 	return result;
 }
 
-// Expressions
 public str ppx(Expression::mediaExpression(str property, list[Type] values)) = "<property>: <ppExpressions(values)>";
 public default str ppx(Expression smth) = "??<smth>??";
 
@@ -312,10 +323,11 @@ public default str ppx(Expression smth) = "??<smth>??";
 public str ppx(Type::class(str name)) = " <name>";
 public str ppx(Type::id(str name)) = " <name>";
 public str ppx(Type::domElement(str name)) = " <name>";
-public str ppx(Type::combinedSelector(list[Expression] selectors)) = "<pp(selectors)>";
 public str ppx(Type::attributeSelector(str attribute, str op, str \value)) = "[<attribute><op><\value>]";
 public str ppx(Type::attributeSelector(str attribute)) = "[<attribute>]";
 public str ppx(Type::pseudoClass(str class)) = ":<class>";
+public str ppx(Type::pseudoElement(str elem)) = "::<elem>";
+
 public str ppx(Type::audio(num aud, str unit)) = formatNumber(aud, unit);
 public str ppx(Type::angle(num angle, str unit)) = formatNumber(angle, unit);
 public str ppx(Type::color(int red, int green, int blue, num alpha)) {

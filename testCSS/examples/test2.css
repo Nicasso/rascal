@@ -1,11 +1,19 @@
-#lol, #lal {
+div {
   color: red;
 }
 
-#lawl > div.div ~ span {
-  color: blue;
-}
+@media screen {
 
-div span {
-  color: yellow;
+  span {
+    color: blue; 
+  }
+
+  h1 {
+    color: yellow;
+  }
+
+  h2 {
+    color: purple;
+  }
+
 }
