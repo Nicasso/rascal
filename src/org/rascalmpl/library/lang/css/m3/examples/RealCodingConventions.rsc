@@ -200,6 +200,29 @@ public int vendorPrefixFallback() {
 	return total;
 }
 
+public void vendorPrefixFallback2() {
+	list[str] prefixes = ["-moz-","-webkit-","-o-","-ms-"];
+	set[str] required = {};
+	top-down visit (stylesheetAST) {
+		case rs:ruleSet(list[Expression] selector, list[Declaration] declarations): {
+			if (size(required) > 0) {
+				print("One or more vendor specific declarations are used without a fallback of the standard property at: <rs@src>");
+				required = {};
+			}
+		}
+		case d:declaration(str property, list[Type] values): {
+			if (property in required) {
+				required -= property;
+			} else {
+				for (pre <- prefixes, startsWith(property, pre)) {
+					required += replaceFirst(property, pre, "");
+					break;
+				}
+			}
+		}
+	};
+}
+
 public int useEmInsteadOfPix() {
 	bool fontRelatedProperty = false;
 	Declaration currentDeclaration;
