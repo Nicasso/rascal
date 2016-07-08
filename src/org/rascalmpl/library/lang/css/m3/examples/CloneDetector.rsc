@@ -285,9 +285,9 @@ public void printCloneResults() {
 	int lines = 0;
 	
 	set[loc] clonePairsPerClass = {};
-	iprintln("All Type <cloneType> clones:");
+	//iprintln("All Type <cloneType> clones:");
 	for (currentClass <- cloneClasses) {
-		iprintln("Total clone pairs in this class: <size(cloneClasses[currentClass])>");
+		//iprintln("Total clone pairs in this class: <size(cloneClasses[currentClass])>");
 		clonePairsPerClass = {};
 		for (currentClone <- cloneClasses[currentClass]) {
 			clonePairsPerClass += currentClone[0][1];
@@ -301,13 +301,14 @@ public void printCloneResults() {
 			} else {
 				first = false;
 			}
-			iprint(uniqueClone);
-			println(" <size(readFileLines(uniqueClone))>");
+			//iprint(uniqueClone);
+			//println(" <size(readFileLines(uniqueClone))>");
 		}
-		iprintln("--------------------------------------------------");
+		//iprintln("--------------------------------------------------");
 	}
 	
-	iprintln("Site: <currentProject> - Clone type <cloneType> - Clone pair count: <counting> - Total cloned lines: <lines>");
+	//iprintln("Site: <currentProject.file> - Clone type <cloneType> - Clone pair count: <counting> - Total cloned lines: <lines>");
+	iprintln("<currentProject.file> ;  <cloneType> ; <lines>");
 }
 
 int calculateLinesOfComments(loc style) {
