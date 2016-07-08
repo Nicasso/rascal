@@ -1,17 +1,22 @@
-div.copy {
-	border :none;
-  color: blue;
+@media screen and (min-width: 480px) {
+
+  span {
+    display: block;
+    color: red;
+  }
+
 }
 
-div {
-	border :none;
+@media screen and (min-width: 480px) {
+
+  span {
+    display: block;
+    color: red;
+  }
+
+}
+
+span {
+  display: block;
   color: red;
-}
-
-span {
-  display: block;
-}
-
-span {
-  display: block;
 }

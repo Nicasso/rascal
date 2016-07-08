@@ -20,67 +20,67 @@ import Traversal;
 
 public int massThreshold = 5;
 public real similarityThreshold;
-loc currentProject = |home:///Documents/workspace/Rascal/rascal/testCSS/examples/a|;
+loc currentProject = |home:///workspace/Rascal/rascal/testCSS/examples/a|;
 int cloneType;
 map[node, lrel[node, loc]] buckets = ();
 map[node, lrel[tuple[node, loc] L, tuple[node, loc] R]] cloneClasses = ();
 list[node] subCloneClasses = [];
 
 list[loc] dirs = [
-		//|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/baidu.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/bing.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/blogger.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/chinadaily.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/diply.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ebay.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/fc2.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/gmw.cn.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/google.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/mail.ru.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/microsoft.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/msn.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com1.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com2.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com3.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/qq.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/sina.com.cn.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/sohu.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/stackoverflow.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/taobao.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/tmall.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/tumblr.com.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/twitter.com.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/vk.com.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/weibo.com.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/whatsapp.com.css|
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/wikipedia.org.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/wordpress.com.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/xvideos.com.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
-	    |home:///workspace/Rascal/rascal/testCSS/examples/clones.css|
+		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/baidu.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/bing.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/blogger.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/chinadaily.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/diply.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ebay.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/fc2.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/gmw.cn.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/google.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/mail.ru.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/microsoft.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/msn.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/naver.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com1.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com2.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com3.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/qq.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/reddit.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sina.com.cn.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/sohu.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/stackoverflow.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/taobao.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/tmall.com.css|,
+	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/tumblr.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/twitter.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/vk.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/weibo.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/whatsapp.com.css|
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/wikipedia.org.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/wordpress.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/xvideos.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
+	    //|home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
+	    //|home:///workspace/Rascal/rascal/testCSS/examples/clones.css|
 	];
 	
 public void go() {
@@ -128,10 +128,8 @@ public void detectClones(int cloneT) {
 	
 	// Loop through all the clone classes and remove all smaller subclones.
 	for (currentClass <- cloneClasses) {
-		for (currentClone <- cloneClasses[currentClass]) {
-			checkForInnerClones(currentClone.L);
-			checkForInnerClones(currentClone.R);
-		}
+		//println(size(cloneClasses[currentClass]));
+		checkIfInnerClone(currentClass);
 	}
 	
 	//println("Indexed all thesmaller subclones");
@@ -193,34 +191,24 @@ public Type normalizedSelector(Type n) {
 	return sel;
 }
 
-public void checkForInnerClones(tuple[node,loc] tree) {
-	visit (tree[0]) {
-		case node x: {
-			// Only if the tree is not equal to itself, and has a certain mass.
-			if (x != tree[0] && calculateMass(x) >= massThreshold) {
-				loc location = getLocationOfNode(x);
-				if (location != currentProject && isMemberOfClones(<x, location>)) {			
-					subCloneClasses += x;
-				}
+public void checkIfInnerClone(node currentCloneClass) {
+	for (otherCloneClass <- cloneClasses) {
+		bool allInnerClones = false;
+		for (tuple[tuple[node n, loc l] L, tuple[node n, loc l] R] currentClonePair <- cloneClasses[currentCloneClass]) {
+			if (size(cloneClasses[otherCloneClass]) == size(cloneClasses[currentCloneClass]) && currentCloneClass != otherCloneClass) {
+				for (tuple[tuple[node n, loc l] L, tuple[node n, loc l] R] otherClonePair <- cloneClasses[otherCloneClass]) {
+					if ((currentClonePair.L.l <= otherClonePair.L.l && currentClonePair.R.l <= otherClonePair.R.l) || (currentClonePair.R.l <= otherClonePair.L.l && currentClonePair.L.l <= otherClonePair.R.l)) {
+						allInnerClones = true;
+						break;
+					} else {
+						allInnerClones = false;
+					}				}
 			}
 		}
-	}
-}
-
-public bool isMemberOfClones(tuple[node n, loc l] current) {
-	for (currentcloneClass <- cloneClasses) {
-		for (tuple[tuple[node n, loc l] L, tuple[node n, loc l] R] pair <- cloneClasses[currentcloneClass]) {
-			if ((current.l <= pair.L.l && pair.L.n == current.n) ||
-				(current.l <= pair.R.l && pair.R.n == current.n)) {
-				if (cloneClasses[current.n]?) {
-					if (size(cloneClasses[current.n]) == size(cloneClasses[currentcloneClass])) {
-						return true;
-					}
-				}
-			} 
+		if (allInnerClones) {
+			subCloneClasses += currentCloneClass;
 		}
 	}
-	return false;
 }
 
 public num calculateSimilarity(node t1, node t2) {
@@ -293,13 +281,11 @@ public int addSubtreeToBucket(node key, node subTree) {
 int calculateMass(node currentNode) = size([n | /node n := currentNode]);
 
 public void printCloneResults() {
-	println();
-	
 	int counting = 0;
 	int lines = 0;
 	
 	set[loc] clonePairsPerClass = {};
-	iprintln("Here come the clones!");
+	iprintln("All Type <cloneType> clones:");
 	for (currentClass <- cloneClasses) {
 		iprintln("Total clone pairs in this class: <size(cloneClasses[currentClass])>");
 		clonePairsPerClass = {};
@@ -308,15 +294,41 @@ public void printCloneResults() {
 			clonePairsPerClass += currentClone[1][1];
 			counting += 1;
 		}
+		bool first = true;
 		for (uniqueClone <- clonePairsPerClass) {
-			//iprintln("COOLIO");
-			lines += size(readFileLines(uniqueClone));
-			iprintln(uniqueClone);
+			if (!first) {
+				lines += size(readFileLines(uniqueClone));
+			} else {
+				first = false;
+			}
+			iprint(uniqueClone);
+			println(" <size(readFileLines(uniqueClone))>");
 		}
-		lines = lines/2;
 		iprintln("--------------------------------------------------");
 	}
 	
-	iprintln("Site: <currentProject> - Type <cloneType> - Clone pairs: <counting> - Lines: <lines>");
-	//lawl();
+	iprintln("Site: <currentProject> - Clone type <cloneType> - Clone pair count: <counting> - Total cloned lines: <lines>");
 }
+
+int calculateLinesOfComments(loc style) {
+  int comment = 0;
+  bool commentBlock = false;
+  for (line <- readFileLines(style)) {
+    if (contains(line,"/*") && !contains(line,"*/")) { 
+      commentBlock = true;
+      comment += 1;
+    } else if (commentBlock && contains(line,"*/")) { 
+      commentBlock = false;
+      comment += 1;
+    } else if (contains(line,"/*") && contains(line,"*/") || commentBlock) {
+      comment += 1;
+    }
+  }
+  return comment; 
+}
+
+int calculateBlankLines(loc stylesheet) = size([0 | line <- readFileLines(stylesheet), trim(line) == ""]); 
+
+int calculateLinesOfCode(loc style) = (size(readFileLines(style))-calculateBlankLines(style)-calculateLinesOfComments(style)); 
+
+int calculateLinesOfComments(M3 stylesheetM3) = sum([0]+[size(readFileLines(d[1])) | d <- stylesheetM3@documentation]);
