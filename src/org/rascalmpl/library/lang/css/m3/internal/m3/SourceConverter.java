@@ -432,7 +432,8 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 
 		ISourceLocation nodeLocation = createLocation(loc, node.getLocation());
 		insert(declarations, bindedLocation, nodeLocation);
-
+		insert(names, values.string(stylesheetName.replaceAll(".css$", "")), bindedLocation);
+		
 		scopeManager.pop();
 
 		return null;

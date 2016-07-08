@@ -10,33 +10,35 @@ import String;
 import List;
 import util::Math;
 
-anno str Type@op;
-anno loc Type@src;
-anno str Statement@comment;
-anno str Declaration@comment;
-anno str Expression@combinator;
-anno str Declaration@modifier;
-anno list[Message] Statement@messages;
+anno str Declaration@documentation;
 
-data Statement
+anno str Statement@documentation;
+anno str Statement@modifier;
+
+anno str Expression@combinator;
+
+anno str Type@operator;
+anno loc Type@src;
+
+data Declaration
 	// Rulesets
-    = stylesheet(str name, list[Statement] rules) // #lol { color: red; } #lal { color: blue; }
-    | ruleSet(list[Expression] selector, list[Declaration] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors) (@TODO selector is a list of types because of the combinedSelector)
+    = stylesheet(str name, list[Declaration] rules) // #lol { color: red; } #lal { color: blue; }
+    | ruleSet(list[Expression] selector, list[Statement] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors) (@TODO selector is a list of types because of the combinedSelector)
     // At rules
-    | ruleMedia(list[Type] mediaQueries, list[Statement] ruleSets) // @media only screen and (max-width : 480px) {
-    | ruleFontFace(list[Declaration] decs) // @font-face { (TODO WHY IS THIS A LIST OF DECLARATIONS?! AND NOT A STATEMENT)
+    | ruleMedia(list[Type] mediaQueries, list[Declaration] ruleSets) // @media only screen and (max-width : 480px) {
+    | ruleFontFace(list[Statement] declarations) // @font-face { (TODO WHY IS THIS A LIST OF DECLARATIONS?! AND NOT A STATEMENT)
     | ruleImport(str uri) // @import url("style2.css");
     | ruleImport(str uri, list[Type] mediaQueries) // @import url("style2.css") handheld and (max-width: 400px);
-    | ruleCounterStyle(str name, list[Declaration] decs)
+    | ruleCounterStyle(str name, list[Statement] declarations)
     | ruleNameSpace(str prefix, str uri)
     | ruleNameSpace(str uri)
     | ruleCharset(str name)
-    | ruleKeyframes(str name, list[Statement] ruleSets)
-    | rulePage(str pseudo, list[Declaration] declarations) // @page :left { "delcarations here" }
-    | ruleViewport(list[Declaration] declarations) // @viewport { "delcarations here" }
+    | ruleKeyframes(str name, list[Declaration] ruleSets)
+    | rulePage(str pseudo, list[Statement] declarations) // @page :left { "delcarations here" }
+    | ruleViewport(list[Statement] declarations) // @viewport { "delcarations here" }
     ;
 
-data Declaration
+data Statement
     = declaration(str property, list[Type] values) // color: red;, background: url('logo.png') no-repeat;
     ;
 
@@ -81,7 +83,7 @@ data Modifier
     | combinator(str combi)
     ;
     
-public Statement createAstFromFile(loc file) {
+public Declaration createAstFromFile(loc file) {
     result = createAstsFromFiles({file});
     if ({oneResult} := result) {
         return oneResult;
@@ -89,7 +91,7 @@ public Statement createAstFromFile(loc file) {
     throw "Unexpected number of ASTs returned from <file>";
 }
 
-public set[Statement] createAstsFromDirectory(loc project) {
+public set[Declaration] createAstsFromDirectory(loc project) {
     if (!(isDirectory(project))) {
       throw "<project> is not a valid directory";
     }
@@ -100,4 +102,4 @@ public set[Statement] createAstsFromDirectory(loc project) {
 
 @javaClass{org.rascalmpl.library.lang.css.m3.internal.ast.ASTLoader}
 @reflect{Need access to stderr and stdout}
-public java set[Statement] createAstsFromFiles(set[loc] file);
+public java set[Declaration] createAstsFromFiles(set[loc] file);

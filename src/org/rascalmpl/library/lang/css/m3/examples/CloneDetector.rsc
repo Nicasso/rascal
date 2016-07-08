@@ -27,7 +27,7 @@ map[node, lrel[tuple[node, loc] L, tuple[node, loc] R]] cloneClasses = ();
 list[node] subCloneClasses = [];
 
 list[loc] dirs = [
-		|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|
+		//|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/360.cn.css|
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/alieexpress.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/amazon.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/apple.com.css|,
@@ -80,6 +80,7 @@ list[loc] dirs = [
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
 	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
+	    |home:///workspace/Rascal/rascal/testCSS/examples/clones.css|
 	];
 	
 public void go() {
@@ -104,7 +105,7 @@ public void detectClones(int cloneT) {
 	cloneClasses = ();
 	subCloneClasses = [];
 	
-	Statement stylesheetAst = createAstFromFile(currentProject);
+	Declaration stylesheetAst = createAstFromFile(currentProject);
 
 	similarityThreshold = if (cloneType <= 2) 1.0; else 0.75;
 	
@@ -162,7 +163,7 @@ public void placeCloneInClass(tuple[tuple[node,loc] L, tuple[node,loc] R] treeRe
 	}
 }
 
-public void chooseSubtrees(Statement stylesheetAsts) {
+public void chooseSubtrees(Declaration stylesheetAsts) {
 	if (cloneType == 1) {
 		[addSubtreeToBucket(x, x) | /node x := stylesheetAsts, calculateMass(x) >= massThreshold, !(Type a := x)];
 	} else {
@@ -173,15 +174,15 @@ public void chooseSubtrees(Statement stylesheetAsts) {
 // Normalize all variable types of the leaves in a tree.
 public node normalizeNodeDec(node ast) {
 	return visit (ast) {
-		case n:ruleSet(list[Type] selector, list[Declaration] declarations) => normalizedRuleset(n, declarations)
+		case n:ruleSet(list[Type] selector, list[Statement] Statements) => normalizedRuleset(n, Statements)
 		case n:class(str name) => normalizedSelector(n) 
     	case n:id(str name) => normalizedSelector(n)
     	case n:domElement(str name) => normalizedSelector(n)
 	};
 }
 
-public Statement normalizedRuleset(Statement s, list[Declaration] declarations) {
-	Statement rs = ruleSet([], declarations);
+public Declaration normalizedRuleset(Declaration s, list[Statement] Statements) {
+	Declaration rs = ruleSet([], Statements);
 	rs@src = s@src;
 	return rs;
 }
@@ -237,9 +238,9 @@ public num calculateSimilarity(node t1, node t2) {
 public loc getLocationOfNode(node subTree) {
 	loc result;
 	switch(subTree) {
-		case Declaration n: result = n@src;
-		case Expression n: result = n@src;
 		case Statement n: result = n@src;
+		case Expression n: result = n@src;
+		case Declaration n: result = n@src;
 		case Type n: result = n@src;
 	}
 	return result;
