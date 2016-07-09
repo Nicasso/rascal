@@ -155,12 +155,25 @@ public int shorthandMarginPadding() {
 	return total;
 }
 
+public void shorthandMargin(Declaration stylesheetAST) {
+	visit (stylesheetAST) {
+		case rs:ruleSet(list[Expression] selector, list[Statement] declarations): {
+			list[str] margin = ["margin-top", "margin-right", "margin-bottom", "margin-left"];
+			for (d <- declarations, d[0] in margin) {
+				margin -= d[0];
+				if (size(margin) == 0) {
+					print("Margin shorthand should be used at: <rs@src>");
+				}
+			}
+		}
+	};
+}
+
 public int noEmptyRules() {
 	int total = 0;
 	visit (stylesheetAST) {
 		case rs:ruleSet(list[Expression] selector, list[Statement] declarations): {
 			if (size(declarations) == 0) {
-				//println("Empty ruleset at: <rs@src>");
 				total += 1;
 			}
 		}
@@ -172,7 +185,6 @@ public int avoidIds() {
 	int total = 0;
 	visit (stylesheetAST) {
 		case i:id(str name): {
-			//println("ID selector used at: <i@src>");
 			total += 1;
 		}
 	};

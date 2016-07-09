@@ -14,9 +14,10 @@ import util::Math;
 import vis::Figure;
 import vis::Render;
 
-Statement stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
+//Declaration stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/bibtex.css|);
+Declaration stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/facebook.com.css|);
 
 public void colorsAnalysis() {
 	set[Color] colors = {rgb(red, green, blue, toReal(alpha)) | /color(int red, int green, int blue, num alpha) := stylesheetAST};
-	render(hvcat([box([size(50), fillColor(c)]) | c <- sort(colors)]));
+	render(hvcat([box([size(50), fillColor(c)]) | c <- colors]));
 }

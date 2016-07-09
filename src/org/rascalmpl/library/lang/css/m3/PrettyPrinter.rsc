@@ -99,8 +99,8 @@ public str ppExpressions(list[Type] selector) {
 public str ppValues(list[Type] vals) {
 	str result = "";
 	for (Type val <- vals) {
-		if (val@op?) {
-			result += "<val@op><ppx(val)>";
+		if (val@operator?) {
+			result += "<val@operator><ppx(val)>";
 		} else {
 			result += " <ppx(val)>";
 		}
