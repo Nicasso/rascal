@@ -1,0 +1,6 @@
+#contact-form {
+  padding: 10px 5px 10px 5px;
+  font-family: Arial;
+  /* Specific fix for IE 8 */
+  width: 100% !important;
+}

@@ -148,7 +148,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		IValue decl =  constructStatementNode("declaration", property, declarationValues.asList());
 		
 		if (node.isImportant()) {
-			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("modifier", values.string("important"));
+			decl = ((IConstructor) decl).asAnnotatable().setAnnotation("important", values.string("important"));
 		}
 		
 		if (node.getComment() != null) {
@@ -486,7 +486,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val; 
@@ -507,7 +507,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val; 
@@ -535,7 +535,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val; 
@@ -555,7 +555,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -576,7 +576,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -603,7 +603,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -623,7 +623,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -644,7 +644,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val; 
@@ -665,7 +665,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -686,7 +686,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -707,7 +707,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -728,7 +728,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -750,7 +750,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		if (node.getOperator() != null) {
 			//eval.getStdOut().println("OPERATOR: "+ node.getOperator());
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -771,7 +771,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -791,7 +791,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;
@@ -984,7 +984,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		
 		if (node.getOperator() != null) {
 			IValue op = values.string(node.getOperator().value());
-			val = ((IConstructor) val).asAnnotatable().setAnnotation("op", op);
+			val = ((IConstructor) val).asAnnotatable().setAnnotation("operator", op);
 		}
 		
 		return val;

@@ -126,6 +126,6 @@ public real numberOfAttributesDefinedPerRuleBlock() {
 	//return toReal(size([1 | /ruleSet(list[Expression] selector, list[Declaration] declarations) := stylesheetAST]));
 }
 
-public int numberOfCohesiveRuleBlocks() {	
+public int numberOfCohesiveRuleBlocks() =
 	return size([1 | /ruleSet(list[Type] selector, list[Declaration] declarations) := stylesheetAST, size(declarations) == 1]);
 }

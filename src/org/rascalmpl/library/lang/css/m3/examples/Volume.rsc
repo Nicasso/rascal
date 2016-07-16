@@ -89,7 +89,7 @@ public void calculateVolume() {
     //iprintln("Lines of code: <code>");
     //iprintln("Blank lines: <blank>");
     //iprintln("Lines of comments: <comment>");
-    print("<d.file>, ");
+    println("<d.file> ; <\all> ; <code> ; <blank> ; <comment>  ");
   }
 }
 

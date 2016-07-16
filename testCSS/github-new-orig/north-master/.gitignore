@@ -1,8 +1,0 @@
-vendor
-node_modules
-bower_components
-.sass-cache
-*.gem
-build
-/dist
-/.tmp

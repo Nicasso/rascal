@@ -49,7 +49,7 @@ public void metrics1() {
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/netflix.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/office.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/ok.ru.css|,
-	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|
+	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/onclickads.net.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/paypal.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pinterest.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/pornhub.com.css|,
@@ -70,7 +70,7 @@ public void metrics1() {
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/xvideos.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
-	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
 	];
 	
 	for (d <- dirs) {
@@ -86,8 +86,8 @@ public void metrics1() {
 		//iprintln("NORB: <numberOfRuleBlocks()>");
 		//iprintln("EM: <entropyMetrics()>");
 		//iprintln("NOERB: <numberOfExtendedRuleBlocks()>");
-		//println("<numberOfAttributesDefinedPerRuleBlock()>");
-		iprintln("NOCRB: <numberOfCohesiveRuleBlocks()>");
+		println("<numberOfAttributesDefinedPerRuleBlock()>");
+		//iprintln("NOCRB: <numberOfCohesiveRuleBlocks()>");
 		//iprintln("<d> & <ruleLength()> & <numberOfRuleBlocks()> & <numberOfAttributesDefinedPerRuleBlock()> & <numberOfCohesiveRuleBlocks()>"); 
 	}
 }
@@ -128,7 +128,9 @@ public real numberOfAttributesDefinedPerRuleBlock() {
 	return toReal(size(declarations(stylesheetM3)))/toReal(size(ruleSets(stylesheetM3)));
 }
 
-int numberOfCohesiveRuleBlocks() = size([rule | rule <- ruleSets(stylesheetM3), size({a | <e,a> <- stylesheetM3@containment, e == rule, isDeclaration(a)}) == 1]);
+public int numberOfCohesiveRuleBlocks() {	
+	return size([rule | rule <- ruleSets(stylesheetM3), size({a | <e,a> <- stylesheetM3@containment, e == rule, isDeclaration(a)}) == 1]);
+}
 
-
-
+int numberOfCohesiveRuleBlocks() = size([rule | rule <- ruleSets(stylesheetM3), 
+	size({a | <e,a> <- stylesheetM3@containment, e == rule, isDeclaration(a)}) == 1]);

@@ -13,23 +13,20 @@ import Node;
 import List;
 import util::Math;
 
-loc stylesheetLocation = |home:///Documents/workspace/Rascal/rascal/testCSS/examples/sattose.css|;
-Declaration stylesheetAST = createAstFromFile(stylesheetLocation);
-M3 stylesheetM3 = createM3FromFile(stylesheetLocation);
-
-list[loc] importantChecker() = [d@src | /d:declaration(str property, list[Type] declarationValues) := stylesheetAST, d@modifier?];
+loc location = |home:///workspace/Rascal/rascal/testCSS/examples/vendor.css|;
+Declaration stylesheetAST = createAstFromFile(location);
+M3 stylesheetM3 = createM3FromFile(location);
 
 void ga() {
-	iprintln(stylesheetM3);
-	
-	iprintln(ruleSets(stylesheetM3));
+	iprintln(stylesheetAST);
 }
 
 void go() {
-	iprintln("Comments: <realComments(stylesheetLocation)>");
-	iprintln("Blank: <blanks(stylesheetLocation)>");
-	iprintln("Code: <code(stylesheetLocation)>");
-	iprintln("Comments2: <comments(stylesheetM3)>");
+	//iprintln("Important: <importantChecker(stylesheetAST)>");
+	//iprintln("Comments: <calculateLinesOfComments(location)>");
+	//iprintln("Blank: <blank(location)>");
+	//iprintln("Code: <code(location,stylesheetM3)>");
+	//iprintln("Comments2: <comment(stylesheetM3)>");
 	//
 	//iprintln("RL: <ruleLength(stylesheetM3)>");
 	//iprintln("NORB: <numberOfRuleBlocks(stylesheetM3)>");
@@ -42,13 +39,14 @@ void go() {
 	//
 	//iprintln("Vendor prefix fallback:");
 	//vendorPrefixFallback(stylesheetAST);
-	//
-	//iprintln("Refactor vendor prefix fallback");
-	//prettyPrint(vendorPrefixFallbackRefactor(stylesheetAST));
+	
+	iprintln("Refactor vendor prefix fallback");
+	prettyPrint(vendorPrefixFallbackRefactor(stylesheetAST));
 }
 
+list[loc] importantChecker(Declaration stylesheetAST) = [d@src | /d:declaration(str property, list[Type] values) := stylesheetAST, d@important?];
 
-int realComments(loc style) {
+int calculateLinesOfComments(loc style) {
   int comment = 0;
   bool commentBlock = false;
   for (line <- readFileLines(style)) {
@@ -65,9 +63,9 @@ int realComments(loc style) {
   return comment; 
 }
 
-int blanks(loc style) = size([0 | line <- readFileLines(style), trim(line) == ""]); 
-int code(loc style) = size(readFileLines(style)) - blanks(style) - realComments(style); 
-int comments(M3 stylesheetM3) = sum([0] + [size(readFileLines(d[1])) | d <- stylesheetM3@documentation]);
+int blank(loc stylesheet) = size([0 | line <- readFileLines(stylesheet), trim(line) == ""]); 
+int comment(M3 stylesheetM3) = sum([0]+[size(readFileLines(d[1])) | d <- stylesheetM3@documentation]);
+int code(loc style, M3 stylesheetM3) = (size(readFileLines(style))-blank(style)-comment(stylesheetM3)); 
 
 int ruleLength(M3 stylesheetM3) { 
   int ruleLength = 0;
@@ -92,7 +90,7 @@ real numberOfAttributesDefinedPerRuleBlock(M3 stylesheetM3) = toReal(size(declar
 
 int numberOfCohesiveRuleBlocks(M3 stylesheetM3) = size([rule | rule <- ruleSets(stylesheetM3), size({a | <e,a> <- stylesheetM3@containment, e == rule, isDeclaration(a)}) == 1]);
 
-public list[str] specificity(Declaration stylesheetAST) { 
+list[str] specificity(Declaration stylesheetAST) { 
   int a = 0;
   int b = 0;
   int c = 0;
@@ -137,7 +135,7 @@ void vendorPrefixFallback(Declaration stylesheetAST) {
   list[str] prefixes = ["-moz-","-webkit-","-o-","-ms-"];
   set[str] required = {};
   bottom-up visit (stylesheetAST) {
-    case rs:ruleSet(list[Expression] selector, list[Statement] declarations): {
+    case rs:ruleSet(list[Expression] selector, list[Statement] Statements): {
       if (size(required) > 0) {
         for (r <- required) {
           println("The <r> property has not been provided as a fallback at: <rs@src>");

@@ -1,22 +1,27 @@
-@media screen and (min-width: 480px) {
-
-  span {
-    display: block;
-    color: red;
-  }
-
-}
-
-@media screen and (min-width: 480px) {
-
-  span {
-    display: block;
-    color: red;
-  }
-
+span {
+  margin: 10px 10px 10px 0px;
+  padding: 10px 0 10px 0;
+  color: red;
+  font-size: 1.2em;
 }
 
 span {
-  display: block;
+  margin: 10px 10px 10px 0px;
+  padding: 10px 0 10px 0;
   color: red;
+  font-size: 1.2em;
+}
+
+div {
+  margin: 10px 10px 10px 0px;
+  padding: 10px 0 10px 0;
+  color: red;
+  font-size: 1.2em;
+}
+
+span {
+  margin: 10px 10px 10px 0px;
+  padding: 10px 0 10px 0;
+  color: blue;
+  font-size: 1.2em;
 }

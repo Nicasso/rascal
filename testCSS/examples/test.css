@@ -1,5 +1,15 @@
-body > span, .lol {
-  /* Important is required for IE */
-  width: 0px !important;
-  color: red;
+h1 {
+	color: red;
+}
+
+#header > #left {
+	color: red;
+}
+
+ul li:active {
+	color: red;
+}
+
+div #left#top#blue {
+	color: red;
 }

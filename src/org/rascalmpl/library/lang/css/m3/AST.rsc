@@ -81,6 +81,7 @@ data Type
 data Modifier
     = important() // !important (Will be added as @modifier annotation to declarations like the Java m3 does)
     | combinator(str combi)
+    | operator(str op)
     ;
     
 public Declaration createAstFromFile(loc file) {

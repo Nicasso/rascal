@@ -1,0 +1,5 @@
+div {
+  color: red;
+  -moz-animate-name: stuff;
+  -webkit-animate-name: stuff;
+}

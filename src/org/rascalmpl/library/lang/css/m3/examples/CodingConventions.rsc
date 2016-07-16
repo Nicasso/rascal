@@ -522,31 +522,39 @@ public int declarationColonSpace() {
 	return total;
 }
 
-public void spaceAfterLastSelector() {
+public int spaceAfterLastSelector() {
+	int total = 0;
 	visit (stylesheetAST) {
 		case rs:ruleSet(list[Expression] selector, list[Declaration] declarations): {
 			bool found = false;
-			for (l <- readFileLines(rs@src), contains(l, " {")) {
-				found = true;
+			for (l <- readFileLines(rs@src)) {
+				if (contains(l, " {")) {
+					found = true;
+				}
 			}
 			if (!found) {
-				println("No space between the last selector and the { present at: <rs@src>");
+				//println("No space between the last selector and the { present at: <rs@src>");
+				total += 1;
 			}
 		}
 	};
+	return total;
 }
 
-public void oneSelectorPerLine() {
+public int oneSelectorPerLine() {
+	int total = 0;
 	list[int] selectorLines = [];
 	visit (stylesheetAST) {
-		case cs:combinedSelector(list[Expression] selectors): {
-			if (cs@src.begin.line notin selectorLines) {
+		case s:combinedSelector(list[Expression] selectors): {
+			if (s@src.begin.line notin selectorLines) {
 				selectorLines += s@src.begin.line;
 			} else {
-				println("Selectors are placed on the same line at: <s@src>");
+				//println("Selectors are placed on the same line at: <s@src>");
+				total += 1;
 			}
 		}
 	};
+	return total;
 }
 
 public int noEmptyRules() {
