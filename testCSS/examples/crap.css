@@ -1,0 +1,15 @@
+@keyframes flash {
+    0%,
+    50%,
+    100% {
+        background-color: #fff
+    }
+    25%,
+    75% {
+        background-color: #ffefbd
+    }
+}
+
+li:nth-child(4), li:active, li:hover, li::after, li:not(.lal) {
+    color: red;
+}

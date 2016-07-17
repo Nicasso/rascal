@@ -446,8 +446,8 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 	@Override
 	public IValue visit(StyleSheet node) {
 		ISourceLocation test = createLocation(loc, node.getLocation());
-//		eval.getStdOut().println("StyleSheet");
-//		eval.getStdOut().println(test);
+//		//eval.getStdOut().println("StyleSheet");
+//		//eval.getStdOut().println(test);
 
 		IValueList statements = new IValueList(values);
 		for (Iterator<RuleBlock<?>> it = node.iterator(); it.hasNext();) {
@@ -476,7 +476,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("TermAngle");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue angle = values.real(node.getValue().doubleValue(), 2);
+		IValue angle = values.real(node.getValue().toString());
 	    IValue unit = values.string(node.getUnit().toString());
 	    
 	    IValue val = constructTypeNode("angle", angle, unit);
@@ -497,7 +497,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("TermAudio");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue angle = values.real(node.getValue().doubleValue(), 2);
+		IValue angle = values.real(node.getValue().toString());
 	    IValue unit = values.string(node.getUnit().toString());
 	    
 	    IValue val = constructTypeNode("audio", angle, unit);
@@ -566,7 +566,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("TermFrequency");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue freq = values.real(node.getValue(), 2);
+		IValue freq = values.real(node.getValue().toString());
 		IValue unit = values.string(node.getUnit().toString());
 		
 		IValue val = constructTypeNode("frequency", freq, unit);
@@ -655,7 +655,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("TermLength");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue length = values.real(node.getValue().doubleValue(), 2);
+		IValue length = values.real(node.getValue().toString());
 		IValue unit = values.string(node.getUnit().toString());
 		
 		IValue val = constructTypeNode("length", length, unit);
@@ -677,7 +677,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("TermNumber");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue number = values.real(node.getValue(), 2);
+		IValue number = values.real(node.getValue().toString());
 		
 		IValue val = constructTypeNode("number", number);
 		
@@ -698,7 +698,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("TermPercent");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue percent = values.real(node.getValue(), 2);
+		IValue percent = values.real(node.getValue().toString());
 		
 		IValue val = constructTypeNode("percent", percent);
 		
@@ -718,7 +718,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("TermResolution");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue resolution = values.real(node.getValue(), 2);
+		IValue resolution = values.real(node.getValue().toString());
 		IValue unit = values.string(node.getUnit().toString());
 		
 		IValue val = constructTypeNode("resolution", resolution, unit);
@@ -761,7 +761,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("TermTime");
 		//eval.getStdOut().println("\t" + node.getValue() + " " + node.getUnit());
 		
-		IValue time = values.real(node.getValue(), 2);
+		IValue time = values.real(node.getValue().toString());
 		IValue unit = values.string(node.getUnit().toString());
 		
 		IValue val = constructTypeNode("time", time, unit);
@@ -879,20 +879,18 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("PseudoPage");
 		//eval.getStdOut().println("\t" + node.getValue());
 		
-		IValue pseudoPage = values.string(node.getValue());
+		String pseudo = "";
+		
+		if (node.getFunctionName() != null) {
+			pseudo += node.getFunctionName()+"("+node.getValue()+")";
+		} else {
+			pseudo = node.getValue();
+		}
+		
+		IValue pseudoPage = values.string(pseudo);
 		
 		IValue val;
-		
-//		boolean element = false;
-//		
-//		switch(node.getDeclaration()) {
-//			case AFTER: element = true;
-//			case BEFORE: element = true;
-//			case FIRST_LETTER: element = true;
-//			case FIRST_LINE: element = true;
-//			default: element = false;
-//		}
-		
+
 		if (node.getDeclaration().isPseudoElement()) {
 			val = constructTypeNode("pseudoElement", pseudoPage);
 		} else {
@@ -1060,7 +1058,7 @@ public class ASTConverter extends CSSToRascalConverter implements CSSNodeVisitor
 		//eval.getStdOut().println("keyframesPercentage");
 		//eval.getStdOut().println("\t" + node.getPercentage());
 		
-		IValue percent = values.real(node.getPercentage(), 2);
+		IValue percent = values.real(node.getPercentage());
 		
 		IValue val = constructTypeNode("percent", percent);
 		

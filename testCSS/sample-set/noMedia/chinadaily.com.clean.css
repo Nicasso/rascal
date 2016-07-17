@@ -1,0 +1,1912 @@
+@charset "utf-8";
+
+body {
+	color: #161616;
+	font-family: 'times new roman', times, serif;
+	margin: 0;
+	padding: 0;
+}
+
+ul,
+ li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+a:link {
+	color: #161616;
+	font-family: 'times new roman', times, serif;
+	text-decoration: none;
+}
+
+ul,
+ li,
+ img {
+	border-bottom-width: 0;
+	border-left-width: 0;
+	border-right-width: 0;
+	border-top-width: 0;
+	margin: 0;
+	padding: 0;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #161616;
+	text-decoration: none;
+}
+
+h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6 {
+	margin: 0;
+	padding: 0;
+}
+
+p {
+	margin: 0;
+	padding: 0;
+}
+
+.topBar {
+	margin: 0 auto;
+	overflow: hidden;
+	padding-bottom: 10px;
+	padding-top: 27px;
+	width: 1200px;
+}
+
+.logo {
+	float: left;
+	margin-right: 120px;
+	padding: 7px 0 0;
+}
+
+.logo img {
+	height: 37px;
+	width: 342px;
+}
+
+.search {
+	float: left;
+	padding-right: 13px;
+	padding-top: 8px;
+}
+
+.search input {
+	border: 1px solid #CCCCCC;
+	float: left;
+	height: 32px;
+	margin-right: 7px;
+	width: 304px;
+}
+
+.channel {
+	border-right: 1px solid #CCCCCC;
+	float: left;
+	font-family: arial;
+	font-size: 12px;
+	padding-right: 18px;
+	width: 129px;
+}
+
+.channel a {
+	color: #9E9E9F;
+	display: block;
+	float: left;
+	font-family: arial;
+	margin-bottom: 0;
+	margin-right: 5px;
+	padding: 1px 3px;
+	text-decoration: none;
+}
+
+.channel a:hover {
+	background: #004679;
+	color: #FFFFFF;
+}
+
+.channel span {
+	float: left;
+	width: 100%;
+}
+
+.topInfo {
+	float: left;
+	padding-left: 20px;
+}
+
+.topInfo a {
+	display: block;
+	float: left;
+	padding-right: 14px;
+}
+
+.topNav {
+	background: #004679;
+	margin: 0 auto 15px auto;
+	width: 1200px;
+}
+
+.dropdown {
+	background-color: #014073;
+	color: #FFFFFF;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	height: 35px;
+	line-height: 35px;
+	position: relative;
+}
+
+.topNav .dropdown li a {
+	color: #FFFFFF;
+	font-family: arial, helvetica, sans-serif;
+	padding-left: 18px;
+	padding-right: 18px;
+}
+
+.dropdown li {
+	float: left;
+	height: 35px;
+	text-align: left;
+	zoom: -1;
+}
+
+.dropdown li span a {
+	color: #FFFFFF;
+	display: block;
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	height: 25px;
+	line-height: 25px;
+	padding-left: 7px;
+	padding-right: 8px;
+	text-decoration: none;
+}
+
+.dropdown li span a:hover {
+	color: #FFFFFF;
+}
+
+.dropdown a:active {
+	color: #FFA500;
+}
+
+.dropdown li:last-child a {
+	border-right: none;
+}
+
+.dropdown li:hover {
+	background-color: #006599;
+	color: #FFFFFF;
+	position: relative;
+}
+
+.dropdown ul {
+	left: -39px;
+	position: absolute;
+	top: 100%;
+	visibility: hidden;
+	width: 150px;
+}
+
+.dropdown ul li {
+	background-color: #014073;
+	border-width: 0;
+	color: #FFFFFF;
+	float: left;
+	font-weight: normal;
+	height: 25px;
+	opacity: 0.85;
+}
+
+.dropdown ul li a {
+	color: #FFFFFF;
+	display: block;
+	height: 25px;
+	line-height: 25px;
+	text-decoration: none;
+	width: 115px;
+}
+
+.dropdown ul li a:hover {
+	background-color: #006599;
+}
+
+.dropdown ul ul {
+	left: 100%;
+	top: 0;
+}
+
+.dropdown li:hover > ul {
+	visibility: visible;
+}
+
+.dropdown li .sub_menu {
+	background-color: #014073;
+	opacity: 0.85;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	z-index: -3;
+}
+
+.sub_menu li a:hover {
+	background-color: #00CC00;
+}
+
+.newspaper {
+	background: url(http://www.chinadaily.com.cn/image_e/2013/arr_bot.gif) no-repeat 102px center;
+	width: 115px;
+}
+
+.tMain {
+	margin-bottom: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0;
+	overflow: hidden;
+	width: 1200px;
+}
+
+.tmL {
+	float: left;
+	width: 642px;
+}
+
+.tmL .twBox {
+	overflow: hidden;
+}
+
+.tmL .twBox a {
+	background: #F0F0F0;
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-size: 20px;
+	height: 208px;
+	line-height: 23px;
+	margin-right: 10px;
+	overflow: hidden;
+	text-decoration: none;
+	width: 153px;
+}
+
+.tmL .twBox a .txt1 {
+	display: block;
+	font-weight: normal;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 8px;
+}
+
+.tmL .twBox a .txt1:hover {
+	text-decoration: none;
+}
+
+.tmR {
+	float: right;
+	width: 543px;
+}
+
+.tmR .twBox {
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.tmR .txtBox {
+	font-family: 'times new roman', times, serif;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.tmR .txtBox div {
+	background: #F0F0F0;
+	float: left;
+	padding: 8px;
+}
+
+.tmR .txtBox a {
+	font-size: 20px;
+}
+
+.tmR .txtBox a:hover {
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.tmR .txtBox div span,
+ .tmR .txtBox div span a {
+	color: #0261A7;
+	font-size: 20px;
+	line-height: 23px;
+	text-decoration: none;
+}
+
+.tmR .txtBox div:hover {
+	background: #E6E6E6;
+}
+
+.tmR .txtBox .txt2 {
+	height: 92px;
+	margin-right: 10px;
+	padding: 8px;
+	width: 304px;
+}
+
+.tmR .txtBox .txt2 b {
+	color: #B8B8B8;
+	font-size: 20px;
+}
+
+.tmR .txtBox .txt3 {
+	height: 92px;
+	width: 196px;
+}
+
+.tmR .txtBox .txt3 b {
+	color: #B8B8B8;
+	font-size: 20px;
+}
+
+.tmR .Txt h2 a {
+	font-family: 'times new roman', times, serif;
+	font-size: 28px;
+	font-weight: normal;
+	line-height: 31px;
+}
+
+.tmR .Txt {
+	float: left;
+	width: 235px;
+}
+
+.tmR .Txt p {
+	color: #7F7F7F;
+	font-family: arial;
+	font-size: 12px;
+	line-height: 15px;
+	padding-top: 10px;
+}
+
+.tmR .Pic {
+	cursor: pointer;
+	float: right;
+	overflow: hidden;
+	width: 297px;
+}
+
+.tmR .ad1 {
+	margin-top: 15px;
+}
+
+.cMain {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0;
+	overflow: hidden;
+	width: 1200px;
+}
+
+.cmL {
+	float: left;
+	width: 1014px;
+}
+
+.cmR {
+	float: right;
+	width: 168px;
+}
+
+.cmL h2 {
+	background: url(http://www.chinadaily.com.cn/image_e/2016/btBg.png) repeat-x center;
+	margin-bottom: 9px;
+	width: 100%;
+}
+
+.cmL h2 b {
+	background-color: #FFFFFF;
+	color: #004679;
+	font-family: 'times new roman', times, serif;
+	font-size: 24px;
+	padding-right: 8px;
+}
+
+.cmL h2 b a {
+	color: #004679;
+}
+
+.cmL h2 .rose b a {
+	color: #7C2671;
+}
+
+.cmL .rose {
+	background: url(http://www.chinadaily.com.cn/image_e/2016/btBg2.png) repeat-x center;
+	width: 100%;
+}
+
+.cmL .rose b {
+	background-color: #FFFFFF;
+	color: #7C2671;
+	font-family: 'times new roman', times, serif;
+	font-size: 24px;
+	padding-right: 8px;
+}
+
+.cmL .cmLBox {
+	margin-bottom: 30px;
+	overflow: hidden;
+}
+
+.cmL .cmLBox .mb15 {
+	margin-bottom: 15px;
+}
+
+.cmL .cmLBox .cmLBoxL {
+	float: left;
+	overflow: hidden;
+	width: 480px;
+}
+
+.cmL .cmLBox .cmLBoxL .Txt {
+	margin-top: 10px;
+	overflow: hidden;
+}
+
+.cmL .cmLBox .cmLBoxL .Txt a {
+	background: #F0F0F0;
+	display: block;
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	height: 34px;
+	margin-right: 10px;
+	padding: 1px 6px;
+	width: 100px;
+}
+
+.cmL .cmLBox .cmLBoxL .twBox {
+	overflow: hidden;
+}
+
+.cmL .cmLBox .cmLBoxL .twBox span {
+	cursor: pointer;
+	float: left;
+	overflow: hidden;
+	width: 290px;
+}
+
+.cmL .cmLBox .cmLBoxL .twBox p {
+	background: #004679;
+	float: left;
+	height: 171px;
+	padding: 8px;
+	width: 174px;
+}
+
+.cmL .cmLBox .cmLBoxL .twBox p a {
+	color: #FFFFFF;
+	font-size: 22px;
+	line-height: 25px;
+}
+
+.cmL .cmLBox .cmLBoxR {
+	float: right;
+	width: 524px;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox {
+	overflow: hidden;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox span {
+	cursor: pointer;
+	float: left;
+	overflow: hidden;
+	top: 200px;
+	width: 168px;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox p {
+	background: #F0F0F0;
+	float: left;
+	height: 93px;
+	padding: 8px;
+	width: 340px;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox p:hover {
+	background: #E6E6E6;
+	cursor: pointer;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox p a {
+	color: #161616;
+	font-size: 22px;
+	line-height: 25px;
+	text-decoration: none;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox p .blu {
+	background: #00457E;
+	float: left;
+	height: 93px;
+	padding: 8px;
+	width: 340px;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox p .blu:hover {
+	background: #003C68;
+	cursor: pointer;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox p .blu a {
+	color: #FFFFFF;
+	font-size: 22px;
+	line-height: 25px;
+	text-decoration: none;
+}
+
+.cmL .cmLBox .cmLBoxR .Txt a {
+	background: #F0F0F0;
+	display: block;
+	float: left;
+	font-size: 14px;
+	font-size: 20px;
+	height: 99px;
+	line-height: 23px;
+	margin-right: 10px;
+	padding: 8px;
+	width: 241px;
+}
+
+.cmL .cmLBox .cmLBoxR .Txt a:hover {
+	background: #E6E6E6;
+	text-decoration: none;
+}
+
+.liBox {
+	padding-top: 20px;
+}
+
+.liBox li {
+	border-top: #E0E0E0 1px solid;
+	padding: 6px 0 7px 0;
+}
+
+.liBox li a {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.liBox2 {
+	padding-top: 10px;
+}
+
+.liBox2 li {
+	border-bottom: #E0E0E0 1px solid;
+	padding: 6px 0 7px 0;
+}
+
+.liBox2 li a {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.cmLBoxR .twBox li {
+	background: #F0F0F0;
+	float: left;
+	height: 187px;
+	margin-right: 10px;
+	width: 168px;
+}
+
+.cmLBoxR .twBox li a {
+	cursor: pointer;
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 17px;
+	overflow: hidden;
+	text-decoration: none;
+}
+
+.cmLBoxR .twBox li .txt1 {
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 8px;
+}
+
+.cmLBoxR .twBox li .txt1:hover {
+	text-decoration: none;
+}
+
+.cmL .cmLBox .cmLBoxL .twBox .bgR {
+	background: #7C2671;
+}
+
+.cmL .cmLBox .cmLBoxL .twBox .bgR a {
+	color: #FFFFFF;
+}
+
+.cmLBox2 {
+	margin-bottom: 30px;
+	overflow: hidden;
+}
+
+.ad2 {
+	float: left;
+	width: 479px;
+}
+
+.bd {
+	background: #F0F0F0;
+	float: right;
+	height: 75px;
+	padding: 10px;
+	width: 504px;
+}
+
+.bd .bk {
+	display: block;
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	overflow: auto;
+	width: 340px;
+}
+
+.bd .wsBtn {
+	float: right;
+	width: 140px;
+}
+
+.bd .wsBt input .but1 {
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	color: #003155;
+	float: right;
+	height: 26px;
+	margin-bottom: 3px;
+	margin-right: 10px;
+	width: 115px;
+}
+
+.cmL .cmLBox .cmLBoxL .twBox .bgW {
+	background: #FFFFFF;
+}
+
+.cmL .cmLBox .cmLBoxL .twBox .bgW a {
+	color: #161616;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox .Txt {
+	background: #FFFFFF;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox .Txt a {
+	background: #F0F0F0;
+	height: 72px;
+	margin-bottom: 10px;
+	padding: 8px;
+}
+
+.cmLBoxR .twBox .bgB,
+ .cmL .cmLBox .cmLBoxL .twBox .bgB {
+	background: #000000;
+}
+
+.cmLBoxR .twBox .bgB a,
+ .cmL .cmLBox .cmLBoxL .twBox .bgB a {
+	color: #FFFFFF;
+}
+
+.cmR h2 {
+	background: url(http://www.chinadaily.com.cn/image_e/2016/btBg.png) repeat-x center;
+	width: 100%;
+}
+
+.cmR h2 b {
+	background-color: #004679;
+	color: #FFFFFF;
+	font-family: 'times new roman', times, serif;
+	font-size: 14px;
+	padding-bottom: 2px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 2px;
+}
+
+.cmR h2 b a {
+	color: #FFFFFF;
+}
+
+.cmR .twBox {
+	overflow: hidden;
+}
+
+.cmR .twBox div {
+	cursor: pointer;
+	margin-bottom: 11px;
+	margin-top: 19px;
+	overflow: hidden;
+}
+
+.cmR .twBox p a {
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 19px;
+}
+
+.cmR .Cont {
+	cursor: pointer;
+	margin-bottom: 30px;
+	overflow: hidden;
+}
+
+.cmR .twBox span {
+	background-color: #999999;
+	color: #FFFFFF;
+	float: right;
+	font-family: arial;
+	font-size: 13px;
+	margin-top: 15px;
+	padding-bottom: 3px;
+	padding-left: 7px;
+	padding-right: 7px;
+	padding-top: 3px;
+}
+
+.cmLBoxL .twBox .v-ico {
+	float: left;
+	height: 187px;
+	position: absolute;
+	width: 290px;
+}
+
+.cmLBoxL .twBox .v-ico b {
+	left: 208px;
+	position: relative;
+	top: -80px;
+}
+
+.cmLBoxL .twBox p .v-txt {
+	left: 290px;
+	position: relative;
+}
+
+.v-ico2 {
+	display: block;
+	height: 109px;
+	position: absolute;
+	width: 168px;
+}
+
+.v-ico2 b {
+	left: 118px;
+	position: relative;
+	top: -47px;
+}
+
+.v-txt2 {
+	background-color: #000000;
+	position: relative;
+	top: 110px;
+}
+
+#topNav {
+	width: 168px;
+}
+
+#topNav .bt {
+	border-bottom: 1px solid #E0E0E0;
+	list-style-type: none;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+}
+
+#topNav .bt li {
+	float: left;
+	width: 84px;
+}
+
+#topNav .bt a {
+	float: left;
+	font-size: 14px;
+	margin-left: 2px;
+	margin-right: 2px;
+	text-align: center;
+	text-decoration: none;
+}
+
+#topNav .bt a span {
+	background-color: #F6F6F6;
+	display: block;
+	padding-bottom: 3px;
+	padding-left: 6px;
+	padding-right: 3px;
+	padding-top: 3px;
+	text-align: left;
+	width: 73px;
+}
+
+#topNav .bt a:hover {
+	color: #FFCC00;
+}
+
+#topNav .bt a .current:hover {
+	color: #666666;
+}
+
+#topNav .bt a .current {
+	color: #666666;
+	display: block;
+	text-decoration: none;
+}
+
+#topNav .bt a .current span {
+	background-color: #004679;
+	background-position: left top;
+	background-repeat: no-repeat;
+	color: #FFFFFF;
+	display: block;
+}
+
+a,
+ area {
+	blr: -expression(expression(this.onfocus=this.blur()));
+}
+
+:focus {
+	outline-style: none;
+}
+
+#topNav .show {
+	clear: both;
+	display: block;
+	width: 168px;
+}
+
+#topNav div {
+	display: none;
+}
+
+#topNav h2 {
+	color: #003399;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 30px;
+	margin: 0;
+}
+
+#topNav p {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0;
+}
+
+#topNav .liBox li {
+	border-bottom: 1px solid #E0E0E0;
+	border-top-width: 0;
+	font-size: 14px;
+	line-height: 17px;
+	padding: 14px 0;
+}
+
+.scrBox .bt3 {
+	background-repeat: no-repeat;
+	height: 35px;
+	line-height: 35px;
+	padding-left: 10px;
+}
+
+.scrBox .bt3 h2 {
+	color: #077DA5;
+	font-size: 26px;
+}
+
+.pic_show_l {
+	background-color: #FFFFFF;
+	background-repeat: repeat-x;
+	font-size: 12px;
+	height: 235px;
+	margin-left: 0;
+	margin-top: 0;
+	padding-bottom: 0;
+	zoom: -1;
+}
+
+.pic_show_l .pcont {
+	float: left;
+	height: 238px;
+	margin-left: 0;
+	margin-right: 0;
+	overflow: hidden;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	padding-top: 10px;
+	width: 1000px;
+}
+
+.pic_show_l .ScrCont {
+	margin-left: -5px;
+	width: 8758px;
+	zoom: -1;
+}
+
+.pic_show_l .leftbotton {
+	display: block;
+	float: left;
+	margin-left: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.pic_show_l .rightbotton {
+	float: left;
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.pic_show_l .leftbotton IMG {
+	border-bottom-style: none;
+	border-left-style: none;
+	border-right-style: none;
+	border-top-style: none;
+}
+
+.pic_show_l .rightbotton IMG {
+	border-bottom-style: none;
+	border-left-style: none;
+	border-right-style: none;
+	border-top-style: none;
+}
+
+.pic_show_l DIV #list1_1 UL {
+	float: left;
+	line-height: 24px;
+	margin: 0;
+	text-align: center;
+	width: 154px;
+}
+
+#ISL_Cont_1 #list1_1 UL LI {
+	display: block;
+	height: 95px;
+	line-height: 14px;
+	margin-bottom: 5px;
+}
+
+#ISL_Cont_1 #list2_1 UL LI {
+	display: block;
+	height: 95px;
+	line-height: 14px;
+	margin-bottom: 5px;
+}
+
+.pic_show_l DIV #list2_1 UL {
+	float: left;
+	height: 248px;
+	line-height: 24px;
+	margin: 0;
+	text-align: center;
+	width: 154px;
+}
+
+.pic_show_l DIV #list1_1 IMG {
+	cursor: pointer;
+	display: block;
+	margin-bottom: 1px;
+	margin-top: 2px;
+}
+
+.pic_show_l DIV #list2_1 IMG {
+	cursor: pointer;
+	display: block;
+	margin: 2px auto 1px;
+}
+
+.pic_show_l #list1_1 {
+	float: left;
+}
+
+.pic_show_l #list2_1 {
+	float: left;
+}
+
+.pic_show_l .rightbotton IMG {
+	margin-left: 2px;
+}
+
+.picshow {
+	margin: 0;
+	position: relative;
+	width: 480px;
+}
+
+#picarea {
+	background: #FFFFFF;
+	margin: 0;
+}
+
+#bigpicarea {
+	height: 310px;
+	overflow: hidden;
+	position: relative;
+}
+
+.image {
+	text-align: center;
+}
+
+.image IMG {
+	border-left: #ECECEC 1px solid;
+	border-right: #ECECEC 1px solid;
+	border-top: #ECECEC 1px solid;
+	margin: 0 auto;
+}
+
+.pic_show_l .bt2 {
+	overflow: hidden;
+}
+
+.pic_show_l .bt2 h2 {
+	float: left;
+	width: 935px;
+}
+
+.pic_show_l .bt2 .arr {
+	float: right;
+	width: 70px;
+}
+
+.cont-roll {
+	height: 320px;
+	margin-bottom: 15px;
+	width: 642px;
+}
+
+.focus {
+	overflow: hidden;
+}
+
+.focus img {
+	height: 320px;
+	width: 642px;
+}
+
+.focus .shadow .title {
+	margin: 0;
+	padding: 0;
+}
+
+.focus .shadow .title a {
+	color: #FFFFFF;
+	font-size: 14px;
+	font-weight: bolder;
+	overflow: hidden;
+	text-decoration: none;
+}
+
+.focus .btn {
+	bottom: 34px;
+	left: 510px;
+	overflow: hidden;
+	zoom: -1;
+}
+
+.focus .btn a {
+	background: #D9D9D9;
+	border-radius: 7px;
+	color: #B0B0B0;
+	display: inline;
+	float: left;
+	font: 12px/15px '宋体';
+	height: 13px;
+	margin: 0 5px;
+	outline: 0;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	width: 13px;
+}
+
+.focus .btn a:hover,
+ .focus .btn a .current {
+	background: #FC114A;
+	cursor: pointer;
+}
+
+.focus .fPic {
+	margin: 0;
+	padding: 0;
+}
+
+.focus .D1fBt {
+	height: 16px;
+	overflow: hidden;
+	z-index: -10;
+	zoom: -1;
+}
+
+.focus .shadow {
+	background: url(http://www.chinadaily.com.cn/image_e/2016/focusLine.png) repeat-x;
+	bottom: 0;
+	cursor: pointer;
+	display: block;
+	height: 100px;
+	left: 0;
+	padding: 65px 15px 0 25px;
+	position: relative;
+	right: 0;
+	text-align: left;
+	top: -146px;
+	width: 602px;
+	z-index: -10;
+}
+
+.focus .shadow h3 {
+	color: #FFFFFF;
+	font-size: 24px;
+	font-weight: normal;
+	line-height: 27px;
+	margin: 40px 0 0 0;
+	padding: 0;
+}
+
+.focus .shadow h3 a {
+	color: #FFFFFF;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+.focus .fcon {
+	display: none;
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 642px;
+}
+
+.focus .fcon img {
+	display: block;
+}
+
+.focus .fbg {
+}
+
+.focus .fbg div {
+	height: 14px;
+	margin: 4px auto 0;
+	overflow: hidden;
+	zoom: -1;
+}
+
+.focus .D1fBt a {
+	border-radius: 7px;
+	color: #B0B0B0;
+	display: inline;
+	float: left;
+	font: 12px/15px '宋体';
+	height: 12px;
+	margin: 0 5px;
+	outline: 0;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	width: 12px;
+}
+
+.focus .D1fBt img {
+	display: none;
+}
+
+.focus .D1fBt i {
+	display: none;
+	font-style: normal;
+}
+
+.focus .prev,
+ .focus .next {
+	background: url(http://www.chinadaily.com.cn/image_e/2016/focus_btn.png) no-repeat;
+	height: 74px;
+	position: absolute;
+	right: 0;
+	width: 40px;
+}
+
+.focus .prev {
+	background-position: 0 -74px;
+	cursor: pointer;
+	left: 0;
+	margin-bottom: 0;
+	margin-right: 0;
+	top: 120px;
+}
+
+.focus .next {
+	background-position: -40px -74px;
+	cursor: pointer;
+	margin-bottom: 0;
+	margin-right: 0;
+	right: 0;
+	top: 120px;
+}
+
+.focus .next:hover {
+	background-position: -40px 0;
+}
+
+.gj {
+	margin: 0 auto;
+	padding: 0;
+	position: absolute;
+	width: 642px;
+	z-index: -33;
+}
+
+.hui-dingbu {
+	background: #F6F6F6;
+	margin: 0;
+	padding: 0;
+}
+
+.ding-nei {
+	color: #161616;
+	font-family: 'times new roman', times, serif;
+	font-size: 20px;
+	margin: 0 auto;
+	padding: 10px 0;
+	text-align: center;
+	width: 1200px;
+}
+
+.ding-nei a:link,
+ .ding-nei a:visited {
+	color: #161616;
+	font-size: 20px;
+	text-decoration: none;
+}
+
+.dibu-one {
+	background: #B9B9B9;
+	margin: 0;
+	padding: 0;
+}
+
+.dibu-one-nei {
+	color: #FFFFFF;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	margin: 0 auto;
+	padding: 40px 0;
+	width: 1200px;
+}
+
+.dibu-one-nei a:link,
+ .dibu-one-nei a:visited {
+	color: #FFFFFF;
+	font-family: arial;
+	text-decoration: none;
+}
+
+.dibu-one-nei a:hover {
+	text-decoration: underline;
+}
+
+.di-a {
+	margin: 0 0 15px 0;
+	padding: 0;
+}
+
+.dibu-two {
+	background: #003E6C;
+	margin: 0;
+	overflow: hidden;
+	padding: 25px 0;
+}
+
+.dibu-two-nei {
+	margin: 0 auto;
+	padding: 0;
+	width: 1200px;
+}
+
+.w-one {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 125px;
+}
+
+.w-bia {
+	color: #CCCCCC;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	margin: 0 0 35px 0;
+	padding: 0;
+}
+
+.w-bia a:link,
+ .w-bia a:visited {
+	color: #CCCCCC;
+	font-family: arial;
+	text-decoration: none;
+}
+
+.w-bia a:hover {
+	text-decoration: underline;
+}
+
+.w-bir {
+	color: #CCCCCC;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	margin: 0 0 15px 0;
+	padding: 0;
+}
+
+.w-bir a:link,
+ .w-bir a:visited {
+	color: #CCCCCC;
+	font-family: arial;
+	text-decoration: none;
+}
+
+.w-bir a:hover {
+	text-decoration: underline;
+}
+
+.w-two {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 125px;
+}
+
+.w-three {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 120px;
+}
+
+.w-for {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 125px;
+}
+
+.w-fiv {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 125px;
+}
+
+.w-six {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 125px;
+}
+
+.w-seven {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 125px;
+}
+
+.w-eight {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 125px;
+}
+
+.w-nine {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 125px;
+}
+
+.dibu-three {
+	background: #004679;
+	margin: 0;
+	overflow: hidden;
+	padding: 35px 0;
+}
+
+.dibu-three-nei {
+	margin: 0 auto;
+	padding: 0;
+	width: 1200px;
+}
+
+.three-left {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 445px;
+}
+
+.lo-g {
+	margin: 0;
+	padding: 0;
+}
+
+.lo-a {
+	color: #CCCCCC;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 15px 0 0 0;
+	padding: 0;
+}
+
+.lo-b {
+	color: #CCCCCC;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 25px 0 0 0;
+	padding: 0;
+}
+
+.lo-c {
+	color: #CCCCCC;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 25px 0 0 0;
+	padding: 0;
+}
+
+.three-midd {
+	float: left;
+	margin: 50px 0 0 150px;
+	padding: 0;
+	width: 395px;
+}
+
+.midd-a {
+	color: #CCCCCC;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 14px;
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+
+.midd-a a:link,
+ .midd-a a:visited {
+	color: #CCCCCC;
+	font-family: arial;
+	text-decoration: none;
+}
+
+.midd-a a:hover {
+	text-decoration: underline;
+}
+
+.three-right {
+	float: right;
+	margin: 10px 100px 0 0;
+	padding: 0;
+	width: 92px;
+}
+
+.right-a {
+	color: #CCCCCC;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 14px;
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+
+.right-b {
+	margin: 0;
+	padding: 0;
+}
+
+.tmR .twBox .Txt h2 a:hover {
+	color: #00457E;
+	text-decoration: none;
+}
+
+.tmR .twBox .Pic img {
+	-moz-transform: -scale((-1);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((-1);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((-1);
+	-webkit-transition: all 0.1s ease;
+	height: 190px;
+	transform: -scale((-1);
+	transition: all 0.1s ease;
+	width: 297px;
+}
+
+.tmR .twBox .Pic:hover img {
+	-moz-transform: -scale((1.15);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((1.15);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((0.15);
+	-webkit-transition: all 0.1s ease;
+	transform: -scale((1.15);
+	transition: all 0.1s ease;
+}
+
+.tmL .twBox a img {
+	-moz-transform: -scale((-1);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((-1);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((-1);
+	-webkit-transition: all 0.1s ease;
+	height: 99px;
+	transform: -scale((-1);
+	transition: all 0.1s ease;
+	width: 153px;
+}
+
+.tmL .twBox a:hover img {
+	-moz-transform: -scale((1.15);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((1.15);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((0.15);
+	-webkit-transition: all 0.1s ease;
+	transform: -scale((1.15);
+	transition: all 0.1s ease;
+}
+
+.tmR .ad1 img {
+	height: 100px;
+	width: 543px;
+}
+
+.cmLBox2 .ad2 img {
+	height: 95px;
+	width: 479px;
+}
+
+.cmLBoxL .twBox span a img {
+	-moz-transform: -scale((-1);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((-1);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((-1);
+	-webkit-transition: all 0.1s ease;
+	display: block;
+	float: left;
+	height: 187px;
+	transform: -scale((-1);
+	transition: all 0.1s ease;
+	width: 290px;
+}
+
+.cmLBoxL .twBox span a:hover img {
+	-moz-transform: -scale((1.15);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((1.15);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((0.15);
+	-webkit-transition: all 0.1s ease;
+	transform: -scale((1.15);
+	transition: all 0.1s ease;
+}
+
+.cmLBoxR .twBox span a img {
+	-moz-transform: -scale((-1);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((-1);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((-1);
+	-webkit-transition: all 0.1s ease;
+	height: 109px;
+	transform: -scale((-1);
+	transition: all 0.1s ease;
+	width: 168px;
+}
+
+.cmLBoxR .twBox span a:hover img {
+	-moz-transform: -scale((1.15);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((1.15);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((0.15);
+	-webkit-transition: all 0.1s ease;
+	transform: -scale((1.15);
+	transition: all 0.1s ease;
+}
+
+.cmLBoxR .twBox li a img {
+	-moz-transform: -scale((-1);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((-1);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((-1);
+	-webkit-transition: all 0.1s ease;
+	height: 109px;
+	transform: -scale((-1);
+	transition: all 0.1s ease;
+	width: 168px;
+}
+
+.cmLBoxR .twBox li a:hover img {
+	-moz-transform: -scale((1.15);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((1.15);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((0.15);
+	-webkit-transition: all 0.1s ease;
+	transform: -scale((1.15);
+	transition: all 0.1s ease;
+}
+
+.cmLBoxR .twBox .Txt2 a {
+	background-color: #F6F6F6;
+	height: 72px;
+	margin-bottom: 10px;
+	padding: 8px;
+	width: 152px;
+}
+
+.cmLBoxR .twBox .Txt2 a:hover {
+	background: #E6E6E6;
+	text-decoration: none;
+}
+
+.cmLBoxL .twBox .v-ico b a img {
+	height: 63px;
+	width: 63px;
+}
+
+.cmLBoxR .twBox .v-ico2 b img {
+	height: 38px;
+	width: 38px;
+}
+
+.cmR div a {
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.cmR .Cont a img {
+	-moz-transform: -scale((-1);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((-1);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((-1);
+	-webkit-transition: all 0.1s ease;
+	height: 109px;
+	transform: -scale((-1);
+	transition: all 0.1s ease;
+	width: 168px;
+}
+
+.cmR .twBox a:hover img {
+	-moz-transform: -scale((1.15);
+	-moz-transition: all 0.1s ease;
+	-o-transform: -scale((1.15);
+	-o-transition: all 0.1s ease;
+	-webkit-transform: -scale((0.15);
+	-webkit-transition: all 0.1s ease;
+	transform: -scale((1.15);
+	transition: all 0.1s ease;
+}
+
+.cmR .ad3 {
+	height: 450px;
+	width: 168px;
+}
+
+.tmL .twBox a:hover {
+	background-color: #E6E6E6;
+}
+
+.cmL .cmLBox .cmLBoxL .Txt a:hover {
+	background-color: #E6E6E6;
+	text-decoration: none;
+}
+
+.cmLBoxR .twBox li:hover {
+	background-color: #E6E6E6;
+	cursor: pointer;
+}
+
+.tmL .twBox a i {
+	display: block;
+	overflow: hidden;
+}
+
+.twBox .v-ico a {
+	display: block;
+	overflow: hidden;
+}
+
+.cmL .cmLBox .cmLBoxR .twBox li .bgB {
+	background-color: #000000;
+}
+
+.twBox .bgB .v-ico2 {
+	display: block;
+	overflow: hidden;
+}
+
+.cmR .Cont2 {
+	margin-bottom: 30px;
+}
+
+.Cont3 img {
+	height: 168px;
+	width: 168px;
+}
+
+.adTop {
+	margin: 0 auto;
+	padding: 0;
+	text-align: center;
+	width: 990px;
+}
+
+.rwm {
+	background: url(http://www.chinadaily.com.cn/image_e/2016/rwmBg_03.jpg);
+	height: 345px;
+	margin-bottom: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0;
+	padding-bottom: 0;
+	padding-left: 123px;
+	padding-right: 0;
+	padding-top: 140px;
+	width: 980px;
+}
+
+.rwmBox {
+	background: #FFFFFF;
+	float: left;
+	height: 144px;
+	margin-right: 118px;
+	padding-bottom: 13px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 13px;
+	width: 96px;
+}
+
+.rwmBox span {
+	display: block;
+	font-family: arial;
+	font-size: 12px;
+	line-height: 24px;
+	text-align: center;
+}
+
+.aBout {
+	margin-bottom: 0;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0;
+	overflow: hidden;
+	padding-bottom: 120px;
+	width: 980px;
+}
+
+.aBout_l {
+	float: left;
+	width: 300px;
+}
+
+.ab_Bt {
+	background: url(http://www.chinadaily.com.cn/image_e/2016/abBg_01.png);
+	color: #FFFFFF;
+	font-size: 44px;
+	font-weight: bold;
+	line-height: 91px;
+	margin-left: 10px;
+	text-align: center;
+}
+
+.aBout_r {
+	float: left;
+	padding-left: 20px;
+	width: 660px;
+}
+
+.aBout_r h1 {
+	color: #2765B2;
+	font-size: 44px;
+	line-height: 44px;
+	padding-bottom: 25px;
+	padding-top: 25px;
+}
+
+.aBout_r .Pic2 {
+	margin-bottom: 40px;
+}
+
+.aBout_r .Cont4 {
+	color: #9A9A9A;
+	font-family: arial;
+	font-size: 16px;
+	line-height: 24px;
+}
+
+.aBout_r .Cont4 p {
+	margin-bottom: 20px;
+}
+
+.ab_lis li {
+	height: 60px;
+}
+
+.ab_lis li .cur {
+	background-image: url(http://www.chinadaily.com.cn/image_e/2016/abHover.png);
+	background-position: center 7px;
+}
+
+.ab_lis .cur a {
+	color: #FFFFFF;
+}
+
+.ab_lis li a {
+	border-bottom: #CCCCCC 1px dotted;
+	color: #6E6E6E;
+	display: block;
+	float: right;
+	font-family: arial;
+	font-size: 18px;
+	line-height: 60px;
+	margin-left: 10px;
+	text-align: center;
+	width: 290px;
+}
+
+.ab_lis li a:hover {
+	text-decoration: none;
+}
+
+.aBout_r .Cont4 .li_ico {
+	background-image: url(http://www.chinadaily.com.cn/image_e/2016/ico1.png);
+	background-position: left 7px;
+	background-repeat: no-repeat;
+	padding-left: 15px;
+}
+
+.ad4 {
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
+.ad4 img {
+	height: 100px;
+	width: 1013px;
+}
+
+.Cont3 {
+	margin-bottom: 30px;
+}
+
+@charset "utf-8";
+
+@media all and (max-width: 1154px) {
+}

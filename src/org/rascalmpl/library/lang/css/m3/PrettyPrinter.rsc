@@ -91,7 +91,11 @@ public str ppSelectors(list[Type] selector) {
 public str ppExpressions(list[Type] selector) {
 	str result = "";
 	for (Type sel <- selector) {
-		result += "<ppx(sel)>";
+		if (sel@operator?) {
+			result += "<sel@operator><ppx(sel)>";
+		} else {
+			result += "<ppx(sel)>";
+		}
 	}
 	return result;
 }
@@ -291,7 +295,7 @@ public default str ppx(Statement smth) = "??<smth>??";
 public str ppx(Type::combinedSelector(list[Expression] selectors)) { 
 	str result = "";
 	for(sel <- selectors) {
-		result  += "<pp(selectors)>";
+		result  += "<ppx(sel)>";
 	}
 	return result;
 }
@@ -320,8 +324,8 @@ public str ppx(Expression::mediaExpression(str property, list[Type] values)) = "
 public default str ppx(Expression smth) = "??<smth>??";
 
 // Types
-public str ppx(Type::class(str name)) = " <name>";
-public str ppx(Type::id(str name)) = " <name>";
+public str ppx(Type::class(str name)) = " .<name>";
+public str ppx(Type::id(str name)) = " #<name>";
 public str ppx(Type::domElement(str name)) = " <name>";
 public str ppx(Type::attributeSelector(str attribute, str op, str \value)) = "[<attribute><op><\value>]";
 public str ppx(Type::attributeSelector(str attribute)) = "[<attribute>]";
@@ -340,7 +344,7 @@ public str ppx(Type::color(int red, int green, int blue, num alpha)) {
 public str ppx(Type::expression(str expression)) = "expression(<expression>)";
 public str ppx(Type::calc(str expression)) = "calc(<expression>)";
 public str ppx(Type::frequency(num freq, str unit)) = formatNumber(freq, unit);
-public str ppx(Type::function(str func, list[Type] exp)) = "<toLowerCase(func)>(<ppExpressions(exp)>)";
+public str ppx(Type::function(str func, list[Type] exp)) = "<toLowerCase(func)><ppExpressions(exp)>)";
 public str ppx(Type::ident(str ident)) = "<toLowerCase(ident)>";
 public str ppx(Type::integer(int val)) = "<val>";
 public str ppx(Type::length(num len, str unit)) = formatNumber(len, unit);
