@@ -15,10 +15,9 @@ import util::Math;
 
 public void go() {
 	
-	Declaration stylesheetAST = createAstFromFile(|home:///workspace/Rascal/rascal/testCSS/examples/crap.css|);
+	Declaration stylesheetAST = createAstFromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/test.css|);
 	
-	iprintln(stylesheetAST);
+	M3 stylesheetM3 = createM3FromFile(|home:///Documents/workspace/Rascal/rascal/testCSS/examples/test.css|);
 	
-	prettyPrint(stylesheetAST);
-	
+	iprintln(stylesheetM3);	
 }

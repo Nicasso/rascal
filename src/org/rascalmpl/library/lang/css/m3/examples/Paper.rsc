@@ -38,7 +38,7 @@ public void metrics1() {
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/hao123.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/imdb.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/imgur.com.css|,
-	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|,
+	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/instagram.com.css|
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/kat.cr.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/linkedin.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/live.com.css|,
@@ -70,7 +70,7 @@ public void metrics1() {
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/xvideos.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yahoo.com.css|,
 	 //   |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/yandex.ru.css|,
-	    |home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
+	    //|home:///Documents/workspace/Rascal/rascal/testCSS/sample-set/web-new/youtube.com.css|
 	];
 	
 	for (d <- dirs) {
@@ -82,11 +82,11 @@ public void metrics1() {
 		diff = end-begin;
 		//iprintln("<d.file> <diff>");
 		
-		//iprintln("RL: <ruleLength()>");
+		iprintln("RL: <ruleLength(stylesheetM3)>");
 		//iprintln("NORB: <numberOfRuleBlocks()>");
 		//iprintln("EM: <entropyMetrics()>");
 		//iprintln("NOERB: <numberOfExtendedRuleBlocks()>");
-		println("<numberOfAttributesDefinedPerRuleBlock()>");
+		//println("<numberOfAttributesDefinedPerRuleBlock()>");
 		//iprintln("NOCRB: <numberOfCohesiveRuleBlocks()>");
 		//iprintln("<d> & <ruleLength()> & <numberOfRuleBlocks()> & <numberOfAttributesDefinedPerRuleBlock()> & <numberOfCohesiveRuleBlocks()>"); 
 	}
@@ -94,22 +94,27 @@ public void metrics1() {
 
 M3 stylesheetM3;
  
-public int ruleLength() {	
-	int ruleLength = 0;
+int calculateAllLines(loc style) = size(readFileLines(style));  
+int calculateLinesOfCode(loc style) = (calculateAllLines(style)-calculateBlankLines(style)-calculateLinesOfComments(style));  
+int calculateLinesOfComments(loc style) {
+	int comment = 0;
 	bool commentBlock = false;
-	for (rule <- ruleSets(stylesheetM3)) {
-		for (line <- readFileLines(rule)) {	
-			if (contains(line,"/*") && !contains(line,"*/")) {
-				commentBlock = true;
-			} else if (commentBlock && contains(line,"*/")) {
-				commentBlock = false;
-			} else if (!(trim(line) == "")) {
-				ruleLength += 1;
-			}
+	for (line <- readFileLines(style)) {
+		if (contains(line,"/*") && !contains(line,"*/")) { 
+			commentBlock = true;
+			comment += 1;
+		} else if (commentBlock && contains(line,"*/")) { 
+			commentBlock = false;
+			comment += 1;
+		} else if (contains(line,"/*") && contains(line,"*/") || commentBlock) {
+			comment += 1;
 		}
 	}
-	return ruleLength;
+	return comment; 
 }
+int calculateBlankLines(loc style) = size([1 | line <- readFileLines(style), trim(line) == ""]); 
+ 
+public int ruleLength(M3 stylesheetM3) = sum([calculateLinesOfCode(rule) | rule <- ruleSets(stylesheetM3)]);
 
 public int  numberOfRuleBlocks() {	
 	return size(ruleSets(stylesheetM3));

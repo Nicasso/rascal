@@ -1,15 +1,6 @@
-h1 {
-	color: red;
-}
-
-#header > #left {
-	color: red;
-}
-
-ul li:active {
-	color: red;
-}
-
-div #left#top#blue {
-	color: red;
+#contact-form {
+  padding: 10px 5px 10px 5px;
+  font-family: Arial;
+  /* Specific fix for IE 8 */
+  width: 100% !important;
 }
