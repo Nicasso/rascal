@@ -412,7 +412,6 @@ public class SourceConverter extends M3Converter implements CSSNodeVisitor {
 	public Void visit(StyleSheet node) {
 		// eval.getStdOut().println("StyleSheet");
 
-		// @TODO Find a way to get the file name here.
 		// makeBinding("css+stylesheet", null, "style1.css");
 		ownValue = loc;
 

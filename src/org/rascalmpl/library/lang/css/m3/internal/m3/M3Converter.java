@@ -34,13 +34,13 @@ public abstract class M3Converter extends CSSToRascalConverter {
 
 	protected final Stack<ISourceLocation> scopeManager = new Stack<ISourceLocation>();
 
-	protected ISetWriter uses; // Nothing really gets "used"
-	protected ISetWriter declarations;// 
-	protected ISetWriter containment;// Rules within declarations and declarations within viewport or media at-rules
-	protected ISetWriter documentation;// Comments
-	protected ISetWriter modifiers;// The !important tag
-	protected ISetWriter names;// Names of classes and id's
-	protected ISetWriter invocation;// Could be used later for animation functions? OR NOT!
+	protected ISetWriter uses; // @font-face and @keyframes 
+	protected ISetWriter declarations; // Everything which is declared
+	protected ISetWriter containment; // Rules within declarations and declarations within viewport or media at-rules
+	protected ISetWriter documentation; // Comments
+	protected ISetWriter modifiers; // Such as the !important tag
+	protected ISetWriter names; // Names of classes and id's
+	protected ISetWriter invocation; // Could be used later for animation functions?
 	
 	protected final org.rascalmpl.value.type.Type CONSTRUCTOR_M3;
 	

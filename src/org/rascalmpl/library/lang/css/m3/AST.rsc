@@ -26,7 +26,7 @@ data Declaration
     | ruleSet(list[Expression] selector, list[Statement] declarations) // #lol { color: red; } (selector is a list because "#lol, #hi, #hej" are 3 individual selectors) (@TODO selector is a list of types because of the combinedSelector)
     // At rules
     | ruleMedia(list[Type] mediaQueries, list[Declaration] ruleSets) // @media only screen and (max-width : 480px) {
-    | ruleFontFace(list[Statement] declarations) // @font-face { (TODO WHY IS THIS A LIST OF DECLARATIONS?! AND NOT A STATEMENT)
+    | ruleFontFace(list[Statement] declarations) // @font-face
     | ruleImport(str uri) // @import url("style2.css");
     | ruleImport(str uri, list[Type] mediaQueries) // @import url("style2.css") handheld and (max-width: 400px);
     | ruleCounterStyle(str name, list[Statement] declarations)
@@ -44,7 +44,7 @@ data Statement
 
 data Expression 
 	= combinedSelector(list[Expression] selectors) // .lol > .hej div.you a single complete selector
-    | selector(list[Type] simpleSelector) // .lol.hej or #hej Combinator is not present with the first selector part, so made it optional by adding the rule below.
+    | selector(list[Type] simpleSelector) // .lol.hej or #hej
     | mediaExpression(str property, list[Type] values) // (max-width : 480px) and (orientation: landscape) in mediaqueries like "@media tv and (min-width: 700px) and (orientation: landscape)"
     ;
 
@@ -79,9 +79,9 @@ data Type
     ;
 
 data Modifier
-    = important() // !important (Will be added as @modifier annotation to declarations like the Java m3 does)
-    | combinator(str combi)
-    | operator(str op)
+    = important() // !important
+    | combinator(str combi) // Combinator for selectors such as > + and ~
+    | operator(str op) // Operator between values such as a comma
     ;
     
 public Declaration createAstFromFile(loc file) {
